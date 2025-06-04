@@ -1,26 +1,39 @@
 OBJECTS
-- todos
-    - created via factory function
-    - Properties:
-        - title
-        - description
-        - dueDate
-        - priority
-        - notes?
-        - checklist?
+    - todos
+        - created via factory function
+        - Properties:
+            - title
+            - description
+            - dueDate
+            - priority
+            - notes
+            - checklist
 
-- projects
-    - created via factory function
-    - separate lists of todos
-    - when app is first opened, a 'default' project is created that todos are attached to
-    - users can create new projects and decide which project their todos go into
-    - Properties:
-        - title
-        - description
-        - dueDate
-        - priority
-        - notes?
-        - checklist?
+    - projects
+        - created via factory function
+        - separate lists of todos
+        - when app is first opened, a 'default' project is created that todos are attached to
+        - users can create new projects and decide which project their todos go into
+        - Properties:
+            - title
+            - description
+            - dueDate
+            - priority
+            - notes?
+            - checklist?
+
+    - ScreenController
+        - IIFE
+        - interacts with the DOM, draws content
+        - interacts with todo and project objects to get the info it needs
+
+    - StorageHandler
+        - IIFE
+        - interacts with localStorage
+        - JSON.stringify() when sending to localStorage
+        - JSON.parse() when getting from localStorage
+            - destructure when getting JSON data to create the appropriate objects
+            - if the structure of JSON is known, should be able to recreate objects
 
 UI
     - view all projects
@@ -35,7 +48,11 @@ Persistent Storage
     - https://www.freecodecamp.org/news/use-local-storage-in-modern-applications/
     - use localStorage to store data so that todo-list information persists between sessions
 
-NOTES
+NOTES/QUESTIONS
 - separate application logic form DOM logic
+    - ScreenController
 - date-fns (installed) to manipulate dates
     - https://github.com/date-fns/date-fns
+- what is the structure of a todo and a project, and is a structure/object needed to store both together?
+- intermediary between the data objects (todo, project) and StorageHandler and ScreenController?
+    - like a todoManager that receives info from event listeners, sends info where it needs to go
