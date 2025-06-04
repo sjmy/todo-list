@@ -2,7 +2,7 @@
   "name": "restaurant-page",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
@@ -11,18 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sjmy/restaurant-page.git"
+    "url": "git+https://github.com/sjmy/todo-list.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sjmy/restaurant-page/issues"
+    "url": "https://github.com/sjmy/todo-list/issues"
   },
-  "homepage": "https://github.com/sjmy/restaurant-page#readme",
+  "homepage": "https://github.com/sjmy/todo-list#readme",
   "devDependencies": {
     "css-loader": "^7.1.2",
-    "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.99.9",
