@@ -26,15 +26,18 @@ import TaskObject from "./task.js";
 export default function DataManagerObject() {
     let projectArray = [];
 
-    // Getters
+    // Getter
     const getProjectArray = () => projectArray;
 
-    const createTask = (taskName, taskDescription = "", taskDueDate = "", taskPriority = "none", taskNotes = "") => {
+    // Create a task. taskName is the only required field.
+    const createTask = (taskName, projectName = "My Tasks", taskDescription = "", taskDueDate = "", taskPriority = "none", taskNotes = "") => {
         const newTask = TaskObject(taskName, taskDescription, taskDueDate, taskPriority, taskNotes);
+        addTaskToProject(newTask, projectName);
     };
 
-    const createProject = (projectName, projectDescription = "", projectDueDate = "", projectPriority = "none", projectNotes = "") => {
-        const newProject = ProjectObject(projectName, projectDescription, projectDueDate, projectPriority, projectNotes);
+    // Create a project. projectName is the only required field.
+    const createProject = (projectName, projectDescription = "", projectDueDate = "", projectPriority = "none", projectNotes = "", projectTasks = []) => {
+        const newProject = ProjectObject(projectName, projectDescription, projectDueDate, projectPriority, projectNotes, projectTasks);
 
         // Check for existing project here or somewhere else? Form validation?
         projectArray.push(newProject);
@@ -46,9 +49,21 @@ export default function DataManagerObject() {
         createProject("My Tasks");
     };
 
+    // If project is not specified on task creation, task gets placed in the default project ("My Tasks")
+    const addTaskToProject = (task, project) => {
+        for (let i = 0; i < projectArray.length; i++) {
+            const existingProject = projectArray[i].getProjectName();
+            if (existingProject == project) {
+                projectArray[i].getProjectTasks().push(task);
+            };
+        };
+        console.log("yes");
+    };
+
     return {getProjectArray,
             createTask,
             createProject,
+            addTaskToProject,
             start
     };
 };

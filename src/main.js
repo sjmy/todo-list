@@ -6,7 +6,8 @@ const DataManager = DataManagerObject();
 const pTag = document.querySelector("p");
 
 DataManager.start();
+DataManager.createTask("Water plants");
 
-// pTag.addEventListener("click", () => {
-//     pTag.textContent = "yes";
-// });
+pTag.addEventListener("click", () => {
+    pTag.textContent = "yes";
+});
