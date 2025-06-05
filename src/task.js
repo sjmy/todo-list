@@ -17,6 +17,8 @@
 //             - toggle
 //             - strikethrough when toggled
 
+// Need a default value for taskDueDate. Is it an empty date? "none"? Will there be issues assigning it a Date object if the default is a string?
+
 export default function Task(taskName, taskDescription, taskDueDate, taskPriority, taskNotes) {
     const taskID = crypto.randomUUID();
     let taskName = taskName;

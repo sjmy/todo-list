@@ -54,10 +54,10 @@ OBJECTS
             - projectPriority
                 - getter/setter
             - notes?
+                - getter/setter
             - checklist?
 
     - DataManager
-        - IIFE
         - intermediary between data objects (Task, Project) and controller objects (ScreenController, StorageController)
         - receives data from event listeners, sends it where it needs to go:
             - Project factory
@@ -75,15 +75,13 @@ OBJECTS
                                             taskDescription: "do stuff really well",
                                             taskDueDate: "tomorrow",
                                             taskPriority: "high",
-                                            taskNotes: "here are somet houghts on how to do stuff really well"}]}]
+                                            taskNotes: "here are some thoughts on how to do stuff really well"}]}]
 
     - ScreenController
-        - IIFE
         - interacts with the DOM, draws content
         - interacts with task and project objects to get the info it needs
 
     - StorageController
-        - IIFE
         - interacts with localStorage
         - JSON.stringify() when sending to localStorage
         - JSON.parse() when getting from localStorage
@@ -108,4 +106,6 @@ NOTES/QUESTIONS
     - ScreenController
 - date-fns (installed) to manipulate dates
     - https://github.com/date-fns/date-fns
-- what is the structure of a task and a project, and is a structure/object needed to store both together?
+- each object is defined in its own module and imported to main.js
+    - this means the objects I only need one of (DataManager, ScreenController, StorageController) don't need to be defined as an IIFE
+    - defining them as a module inherently protects their scope from polluting into the global scope
