@@ -53,6 +53,8 @@ OBJECTS
                 - getter/setter
             - projectPriority
                 - getter/setter
+            - projectTasks
+                - 
             - notes?
                 - getter/setter
             - checklist?

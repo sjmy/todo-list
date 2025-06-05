@@ -18,20 +18,23 @@
 //             - getter/setter
 //         - checklist?
 
-export default function Project(projectName, projectDescription, projectDueDate, projectPriority, projectNotes) {
+export default function ProjectObject(name, description, dueDate, priority, notes) {
     const projectID = crypto.randomUUID();
-    let projectName = projectName;
-    let projectDescription = projectDescription;
-    let projectDueDate = projectDueDate;
-    let projectPriority = projectPriority;
-    let projectNotes = projectNotes;
+    let projectName = name;
+    let projectDescription = description;
+    let projectDueDate = dueDate;
+    let projectPriority = priority;
+    let projectNotes = notes;
+    let projectTasks = [];
 
     // Getters
     const getProjectID = () => projectID;
+    const getProjectName = () => projectName;
     const getProjectDescription = () => projectDescription;
     const getProjectDueDate = () => projectDueDate;
     const getProjectPriority = () => projectPriority;
     const getProjectNotes = () => projectNotes;
+    const getProjectTasks = () => projectTasks;
 
     // Setters
     const setProjectDescription = (newProjectDescription) => {
@@ -51,12 +54,15 @@ export default function Project(projectName, projectDescription, projectDueDate,
     };
 
     return {getProjectID,
+            getProjectName,
             getProjectDescription,
             getProjectDueDate,
             getProjectPriority,
             getProjectNotes,
+            getProjectTasks,
             setProjectDescription,
             setProjectDueDate,
             setProjectPriority,
-            setProjectNotes};
+            setProjectNotes
+    };
 };
