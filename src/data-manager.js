@@ -30,17 +30,18 @@ export default function DataManagerObject() {
     const getProjectArray = () => projectArray;
 
     // Create a task. taskName is the only required field.
-    const createTask = (taskName, projectName = "My Tasks", taskDescription = "", taskDueDate = "", taskPriority = "none", taskNotes = "") => {
-        const newTask = TaskObject(taskName, taskDescription, taskDueDate, taskPriority, taskNotes);
-        addTaskToProject(newTask, projectName);
+    // A project object must always be passed as a parameter
+    const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = "", taskPriority = "none", taskNotes = "") => {
+        const newTaskObject = TaskObject(taskName, taskDescription, taskDueDate, taskPriority, taskNotes);
+        addTaskToProject(newTaskObject, projectObject);
     };
 
     // Create a project. projectName is the only required field.
     const createProject = (projectName, projectDescription = "", projectDueDate = "", projectPriority = "none", projectNotes = "", projectTasks = []) => {
-        const newProject = ProjectObject(projectName, projectDescription, projectDueDate, projectPriority, projectNotes, projectTasks);
+        const newProjectObject = ProjectObject(projectName, projectDescription, projectDueDate, projectPriority, projectNotes, projectTasks);
 
-        // Check for existing project here or somewhere else? Form validation?
-        projectArray.push(newProject);
+        // Check for existing project here? Or caught via form validation?
+        projectArray.push(newProjectObject);
     };
 
     const start = () => {
@@ -50,20 +51,44 @@ export default function DataManagerObject() {
     };
 
     // If project is not specified on task creation, task gets placed in the default project ("My Tasks")
-    const addTaskToProject = (task, project) => {
+    // "My Tasks" project is created during start()
+    const addTaskToProject = (taskObject, projectObject) => {
         for (let i = 0; i < projectArray.length; i++) {
-            const existingProject = projectArray[i].getProjectName();
-            if (existingProject == project) {
-                projectArray[i].getProjectTasks().push(task);
+            const existingProjectID = projectArray[i].getProjectID();
+            if (existingProjectID == projectObject.getProjectID()) {
+                projectArray[i].getProjectTasks().push(taskObject);
             };
         };
-        console.log("yes");
+    };
+
+    // Move task to a different project
+    const moveTask = (task, newProject) => {
+        // task is task object to be moved
+        // newProject is project object the task is to be moved into
+        // must also remove task from previous project - use taskID to loop through projectArray, pop when found, push to newProject?
+        // Can addTaskToProject() be used here?
+        const taskID = task.getTaskID();
+
+        for (let p = 0; p < projectArray.length; p++) {
+            const projectTasks = projectArray[p].getProjectTasks();
+
+            for (let t = 0; t < projectTasks.length; t++) {
+                const existingTaskID = projectTasks[t].getTaskID();
+
+                if (existingTaskID == taskID) {
+                    projectTasks.splice(t, 1);
+                };
+            };
+        };
+
+        addTaskToProject(task, newProject);
     };
 
     return {getProjectArray,
             createTask,
             createProject,
             addTaskToProject,
+            moveTask,
             start
     };
 };
