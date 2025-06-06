@@ -9,7 +9,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: 1fr 9fr;
-    height: 95vh;
+    height: 100vh;
 }
 
 .sidebar {
@@ -17,6 +17,7 @@ body {
     grid-template-rows: 1fr 9fr;;
     grid-area: 1 / 1 / 11 / 2;
     margin-left: 20px;
+    box-shadow: 1px 1px 4px 1px lightgrey;
 }
 
 .title {
@@ -29,4 +30,10 @@ body {
 
 .main {
     grid-area: 2 / 2 / 11 / 5;
+    margin-left: 20px;
+}
+
+.add {
+    margin: 20px;
+    opacity: 70%;
 }
