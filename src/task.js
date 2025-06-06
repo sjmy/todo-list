@@ -26,6 +26,7 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
     let taskDueDate = dueDate;
     let taskPriority = priority;
     let taskNotes = notes;
+    let isComplete = false;
 
     // Getters
     const getTaskID = () => taskID;
@@ -34,6 +35,7 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
     const getTaskDueDate = () => taskDueDate;
     const getTaskPriority = () => taskPriority;
     const getTaskNotes = () => taskNotes;
+    const getIsComplete = () => isComplete;
 
     // Setters
     const setTaskDescription = (newTaskDescription) => {
@@ -52,15 +54,21 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
         taskNotes = newTaskNotes;
     };
 
+    const toggleIsComplete = () => {
+        isComplete = !isComplete;
+    };
+
     return {getTaskID,
             getTaskName,
             getTaskDescription,
             getTaskDueDate,
             getTaskPriority,
             getTaskNotes,
+            getIsComplete,
             setTaskDescription,
             setTaskDueDate,
             setTaskPriority,
-            setTaskNotes
+            setTaskNotes,
+            toggleIsComplete
     };
 };

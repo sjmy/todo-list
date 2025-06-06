@@ -61,12 +61,7 @@ export default function DataManagerObject() {
         };
     };
 
-    // Move task to a different project
-    const moveTask = (task, newProject) => {
-        // task is task object to be moved
-        // newProject is project object the task is to be moved into
-        // must also remove task from previous project - use taskID to loop through projectArray, pop when found, push to newProject?
-        // Can addTaskToProject() be used here?
+    const deleteTask = (task) => {
         const taskID = task.getTaskID();
 
         for (let p = 0; p < projectArray.length; p++) {
@@ -76,11 +71,20 @@ export default function DataManagerObject() {
                 const existingTaskID = projectTasks[t].getTaskID();
 
                 if (existingTaskID == taskID) {
+                    console.log(`Task ${projectTasks[t].getTaskName()} deleted from Project ${projectArray[p].getProjectName()}`);
                     projectTasks.splice(t, 1);
                 };
             };
         };
+    };
 
+    // Move task to a different project
+    const moveTask = (task, newProject) => {
+        // task is task object to be moved
+        // newProject is project object the task is to be moved into
+        // must also remove task from previous project - use taskID to loop through projectArray, splice when found, push to newProject
+        // Can addTaskToProject() be used here?
+        deleteTask(task);
         addTaskToProject(task, newProject);
     };
 
@@ -89,6 +93,7 @@ export default function DataManagerObject() {
             createProject,
             addTaskToProject,
             moveTask,
+            deleteTask,
             start
     };
 };

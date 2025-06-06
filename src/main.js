@@ -13,7 +13,7 @@ window.DataManager = DataManager;
 
 DataManager.start();
 
-// moveTask testing. I really have to learn tests.
+// // moveTask() and deleteTask() testing. I really have to learn tests.
 // const projectOne = projects[0];
 
 // DataManager.createTask("Water plants", projectOne);
@@ -36,6 +36,18 @@ DataManager.start();
 // };
 
 // DataManager.moveTask(projectOne.getProjectTasks()[0], projectTwo);
+
+// console.log("My Tasks:")
+// for (let n = 0; n < projectOne.getProjectTasks().length; n++) {
+//     console.log(projectOne.getProjectTasks()[n].getTaskName());
+// };
+
+// console.log("Plant Duties:")
+// for (let n = 0; n < projectTwo.getProjectTasks().length; n++) {
+//     console.log(projectTwo.getProjectTasks()[n].getTaskName());
+// };
+
+// DataManager.deleteTask(projectTwo.getProjectTasks()[0]);
 
 // console.log("My Tasks:")
 // for (let n = 0; n < projectOne.getProjectTasks().length; n++) {
