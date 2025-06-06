@@ -12,8 +12,7 @@ Data Flow
         - creates Tasks
         - assigns Tasks to Projects
         - assigns Project to projectArray
-    - ScreenController receives data from event listeners and reads projectArray
-        - see UI section, not fleshed out yet
+    - ScreenController receives DataManager object and data from event listeners, reads projectArray, draws
     - StorageController reads projectArray, stringifys and sends to localStorage
         - DataManager calls it?
 
@@ -81,7 +80,9 @@ OBJECTS
 
     - ScreenController
         - interacts with the DOM, draws content
-        - interacts with task and project objects to get the info it needs
+        - interacts with DataManager object to get the info it needs
+            - from main.js, pass in DataManager object to methods
+                - and the event?
 
     - StorageController
         - interacts with localStorage
