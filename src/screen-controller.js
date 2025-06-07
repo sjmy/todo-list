@@ -43,6 +43,9 @@ export default function ScreenControllerObject() {
         mainContent.textContent = "";
     };
 
+    // Clears the main content area
+    // Takes a project, creates HTML elements, attaches values and classes as necessary,
+    // appends in order, calls drawTask() for each task in the project
     const drawProject = (project) => {
         const mainContent = document.querySelector(".main");
         const projectName = document.createElement("h1");
@@ -81,11 +84,13 @@ export default function ScreenControllerObject() {
         mainContent.appendChild(projectDescriptionDiv);
         mainContent.appendChild(taskItems);
 
+        // Call drawTask() for each task
         for (let t = 0; t < projectTasks.length; t++) {
             drawTask(projectTasks[t]);
         };
     };
 
+    // Takes a task, creates a div, label, and checkbox, append to taskItems
     const drawTask = (task) => {
         const taskItems = document.querySelector(".taskItems");
         const taskDiv = document.createElement("div");
