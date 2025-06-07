@@ -12,6 +12,9 @@
 //         - projectName
 //         - dueDate, priority, notes in light grey in a line underneath projectName
 //         - projectDescription (show one line, expandable if more)
+//             - textarea element
+//                 - can set maxchars
+//                 - can it be styled to only show a certain amount of chars before expanding? font? border?
 //     - drawTask
 //         - checkbox (task.isComplete() for task status)
 //             - strikethrough when complete
@@ -40,7 +43,32 @@ export default function ScreenControllerObject() {
         mainContent.textContent = "";
     };
 
-    return {clearMainContent,
+    const drawProject = (project) => {
+        const mainContent = document.querySelector(".main");
+        const projectName = document.createElement("h1");
+        const projectDescription = document.createElement("textarea");
+        const projectItems = document.createElement("div");
+        const projectDueDate = document.createElement("span");
+        const projectPriority = document.createElement("span");
 
+        clearMainContent();
+
+        projectItems.classList.add("projectItems");
+        // Add a class and/or name to textarea
+
+        projectName.textContent = project.getProjectName();
+        projectDescription.textContent = project.getProjectDescription();
+        projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
+        projectPriority.textContent = project.getProjectPriority();
+
+        projectItems.appendChild(projectDueDate);
+        projectItems.appendChild(projectPriority);
+        mainContent.appendChild(projectName);
+        mainContent.appendChild(projectDescription);
+        mainContent.appendChild(projectItems);
+    };
+
+    return {clearMainContent,
+            drawProject
     };
 };

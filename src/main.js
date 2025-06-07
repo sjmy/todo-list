@@ -1,7 +1,9 @@
 import "./styles.css";
 import DataManagerObject from "./data-manager.js";
+import ScreenControllerObject from "./screen-controller.js";
 
 const DataManager = DataManagerObject();
+const ScreenController = ScreenControllerObject();
 // const pTag = document.querySelector("p");
 
 // pTag.addEventListener("click", () => {
@@ -10,9 +12,20 @@ const DataManager = DataManagerObject();
 
 
 const projects = DataManager.getProjectArray();
+
+
 window.DataManager = DataManager;
 
 DataManager.start();
+const projectOne = projects[0];
+
+projectOne.setProjectDescription("This is the project description!");
+projectOne.setProjectDueDate("Tomorrow");
+projectOne.setProjectPriority("High");
+DataManager.createTask("Water plants", projectOne);
+DataManager.createTask("Repot peace lily", projectOne);
+
+ScreenController.drawProject(projectOne);
 
 // // moveTask() and deleteTask() testing. I really have to learn tests.
 // const projectOne = projects[0];

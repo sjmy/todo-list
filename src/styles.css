@@ -35,12 +35,28 @@ h1 {
     grid-area: 1 / 4 / 2 / 5;
 }
 
+.add {
+    margin: 20px;
+    opacity: 70%;
+}
+
 .main {
     grid-area: 2 / 2 / 11 / 5;
     margin-left: 20px;
 }
 
-.add {
-    margin: 20px;
-    opacity: 70%;
+textarea {
+    font: inherit;
+    border: none;
+    color: grey;
+}
+
+textarea:focus {
+    color: black;
+    border: solid 1px grey;
+}
+
+.projectItems {
+    display: flex;
+    color: grey;
 }
