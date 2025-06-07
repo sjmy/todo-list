@@ -16,8 +16,8 @@ body {
     display: grid;
     grid-template-rows: 1fr 9fr;;
     grid-area: 1 / 1 / 11 / 2;
-    margin-left: 20px;
     box-shadow: 1px 1px 4px 1px lightgrey;
+    padding-left: 20px;
 }
 
 .title {
@@ -27,7 +27,7 @@ body {
 }
 
 h1 {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     word-wrap: none;
 }
 
@@ -41,22 +41,50 @@ h1 {
 }
 
 .main {
-    grid-area: 2 / 2 / 11 / 5;
+    grid-area: 1 / 2 / 11 / 5;
+    margin-top: 20px;
     margin-left: 20px;
 }
 
-textarea {
-    font: inherit;
-    border: none;
-    color: grey;
+.projectDescription {
+    display: grid;
 }
 
-textarea:focus {
-    color: black;
-    border: solid 1px grey;
+.projectDescription::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+}
+
+.projectDescription > textarea {
+    resize: none;
+    overflow: hidden;
+}
+
+.projectDescription > textarea,
+.projectDescription::after {
+    font: inherit;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    color: grey;
+    resize: none;
+    width: 90%;
+    grid-area: 1 / 1 / 2 / 2;
+    margin-bottom: 10px;
+}
+
+textarea:hover {
+    border: solid 1px rgb(180, 180, 180);
 }
 
 .projectItems {
     display: flex;
-    color: grey;
+    gap: 40px;
+    color: rgb(164, 164, 164);
+    font-size: small;
+    padding-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
 }
