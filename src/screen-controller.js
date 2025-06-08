@@ -151,6 +151,8 @@ export default function ScreenControllerObject() {
         taskDetails.classList.add("taskDetails");
         taskDetails.classList.add(`${task.getTaskID()}`);
         taskDescriptionDiv.classList.add("taskDescription");
+        taskDescriptionDiv.classList.add(`${task.getTaskID()}`);
+        taskDescription.classList.add("taskDescriptionText");
         taskDescription.classList.add(`${task.getTaskID()}`);
         taskItemDetails.classList.add("taskItemDetails");
         // taskDueDate.classList.add(`${task.getTaskDueDate()}`);
