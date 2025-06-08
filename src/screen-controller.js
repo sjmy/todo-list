@@ -1,3 +1,5 @@
+import moreImage from "./img/more.svg";
+
 // ScreenController
 //     - receives DataManager object and data from event listeners, reads projectArray, draws
 //     - interacts with the DOM, draws content
@@ -62,6 +64,8 @@ export default function ScreenControllerObject() {
         projectDescriptionDiv.classList.add("projectDescription");
         projectDescription.classList.add(`${project.getProjectID()}`);
         projectItems.classList.add("projectItems");
+        // projectDueDate.classList.add(`${project.getProjectDueDate()}`);
+        // projectPriority.classList.add(`${project.getProjectPriority()}`);
         taskItems.classList.add("taskItems");
 
         // This event listener copies the project description to an attribute on the projectDescriptionDiv
@@ -96,16 +100,77 @@ export default function ScreenControllerObject() {
         const taskDiv = document.createElement("div");
         const taskLabel = document.createElement("label");
         const checkbox = document.createElement("input");
+        const moreDiv = document.createElement("div");
+        const more = document.createElement("img");
 
+        taskDiv.classList.add("taskItem");
         taskDiv.classList.add(`${task.getTaskID()}`);
-        taskLabel.htmlFor = `${task.getTaskID()}`;
-        checkbox.id = `${task.getTaskID()}`;
-        taskLabel.textContent = task.getTaskName();
-        checkbox.type = "checkbox";
 
+        taskLabel.htmlFor = `${task.getTaskID()}`;
+        taskLabel.textContent = task.getTaskName();
+
+        checkbox.type = "checkbox";
+        checkbox.id = `${task.getTaskID()}`;
+
+        moreDiv.classList.add("more");
+        moreDiv.classList.add(`${task.getTaskID()}`);
+
+        more.src = moreImage;
+        more.alt = "Show task details";
+
+        moreDiv.appendChild(more);
         taskDiv.appendChild(checkbox);
         taskDiv.appendChild(taskLabel);
+        taskDiv.appendChild(moreDiv);
         taskItems.appendChild(taskDiv);
+
+        drawTaskDetails(task);
+    };
+
+    // Takes a task, creates a div with task detail elements, places it after the task item
+    // Event listener can show and hide via css?
+    const drawTaskDetails = (task) => {
+        // Grab all drawn tasks and select the last (current) task
+        const tasks = document.querySelectorAll(".taskItem");
+        const taskItem = tasks[tasks.length - 1];
+
+        // The div that holds all the remaining task details
+        const taskDetails = document.createElement("div");
+
+        // taskDescription has a div around it to facilitate the textarea fix event listener described below
+        const taskDescriptionDiv = document.createElement("div");
+        const taskDescription = document.createElement("textarea");
+
+        // taskItems is created to display taskDueDate and taskPriority in line
+        const taskItemDetails = document.createElement("div");
+        const taskDueDate = document.createElement("span");
+        const taskPriority = document.createElement("span");
+
+        taskDetails.classList.add("taskDetails");
+        taskDetails.classList.add(`${task.getTaskID()}`);
+        taskDescriptionDiv.classList.add("taskDescription");
+        taskDescription.classList.add(`${task.getTaskID()}`);
+        taskItemDetails.classList.add("taskItemDetails");
+        // taskDueDate.classList.add(`${task.getTaskDueDate()}`);
+        // taskPriority.classList.add(`${task.getTaskPriority()}`);
+
+        // This event listener copies the task description to an attribute on the taskDescriptionDiv
+        // In styles.css, a hidden pseudo-element is overlayed on taskDescription so the textarea matches the content
+        // https://chriscoyier.net/2023/09/29/css-solves-auto-expanding-textareas-probably-eventually/
+        taskDescription.addEventListener("input", () => {
+            taskDescriptionDiv.dataset.replicatedValue = taskDescription.value;
+        });
+
+        taskDescription.textContent = task.getTaskDescription();
+        taskDueDate.textContent = `Due: ${task.getTaskDueDate()}`;
+        taskPriority.textContent = `${task.getTaskPriority()} priority`;
+
+        taskDescriptionDiv.appendChild(taskDescription);
+        taskItemDetails.appendChild(taskDueDate);
+        taskItemDetails.appendChild(taskPriority);
+        taskDetails.appendChild(taskDescriptionDiv);
+        taskDetails.appendChild(taskItemDetails);
+        taskItem.after(taskDetails);
     };
 
     return {clearMainContent,

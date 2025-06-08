@@ -19,13 +19,12 @@
 
 // Need a default value for taskDueDate. Is it an empty date? "none"? Will there be issues assigning it a Date object if the default is a string?
 
-export default function TaskObject(name, description, dueDate, priority, notes) {
+export default function TaskObject(name, description, dueDate, priority) {
     const taskID = crypto.randomUUID();
     let taskName = name;
     let taskDescription = description;
     let taskDueDate = dueDate;
     let taskPriority = priority;
-    let taskNotes = notes;
     let isComplete = false;
 
     // Getters
@@ -34,7 +33,6 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
     const getTaskDescription = () => taskDescription;
     const getTaskDueDate = () => taskDueDate;
     const getTaskPriority = () => taskPriority;
-    const getTaskNotes = () => taskNotes;
     const getIsComplete = () => isComplete;
 
     // Setters
@@ -50,10 +48,6 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
         taskPriority = newTaskPriority;
     };
 
-    const setTaskNotes = (newTaskNotes) => {
-        taskNotes = newTaskNotes;
-    };
-
     const toggleIsComplete = () => {
         isComplete = !isComplete;
     };
@@ -63,12 +57,10 @@ export default function TaskObject(name, description, dueDate, priority, notes) 
             getTaskDescription,
             getTaskDueDate,
             getTaskPriority,
-            getTaskNotes,
             getIsComplete,
             setTaskDescription,
             setTaskDueDate,
             setTaskPriority,
-            setTaskNotes,
             toggleIsComplete
     };
 };

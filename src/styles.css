@@ -7,14 +7,14 @@ body {
 
 .layout {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: min-content 3fr;
     grid-template-rows: 1fr 9fr;
     height: 100vh;
 }
 
 .sidebar {
     display: grid;
-    grid-template-rows: 1fr 9fr;;
+    grid-template-rows: 1fr 9fr;
     grid-area: 1 / 1 / 11 / 2;
     box-shadow: 1px 1px 4px 1px lightgrey;
     padding-left: 20px;
@@ -46,17 +46,20 @@ h1 {
     margin-left: 20px;
 }
 
-.projectDescription {
+.projectDescription,
+.taskDescription {
     display: grid;
 }
 
-.projectDescription::after {
+.projectDescription::after,
+.taskDescription::after {
     content: attr(data-replicated-value) " ";
     white-space: pre-wrap;
     visibility: hidden;
 }
 
-.projectDescription > textarea {
+.projectDescription > textarea,
+.taskDescription > textarea {
     resize: none;
     overflow: hidden;
 }
@@ -73,6 +76,18 @@ h1 {
     margin-bottom: 10px;
 }
 
+.taskDescription > textarea,
+.taskDescription::after {
+    font: inherit;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    color: grey;
+    resize: none;
+    width: 70%;
+    grid-area: 1 / 1 / 2 / 2;
+    margin-left: 25px;
+}
+
 textarea:hover {
     border: solid 1px rgb(180, 180, 180);
 }
@@ -85,6 +100,34 @@ textarea:hover {
     padding-bottom: 10px;
 }
 
+.taskItemDetails {
+    display: flex;
+    gap: 40px;
+    color: rgb(164, 164, 164);
+    font-size: small;
+    padding-bottom: 10px;
+    margin-left: 25px;
+}
+
 input[type="checkbox"] {
     margin-right: 10px;
+}
+
+input:checked + label {
+    text-decoration: line-through;
+}
+
+label {
+    margin-right: 10px;
+}
+
+.taskItem {
+    display: flex;
+    align-items: center;
+}
+
+.more {
+    display: flex;
+    align-items: flex-end;
+    opacity: 70%;
 }
