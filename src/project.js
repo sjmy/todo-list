@@ -1,3 +1,5 @@
+import createRandomString from "./randomstring";
+
 // - Project
 //     - created via factory function
 //     - separate lists of tasks
@@ -22,15 +24,6 @@ export default function ProjectObject(name, description, dueDate, priority, task
     let projectDueDate = dueDate;
     let projectPriority = priority;
     let projectTasks = tasks;
-
-    function createRandomString(length) {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        };
-        return result;
-    };
 
     // Getters
     const getProjectID = () => projectID;

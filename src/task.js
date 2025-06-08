@@ -1,3 +1,5 @@
+import createRandomString from "./randomstring";
+
 // - Task
 //     - created via factory function
 //     - Properties:
@@ -26,15 +28,6 @@ export default function TaskObject(name, description, dueDate, priority) {
     let taskDueDate = dueDate;
     let taskPriority = priority;
     let isComplete = false;
-
-    function createRandomString(length) {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        };
-        return result;
-    };
 
     // Getters
     const getTaskID = () => taskID;

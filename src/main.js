@@ -24,6 +24,9 @@ projectOne.setProjectDueDate("Tomorrow");
 projectOne.setProjectPriority("High");
 DataManager.createTask("Water plants", projectOne);
 DataManager.createTask("Repot peace lily", projectOne);
+DataManager.createTask("Buy End-All", projectOne);
+DataManager.createTask("Propagate umbrella plant", projectOne);
+DataManager.createTask("Fertilize calathea", projectOne);
 
 ScreenController.drawProject(projectOne);
 

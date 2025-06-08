@@ -25,7 +25,7 @@
 //         - checkbox toggles isComplete
 //             - could show amount of tasks completed next to the project "3/6 tasks completed"
 //         - change name
-//         - more icon to show/hide task details
+//         - more icon to show/hide task details DONE
 //         - change taskDescription
 //         - change dueDate
 //         - change priority
