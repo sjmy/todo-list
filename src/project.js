@@ -16,12 +16,21 @@
 //             - getter/setter
 
 export default function ProjectObject(name, description, dueDate, priority, tasks) {
-    const projectID = crypto.randomUUID();
+    const projectID = createRandomString(10);
     let projectName = name;
     let projectDescription = description;
     let projectDueDate = dueDate;
     let projectPriority = priority;
     let projectTasks = tasks;
+
+    function createRandomString(length) {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        };
+        return result;
+    };
 
     // Getters
     const getProjectID = () => projectID;

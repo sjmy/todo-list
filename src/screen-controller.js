@@ -112,11 +112,13 @@ export default function ScreenControllerObject() {
         checkbox.type = "checkbox";
         checkbox.id = `${task.getTaskID()}`;
 
-        moreDiv.classList.add("more");
-        moreDiv.classList.add(`${task.getTaskID()}`);
+        // moreDiv.classList.add("more");
+        // moreDiv.classList.add(`${task.getTaskID()}`);
 
         more.src = moreImage;
         more.alt = "Show task details";
+        more.classList.add("more");
+        more.classList.add(`${task.getTaskID()}`);
 
         moreDiv.appendChild(more);
         taskDiv.appendChild(checkbox);

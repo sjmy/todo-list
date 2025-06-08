@@ -1,14 +1,14 @@
 import "./styles.css";
 import DataManagerObject from "./data-manager.js";
 import ScreenControllerObject from "./screen-controller.js";
+import ListenerObject from "./listener.js";
 
 const DataManager = DataManagerObject();
 const ScreenController = ScreenControllerObject();
-// const pTag = document.querySelector("p");
+const Listener = ListenerObject();
 
-// pTag.addEventListener("click", () => {
-//     pTag.textContent = "yes";
-// });
+
+
 
 
 const projects = DataManager.getProjectArray();
@@ -26,6 +26,8 @@ DataManager.createTask("Water plants", projectOne);
 DataManager.createTask("Repot peace lily", projectOne);
 
 ScreenController.drawProject(projectOne);
+
+Listener.start();
 
 // // moveTask() and deleteTask() testing. I really have to learn tests.
 // const projectOne = projects[0];

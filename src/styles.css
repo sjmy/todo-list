@@ -131,3 +131,7 @@ label {
     align-items: flex-end;
     opacity: 70%;
 }
+
+.taskDetails {
+    display: none;
+}
