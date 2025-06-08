@@ -135,6 +135,7 @@ export default function ScreenControllerObject() {
         // Grab all drawn tasks and select the last (current) task
         const tasks = document.querySelectorAll(".taskItem");
         const taskItem = tasks[tasks.length - 1];
+        const priorityValues = ["None", "Low", "Medium", "High"];
 
         // The div that holds all the remaining task details
         const taskDetails = document.createElement("div");
@@ -146,7 +147,9 @@ export default function ScreenControllerObject() {
         // taskItems is created to display taskDueDate and taskPriority in line
         const taskItemDetails = document.createElement("div");
         const taskDueDate = document.createElement("span");
-        const taskPriority = document.createElement("span");
+        const taskPriorityDiv = document.createElement("div");
+        const taskPriority = document.createElement("label");
+        const taskPriorityValue = document.createElement("select");
 
         taskDetails.classList.add("taskDetails");
         taskDetails.classList.add(`${task.getTaskID()}`);
@@ -156,7 +159,18 @@ export default function ScreenControllerObject() {
         taskDescription.classList.add(`${task.getTaskID()}`);
         taskItemDetails.classList.add("taskItemDetails");
         // taskDueDate.classList.add(`${task.getTaskDueDate()}`);
-        // taskPriority.classList.add(`${task.getTaskPriority()}`);
+        taskPriority.textContent = `Priority:`;
+        taskPriority.htmlFor = `priority${task.getTaskID()}`;
+        taskPriorityValue.name = `${task.getTaskID()}`;
+        taskPriorityValue.classList.add("taskPriority");
+        taskPriorityValue.classList.add(`${task.getTaskID()}`);
+
+        for (let p = 0; p < priorityValues.length; p++) {
+            const priorityOption = document.createElement("option");
+            priorityOption.value = priorityValues[p];
+            priorityOption.textContent = priorityValues[p];
+            taskPriorityValue.appendChild(priorityOption);
+        };
 
         // This event listener copies the task description to an attribute on the taskDescriptionDiv
         // In styles.css, a hidden pseudo-element is overlayed on taskDescription so the textarea matches the content
@@ -167,11 +181,12 @@ export default function ScreenControllerObject() {
 
         taskDescription.textContent = task.getTaskDescription();
         taskDueDate.textContent = `Due: ${task.getTaskDueDate()}`;
-        taskPriority.textContent = `${task.getTaskPriority()} priority`;
 
         taskDescriptionDiv.appendChild(taskDescription);
+        taskPriorityDiv.appendChild(taskPriority);
+        taskPriorityDiv.appendChild(taskPriorityValue);
         taskItemDetails.appendChild(taskDueDate);
-        taskItemDetails.appendChild(taskPriority);
+        taskItemDetails.appendChild(taskPriorityDiv);
         taskDetails.appendChild(taskDescriptionDiv);
         taskDetails.appendChild(taskItemDetails);
         taskItem.after(taskDetails);

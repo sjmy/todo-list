@@ -49,13 +49,33 @@ function ListenersObject() {
             const targetClass = e.target.classList[0];
             const taskID = e.target.classList[1];
 
-            console.log(targetClass);
-            console.log(taskID);
+            // console.log(targetClass);
+            // console.log(taskID);
 
             if (targetClass == "more") {
                 moreTaskDetails(taskID);
             };
         });
+    };
+
+    function changeEvents() {
+        const taskPriorityDropdowns = document.querySelectorAll(".taskPriority");
+
+        for (let d = 0; d < taskPriorityDropdowns.length; d++) {
+            taskPriorityDropdowns[d].addEventListener("change", (e) => {
+                const taskID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            projectTasks[n].setTaskPriority(taskPriorityDropdowns[d].value);
+                        };
+                    };
+                };
+            });
+        };
     };
 
     // Saves the task description when the text on any task is changed
@@ -84,6 +104,7 @@ function ListenersObject() {
     // Start the event listener, call functions based on targetClass, send id for specific project or task
     const start = () => {
         clickEvents();
+        changeEvents();
         taskDescriptionEvents();
     };
 

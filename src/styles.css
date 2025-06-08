@@ -86,6 +86,7 @@ h1 {
     width: 70%;
     grid-area: 1 / 1 / 2 / 2;
     margin-left: 25px;
+    margin-bottom: 5px;
 }
 
 textarea:hover {
@@ -134,4 +135,12 @@ label {
 
 .taskDetails {
     display: none;
+}
+
+select {
+    font: inherit;
+    font-size: small;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    color: rgb(164, 164, 164);
 }
