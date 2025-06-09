@@ -24,7 +24,7 @@ import ScreenControllerObject from "./screen-controller.js";
 //         - change dueDate
 //         - change priority
 //             - green/yellow/red for low/medium/Highlight
-//         - change projectDescription
+//         - change projectDescription DONE
 //     - Task
 //         - checkbox toggles isComplete
 //             - could show amount of tasks completed next to the project "3/6 tasks completed"
@@ -32,7 +32,7 @@ import ScreenControllerObject from "./screen-controller.js";
 //         - more icon to show/hide task details DONE
 //         - change taskDescription DONE
 //         - change dueDate
-//         - change priority
+//         - change priority DONE
 //         - delete task
 //             - add a trash icon in taskItemDetails
 function ListenersObject() {
@@ -101,11 +101,31 @@ function ListenersObject() {
         
     };
 
+    // Saves the project description when the text on any project is changed
+    function projectDescriptionEvents() {
+        const projectDescriptionTextBoxes = document.querySelectorAll(".projectDescriptionText");
+        const projectDescriptionValues = document.querySelectorAll(".projectDescription");
+
+        for (let t = 0; t < projectDescriptionTextBoxes.length; t++) {
+            projectDescriptionTextBoxes[t].addEventListener("keyup", (e) => {
+                const projectID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    if (projectArray[p].getProjectID() == projectID) {
+                        projectArray[p].setProjectDescription(projectDescriptionValues[p].dataset.replicatedValue);
+                    };
+                };
+            });
+        };
+        
+    };
+
     // Start the event listener, call functions based on targetClass, send id for specific project or task
     const start = () => {
         clickEvents();
         changeEvents();
         taskDescriptionEvents();
+        projectDescriptionEvents();
     };
 
     return { start }

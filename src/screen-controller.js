@@ -62,6 +62,7 @@ export default function ScreenControllerObject() {
         clearMainContent();
 
         projectDescriptionDiv.classList.add("projectDescription");
+        projectDescription.classList.add("projectDescriptionText");
         projectDescription.classList.add(`${project.getProjectID()}`);
         projectItems.classList.add("projectItems");
         // projectDueDate.classList.add(`${project.getProjectDueDate()}`);
