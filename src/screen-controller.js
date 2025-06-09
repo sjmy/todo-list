@@ -72,8 +72,6 @@ export default function ScreenControllerObject() {
         projectDescription.classList.add("projectDescriptionText");
         projectDescription.classList.add(`${project.getProjectID()}`);
         projectItems.classList.add("projectItems");
-        // projectDueDate.classList.add(`${project.getProjectDueDate()}`);
-        // projectPriority.classList.add(`${project.getProjectPriority()}`);
         taskItems.classList.add("taskItems");
         projectPriority.textContent = `Priority:`;
         projectPriority.htmlFor = `priority${project.getProjectID()}`;
@@ -141,9 +139,6 @@ export default function ScreenControllerObject() {
         if (task.getIsComplete() == true) {
             checkbox.checked = true;
         };
-
-        // moreDiv.classList.add("more");
-        // moreDiv.classList.add(`${task.getTaskID()}`);
 
         more.src = moreImage;
         more.alt = "Show task details";

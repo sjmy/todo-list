@@ -1,4 +1,5 @@
 import createRandomString from "./randomstring";
+import { format, isToday } from "date-fns";
 
 // - Project
 //     - created via factory function
@@ -29,7 +30,13 @@ export default function ProjectObject(name, description, dueDate, priority, task
     const getProjectID = () => projectID;
     const getProjectName = () => projectName;
     const getProjectDescription = () => projectDescription;
-    const getProjectDueDate = () => projectDueDate;
+    const getProjectDueDate = () => {
+        if (isToday(projectDueDate)) {
+            return "Today";
+        } else {
+            return format(projectDueDate, "PPP");
+        };
+    };
     const getProjectPriority = () => projectPriority;
     const getProjectTasks = () => projectTasks;
 

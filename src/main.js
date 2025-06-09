@@ -27,7 +27,7 @@ import ScreenControllerObject from "./screen-controller.js";
 //         - change projectDescription DONE
 //     - Task
 //         - checkbox toggles isComplete DONE
-//             - could show amount of tasks completed next to the project "3/6 tasks completed"
+//             - could show amount of tasks completed next to the project "3/6 tasks completed" DONE
 //         - change name
 //         - more icon to show/hide task details DONE
 //         - change taskDescription DONE
@@ -199,17 +199,15 @@ const DataManager = DataManagerObject();
 const ScreenController = ScreenControllerObject();
 const Listeners = ListenersObject();
 
-
-
-
-
 const projects = DataManager.getProjectArray();
-
 
 window.DataManager = DataManager;
 
 DataManager.start();
+DataManager.createProject("Plant Trees", "Plant all those trees");
+
 const projectOne = projects[0];
+const projectTwo = projects[1];
 
 projectOne.setProjectDescription("This is the project description!");
 projectOne.setProjectDueDate("Tomorrow");
@@ -220,7 +218,13 @@ DataManager.createTask("Buy End-All", projectOne);
 DataManager.createTask("Propagate umbrella plant", projectOne);
 DataManager.createTask("Fertilize calathea", projectOne);
 
-ScreenController.drawProject(projectOne);
+DataManager.createTask("Bloodgood Maple", projectTwo);
+DataManager.createTask("Japanese Stewartia", projectTwo);
+DataManager.createTask("Buy big containers", projectTwo);
+DataManager.createTask("Buy mulch", projectTwo);
+DataManager.createTask("Enjoy", projectTwo);
+
+ScreenController.drawProject(projectTwo);
 
 Listeners.start();
 

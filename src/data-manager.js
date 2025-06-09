@@ -31,13 +31,13 @@ export default function DataManagerObject() {
 
     // Create a task. taskName is the only required field.
     // A project object must always be passed as a parameter
-    const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = "", taskPriority = "None") => {
+    const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = new Date(), taskPriority = "None") => {
         const newTaskObject = TaskObject(taskName, taskDescription, taskDueDate, taskPriority);
         addTaskToProject(newTaskObject, projectObject);
     };
 
     // Create a project. projectName is the only required field.
-    const createProject = (projectName, projectDescription = "", projectDueDate = "", projectPriority = "None", projectTasks = []) => {
+    const createProject = (projectName, projectDescription = "", projectDueDate = new Date(), projectPriority = "None", projectTasks = []) => {
         const newProjectObject = ProjectObject(projectName, projectDescription, projectDueDate, projectPriority, projectTasks);
 
         // Check for existing project here? Or caught via form validation?

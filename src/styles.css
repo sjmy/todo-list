@@ -125,7 +125,8 @@ textarea:hover {
     color: rgb(164, 164, 164);
     font-size: small;
     padding-bottom: 10px;
-    margin-left: 25px;
+    margin-left: 30px;
+    width: 70%;
 }
 
 input[type="checkbox"] {
@@ -142,12 +143,11 @@ label {
 
 .taskItem {
     display: flex;
-    align-items: center;
+    width: 75%;
 }
 
 .more {
     display: flex;
-    align-items: flex-end;
     opacity: 70%;
 }
 
@@ -165,7 +165,7 @@ select {
 
 .delete {
     display: flex;
-    align-items: center;
+    margin-left: auto;
     scale: 70%;
     opacity: 30%;
 }

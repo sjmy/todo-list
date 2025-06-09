@@ -1,4 +1,5 @@
 import createRandomString from "./randomstring";
+import { format, isToday } from "date-fns";
 
 // - Task
 //     - created via factory function
@@ -33,7 +34,13 @@ export default function TaskObject(name, description, dueDate, priority) {
     const getTaskID = () => taskID;
     const getTaskName = () => taskName;
     const getTaskDescription = () => taskDescription;
-    const getTaskDueDate = () => taskDueDate;
+    const getTaskDueDate = () => {
+            if (isToday(taskDueDate)) {
+                return "Today";
+            } else {
+                return format(taskDueDate, "PPP");
+            };
+        };
     const getTaskPriority = () => taskPriority;
     const getIsComplete = () => isComplete;
 
