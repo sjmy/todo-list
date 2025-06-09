@@ -1,4 +1,5 @@
 import moreImage from "./img/more.svg";
+import deleteImage from "./img/delete.svg";
 
 // ScreenController
 //     - receives DataManager object and data from event listeners, reads projectArray, draws
@@ -167,12 +168,21 @@ export default function ScreenControllerObject() {
         const taskPriority = document.createElement("label");
         const taskPriorityValue = document.createElement("select");
 
+        // Delete image
+        const del = document.createElement("img");
+
+        del.src = deleteImage;
+        del.alt = "Delete task";
+        del.classList.add("delete");
+        del.classList.add(`${task.getTaskID()}`);
+
         taskDetails.classList.add("taskDetails");
         taskDetails.classList.add(`${task.getTaskID()}`);
         taskDescriptionDiv.classList.add("taskDescription");
         taskDescriptionDiv.classList.add(`${task.getTaskID()}`);
         taskDescription.classList.add("taskDescriptionText");
         taskDescription.classList.add(`${task.getTaskID()}`);
+        taskDescription.textContent = task.getTaskDescription();
         taskItemDetails.classList.add("taskItemDetails");
         // taskDueDate.classList.add(`${task.getTaskDueDate()}`);
         taskPriority.textContent = `Priority:`;
@@ -195,7 +205,6 @@ export default function ScreenControllerObject() {
             taskDescriptionDiv.dataset.replicatedValue = taskDescription.value;
         });
 
-        taskDescription.textContent = task.getTaskDescription();
         taskDueDate.textContent = `Due: ${task.getTaskDueDate()}`;
 
         taskDescriptionDiv.appendChild(taskDescription);
@@ -203,6 +212,7 @@ export default function ScreenControllerObject() {
         taskPriorityDiv.appendChild(taskPriorityValue);
         taskItemDetails.appendChild(taskDueDate);
         taskItemDetails.appendChild(taskPriorityDiv);
+        taskItemDetails.appendChild(del);
         taskDetails.appendChild(taskDescriptionDiv);
         taskDetails.appendChild(taskItemDetails);
         taskItem.after(taskDetails);

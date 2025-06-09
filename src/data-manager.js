@@ -82,8 +82,6 @@ export default function DataManagerObject() {
     const moveTask = (task, newProject) => {
         // task is task object to be moved
         // newProject is project object the task is to be moved into
-        // must also remove task from previous project - use taskID to loop through projectArray, splice when found, push to newProject
-        // Can addTaskToProject() be used here?
         deleteTask(task);
         addTaskToProject(task, newProject);
     };

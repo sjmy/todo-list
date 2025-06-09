@@ -22,7 +22,7 @@ import ScreenControllerObject from "./screen-controller.js";
 //     - Project
 //         - change name
 //         - change dueDate
-//         - change priority
+//         - change priority DONE
 //             - green/yellow/red for low/medium/Highlight
 //         - change projectDescription DONE
 //     - Task
@@ -128,11 +128,26 @@ function ListenersObject() {
             const targetClass = e.target.classList[0];
             const taskID = e.target.classList[1];
 
-            // console.log(targetClass);
-            // console.log(taskID);
+            console.log(targetClass);
+            console.log(taskID);
 
             if (targetClass == "more") {
                 moreTaskDetails(taskID);
+            };
+
+            if (targetClass == "delete") {
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            DataManager.deleteTask(projectTasks[n]);
+                            // ADD ARE YOU SURE?
+                            ScreenController.drawProject(projectArray[p]);
+                        };
+                    };
+                };
+                
             };
         });
     };
