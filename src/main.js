@@ -26,7 +26,7 @@ import ScreenControllerObject from "./screen-controller.js";
 //             - green/yellow/red for low/medium/Highlight
 //         - change projectDescription DONE
 //     - Task
-//         - checkbox toggles isComplete
+//         - checkbox toggles isComplete DONE
 //             - could show amount of tasks completed next to the project "3/6 tasks completed"
 //         - change name
 //         - more icon to show/hide task details DONE
@@ -144,7 +144,7 @@ function ListenersObject() {
 
             if (targetClass == "yesButton") {
                 const dialog = document.querySelector("dialog");
-                
+
                 e.preventDefault();
 
                 for (let p = 0; p < projectArray.length; p++) {
@@ -166,6 +166,19 @@ function ListenersObject() {
 
                 e.preventDefault();
                 dialog.close();
+            };
+
+            if (targetClass == "checkbox") {
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            projectTasks[n].toggleIsComplete();
+                            ScreenController.drawProject(projectArray[p]);
+                        };
+                    };
+                };
             };
         });
     };

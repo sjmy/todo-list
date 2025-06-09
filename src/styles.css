@@ -51,6 +51,18 @@ h5 {
     margin-left: 20px;
 }
 
+.projectNameDiv {
+    display: flex;
+}
+
+.projectTasksCompleted {
+    align-self: center;
+    padding-top: 20px;
+    padding-left: 15px;
+    font-size: small;
+    color: rgb(164, 164, 164);
+}
+
 .projectDescription,
 .taskDescription {
     display: grid;

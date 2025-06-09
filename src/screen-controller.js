@@ -51,7 +51,9 @@ export default function ScreenControllerObject() {
     // Takes a project, creates HTML elements, attaches values and classes as necessary,
     // appends in order, calls drawTask() for each task in the project
     const drawProject = (project) => {
+        const projectNameDiv = document.createElement("div");
         const projectName = document.createElement("h1");
+        const projectTasksCompleted = document.createElement("span");
         const projectDescriptionDiv = document.createElement("div");
         const projectDescription = document.createElement("textarea");
         const projectItems = document.createElement("div");
@@ -64,6 +66,8 @@ export default function ScreenControllerObject() {
 
         clearMainContent();
 
+        projectNameDiv.classList.add("projectNameDiv");
+        projectTasksCompleted.classList.add("projectTasksCompleted");
         projectDescriptionDiv.classList.add("projectDescription");
         projectDescription.classList.add("projectDescriptionText");
         projectDescription.classList.add(`${project.getProjectID()}`);
@@ -94,13 +98,16 @@ export default function ScreenControllerObject() {
         projectName.textContent = project.getProjectName();
         projectDescription.textContent = project.getProjectDescription();
         projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
+        projectTasksCompleted.textContent = countProjectTasksCompleted(project);
 
+        projectNameDiv.appendChild(projectName);
+        projectNameDiv.appendChild(projectTasksCompleted);
         projectDescriptionDiv.appendChild(projectDescription);
         projectPriorityDiv.appendChild(projectPriority);
         projectPriorityDiv.appendChild(projectPriorityValue);
         projectItems.appendChild(projectDueDate);
         projectItems.appendChild(projectPriorityDiv);
-        mainContent.appendChild(projectName);
+        mainContent.appendChild(projectNameDiv);
         mainContent.appendChild(projectItems);
         mainContent.appendChild(projectDescriptionDiv);
         mainContent.appendChild(taskItems);
@@ -128,6 +135,12 @@ export default function ScreenControllerObject() {
 
         checkbox.type = "checkbox";
         checkbox.id = `${task.getTaskID()}`;
+        checkbox.classList.add("checkbox");
+        checkbox.classList.add(`${task.getTaskID()}`);
+
+        if (task.getIsComplete() == true) {
+            checkbox.checked = true;
+        };
 
         // moreDiv.classList.add("more");
         // moreDiv.classList.add(`${task.getTaskID()}`);
@@ -217,12 +230,8 @@ export default function ScreenControllerObject() {
         taskItem.after(taskDetails);
     };
 
-    const showAreYouSure = () => {
-
-    };
-
     // Builds confirmation form for when delete task is clicked
-    function buildAreYouSure(taskID) {
+    const buildAreYouSure = (taskID) => {
         const body = document.querySelector("body");
         const form = document.createElement("form");
         const dialog = document.createElement("dialog");
@@ -247,6 +256,20 @@ export default function ScreenControllerObject() {
         dialog.appendChild(buttons);
         form.appendChild(dialog);
         body.appendChild(form);
+    };
+
+    function countProjectTasksCompleted(project) {
+        const projectTasks = project.getProjectTasks();
+        const totalTasks = projectTasks.length;
+        let tasksComplete = 0;
+
+        for (let t = 0; t < totalTasks; t++) {
+            if (projectTasks[t].getIsComplete() == true) {
+                tasksComplete += 1;
+            };
+        };
+
+        return `${tasksComplete}/${totalTasks} tasks completed`;
     };
 
     return {clearMainContent,
