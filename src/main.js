@@ -38,6 +38,85 @@ import ScreenControllerObject from "./screen-controller.js";
 function ListenersObject() {
     const projectArray = DataManager.getProjectArray();
 
+    // Saves the project description when the text on any project is changed
+    function changeProjectDescription() {
+        const projectDescriptionTextBoxes = document.querySelectorAll(".projectDescriptionText");
+        const projectDescriptionValues = document.querySelectorAll(".projectDescription");
+
+        for (let t = 0; t < projectDescriptionTextBoxes.length; t++) {
+            projectDescriptionTextBoxes[t].addEventListener("keyup", (e) => {
+                const projectID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    if (projectArray[p].getProjectID() == projectID) {
+                        projectArray[p].setProjectDescription(projectDescriptionValues[p].dataset.replicatedValue);
+                    };
+                };
+            });
+        };
+    };
+
+    // Sets project priority whenever it changes
+    function changeProjectPriority() {
+        const projectPriorityDropdowns = document.querySelectorAll(".projectPriority");
+
+        for (let d = 0; d < projectPriorityDropdowns.length; d++) {
+            projectPriorityDropdowns[d].addEventListener("change", (e) => {
+                const projectID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    if (projectArray[p].getProjectID() == projectID) {
+                        projectArray[p].setProjectPriority(projectPriorityDropdowns[d].value);
+                    };
+                };
+            });
+        };
+    };    
+
+    // Saves the task description when the text on any task is changed
+    function changeTaskDescription() {
+        const taskDescriptionTextBoxes = document.querySelectorAll(".taskDescriptionText");
+        const taskDescriptionValues = document.querySelectorAll(".taskDescription");
+
+        for (let t = 0; t < taskDescriptionTextBoxes.length; t++) {
+            taskDescriptionTextBoxes[t].addEventListener("keyup", (e) => {
+                const taskID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            projectTasks[n].setTaskDescription(taskDescriptionValues[n].dataset.replicatedValue);
+                        };
+                    };
+                };
+            });
+        };
+    };
+    
+    // Sets task priority whenever it changes
+    function changeTaskPriority() {
+        const taskPriorityDropdowns = document.querySelectorAll(".taskPriority");
+
+        for (let d = 0; d < taskPriorityDropdowns.length; d++) {
+            taskPriorityDropdowns[d].addEventListener("change", (e) => {
+                const taskID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            projectTasks[n].setTaskPriority(taskPriorityDropdowns[d].value);
+                        };
+                    };
+                };
+            });
+        };
+    };
+
+    // Shows/hides task details
     function moreTaskDetails(taskID) {
         const detailsDiv = document.querySelector(`.taskDetails.${taskID}`);
         detailsDiv.style.display = (detailsDiv.style.display === "none" || detailsDiv.style.display === "") ? "block" : "none";
@@ -58,74 +137,13 @@ function ListenersObject() {
         });
     };
 
-    function changeEvents() {
-        const taskPriorityDropdowns = document.querySelectorAll(".taskPriority");
-
-        for (let d = 0; d < taskPriorityDropdowns.length; d++) {
-            taskPriorityDropdowns[d].addEventListener("change", (e) => {
-                const taskID = e.target.classList[1];
-
-                for (let p = 0; p < projectArray.length; p++) {
-                    const projectTasks = projectArray[p].getProjectTasks();
-
-                    for (let n = 0; n < projectTasks.length; n++) {
-                        if (projectTasks[n].getTaskID() == taskID) {
-                            projectTasks[n].setTaskPriority(taskPriorityDropdowns[d].value);
-                        };
-                    };
-                };
-            });
-        };
-    };
-
-    // Saves the task description when the text on any task is changed
-    function taskDescriptionEvents() {
-        const taskDescriptionTextBoxes = document.querySelectorAll(".taskDescriptionText");
-        const taskDescriptionValues = document.querySelectorAll(".taskDescription");
-
-        for (let t = 0; t < taskDescriptionTextBoxes.length; t++) {
-            taskDescriptionTextBoxes[t].addEventListener("keyup", (e) => {
-                const taskID = e.target.classList[1];
-
-                for (let p = 0; p < projectArray.length; p++) {
-                    const projectTasks = projectArray[p].getProjectTasks();
-
-                    for (let n = 0; n < projectTasks.length; n++) {
-                        if (projectTasks[n].getTaskID() == taskID) {
-                            projectTasks[n].setTaskDescription(taskDescriptionValues[n].dataset.replicatedValue);
-                        };
-                    };
-                };
-            });
-        };
-        
-    };
-
-    // Saves the project description when the text on any project is changed
-    function projectDescriptionEvents() {
-        const projectDescriptionTextBoxes = document.querySelectorAll(".projectDescriptionText");
-        const projectDescriptionValues = document.querySelectorAll(".projectDescription");
-
-        for (let t = 0; t < projectDescriptionTextBoxes.length; t++) {
-            projectDescriptionTextBoxes[t].addEventListener("keyup", (e) => {
-                const projectID = e.target.classList[1];
-
-                for (let p = 0; p < projectArray.length; p++) {
-                    if (projectArray[p].getProjectID() == projectID) {
-                        projectArray[p].setProjectDescription(projectDescriptionValues[p].dataset.replicatedValue);
-                    };
-                };
-            });
-        };
-        
-    };
-
     // Start the event listener, call functions based on targetClass, send id for specific project or task
     const start = () => {
+        changeProjectDescription();
+        changeProjectPriority();
+        changeTaskDescription();
+        changeTaskPriority();
         clickEvents();
-        changeEvents();
-        taskDescriptionEvents();
-        projectDescriptionEvents();
     };
 
     return { start }

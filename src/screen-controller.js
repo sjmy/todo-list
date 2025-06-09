@@ -40,6 +40,7 @@ import moreImage from "./img/more.svg";
 
 export default function ScreenControllerObject() {
     const mainContent = document.querySelector(".main");
+    const priorityValues = ["None", "Low", "Medium", "High"];
 
     const clearMainContent = () => {
         mainContent.textContent = "";
@@ -55,7 +56,9 @@ export default function ScreenControllerObject() {
         const projectDescription = document.createElement("textarea");
         const projectItems = document.createElement("div");
         const projectDueDate = document.createElement("span");
-        const projectPriority = document.createElement("span");
+        const projectPriorityDiv = document.createElement("div");
+        const projectPriority = document.createElement("label");
+        const projectPriorityValue = document.createElement("select");        
         const projectTasks = project.getProjectTasks();
         const taskItems = document.createElement("div");
 
@@ -68,6 +71,18 @@ export default function ScreenControllerObject() {
         // projectDueDate.classList.add(`${project.getProjectDueDate()}`);
         // projectPriority.classList.add(`${project.getProjectPriority()}`);
         taskItems.classList.add("taskItems");
+        projectPriority.textContent = `Priority:`;
+        projectPriority.htmlFor = `priority${project.getProjectID()}`;
+        projectPriorityValue.name = `priority${project.getProjectID()}`;
+        projectPriorityValue.classList.add("projectPriority");
+        projectPriorityValue.classList.add(`${project.getProjectID()}`);
+
+        for (let p = 0; p < priorityValues.length; p++) {
+            const priorityOption = document.createElement("option");
+            priorityOption.value = priorityValues[p];
+            priorityOption.textContent = priorityValues[p];
+            projectPriorityValue.appendChild(priorityOption);
+        };
 
         // This event listener copies the project description to an attribute on the projectDescriptionDiv
         // In styles.css, a hidden pseudo-element is overlayed on projectDescription so the textarea matches the content
@@ -79,11 +94,12 @@ export default function ScreenControllerObject() {
         projectName.textContent = project.getProjectName();
         projectDescription.textContent = project.getProjectDescription();
         projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
-        projectPriority.textContent = `${project.getProjectPriority()} priority`;
 
         projectDescriptionDiv.appendChild(projectDescription);
+        projectPriorityDiv.appendChild(projectPriority);
+        projectPriorityDiv.appendChild(projectPriorityValue);
         projectItems.appendChild(projectDueDate);
-        projectItems.appendChild(projectPriority);
+        projectItems.appendChild(projectPriorityDiv);
         mainContent.appendChild(projectName);
         mainContent.appendChild(projectItems);
         mainContent.appendChild(projectDescriptionDiv);
@@ -136,7 +152,6 @@ export default function ScreenControllerObject() {
         // Grab all drawn tasks and select the last (current) task
         const tasks = document.querySelectorAll(".taskItem");
         const taskItem = tasks[tasks.length - 1];
-        const priorityValues = ["None", "Low", "Medium", "High"];
 
         // The div that holds all the remaining task details
         const taskDetails = document.createElement("div");
@@ -162,7 +177,7 @@ export default function ScreenControllerObject() {
         // taskDueDate.classList.add(`${task.getTaskDueDate()}`);
         taskPriority.textContent = `Priority:`;
         taskPriority.htmlFor = `priority${task.getTaskID()}`;
-        taskPriorityValue.name = `${task.getTaskID()}`;
+        taskPriorityValue.name = `priority${task.getTaskID()}`;
         taskPriorityValue.classList.add("taskPriority");
         taskPriorityValue.classList.add(`${task.getTaskID()}`);
 
