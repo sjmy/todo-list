@@ -51,7 +51,6 @@ export default function ScreenControllerObject() {
     // Takes a project, creates HTML elements, attaches values and classes as necessary,
     // appends in order, calls drawTask() for each task in the project
     const drawProject = (project) => {
-        const mainContent = document.querySelector(".main");
         const projectName = document.createElement("h1");
         const projectDescriptionDiv = document.createElement("div");
         const projectDescription = document.createElement("textarea");
@@ -218,8 +217,41 @@ export default function ScreenControllerObject() {
         taskItem.after(taskDetails);
     };
 
+    const showAreYouSure = () => {
+
+    };
+
+    // Builds confirmation form for when delete task is clicked
+    function buildAreYouSure(taskID) {
+        const body = document.querySelector("body");
+        const form = document.createElement("form");
+        const dialog = document.createElement("dialog");
+        const deleteTaskText = document.createElement("h5");
+        const buttons = document.createElement("div");
+        const yesButton = document.createElement("button");
+        const noButton = document.createElement("button");
+
+        dialog.classList.add("areYouSure");
+        buttons.classList.add("yesNoButtons");
+        yesButton.classList.add("yesButton");
+        yesButton.classList.add(`${taskID}`);
+        noButton.classList.add("noButton");
+        yesButton.classList.add(`${taskID}`);
+        deleteTaskText.textContent = "Delete Task?";
+        yesButton.textContent = "Yes";
+        noButton.textContent = "No";
+
+        buttons.appendChild(yesButton);
+        buttons.appendChild(noButton);
+        dialog.appendChild(deleteTaskText);
+        dialog.appendChild(buttons);
+        form.appendChild(dialog);
+        body.appendChild(form);
+    };
+
     return {clearMainContent,
             drawProject,
-            drawTask
+            drawTask,
+            buildAreYouSure
     };
 };

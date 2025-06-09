@@ -33,8 +33,8 @@ import ScreenControllerObject from "./screen-controller.js";
 //         - change taskDescription DONE
 //         - change dueDate
 //         - change priority DONE
-//         - delete task
-//             - add a trash icon in taskItemDetails
+//         - delete task DONE
+//             - add a trash icon in taskItemDetails DONE
 function ListenersObject() {
     const projectArray = DataManager.getProjectArray();
 
@@ -136,18 +136,36 @@ function ListenersObject() {
             };
 
             if (targetClass == "delete") {
+                ScreenController.buildAreYouSure(taskID);
+
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            };
+
+            if (targetClass == "yesButton") {
+                const dialog = document.querySelector("dialog");
+                
+                e.preventDefault();
+
                 for (let p = 0; p < projectArray.length; p++) {
                     const projectTasks = projectArray[p].getProjectTasks();
 
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
                             DataManager.deleteTask(projectTasks[n]);
-                            // ADD ARE YOU SURE?
                             ScreenController.drawProject(projectArray[p]);
                         };
                     };
                 };
-                
+
+                dialog.close();
+            };
+
+            if (targetClass == "noButton") {
+                const dialog = document.querySelector("dialog");
+
+                e.preventDefault();
+                dialog.close();
             };
         });
     };

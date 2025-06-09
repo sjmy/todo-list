@@ -31,6 +31,11 @@ h1 {
     word-wrap: none;
 }
 
+h5 {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
 .header {
     grid-area: 1 / 4 / 2 / 5;
 }
@@ -151,4 +156,14 @@ select {
     align-items: center;
     scale: 70%;
     opacity: 30%;
+}
+
+.yesNoButtons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.yesButton,
+.noButton {
+    border: solid 1px lightgrey;
 }
