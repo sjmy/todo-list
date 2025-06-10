@@ -56,6 +56,25 @@ function ListenersObject() {
         };
     };
 
+    // Sets project due date whenever it changes
+    function changeProjectDueDate() {
+        const projectDueDatePicker = document.querySelector(".projectDueDate");
+
+        projectDueDatePicker.addEventListener("change", (e) => {
+            const projectID = e.target.classList[1];
+            console.log(projectID)
+            console.log(projectArray[1].getProjectID());
+
+            for (let p = 0; p < projectArray.length; p++) {
+                if (projectArray[p].getProjectID() == projectID) {
+                    projectArray[p].setProjectDueDate(new Date(projectDueDatePicker.value));
+                    ScreenController.drawProject(projectArray[p]);
+                    console.log(projectArray[p].getProjectDueDate());
+                };
+            };
+        });
+    };
+
     // Sets project priority whenever it changes
     function changeProjectPriority() {
         const projectPriorityDropdowns = document.querySelectorAll(".projectPriority");
@@ -186,6 +205,7 @@ function ListenersObject() {
     // Start the event listener, call functions based on targetClass, send id for specific project or task
     const start = () => {
         changeProjectDescription();
+        changeProjectDueDate();
         changeProjectPriority();
         changeTaskDescription();
         changeTaskPriority();

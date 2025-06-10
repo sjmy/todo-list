@@ -1,5 +1,5 @@
 import createRandomString from "./randomstring";
-import { format, isToday } from "date-fns";
+import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 
 // - Project
 //     - created via factory function
@@ -30,15 +30,19 @@ export default function ProjectObject(name, description, dueDate, priority, task
     const getProjectID = () => projectID;
     const getProjectName = () => projectName;
     const getProjectDescription = () => projectDescription;
+    const getProjectPriority = () => projectPriority;
+    const getProjectTasks = () => projectTasks;
     const getProjectDueDate = () => {
         if (isToday(projectDueDate)) {
             return "Today";
+        } else if (isYesterday(projectDueDate)) {
+            return "Yesterday";
+        } else if (isTomorrow(projectDueDate)) {
+            return "Tomorrow";
         } else {
             return format(projectDueDate, "PPP");
         };
     };
-    const getProjectPriority = () => projectPriority;
-    const getProjectTasks = () => projectTasks;
 
     // Setters
     const setProjectDescription = (newProjectDescription) => {

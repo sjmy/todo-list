@@ -57,7 +57,9 @@ export default function ScreenControllerObject() {
         const projectDescriptionDiv = document.createElement("div");
         const projectDescription = document.createElement("textarea");
         const projectItems = document.createElement("div");
-        const projectDueDate = document.createElement("span");
+        const projectDueDateDiv = document.createElement("div");
+        const projectDueDate = document.createElement("label");
+        const projectDueDateValue = document.createElement("input");
         const projectPriorityDiv = document.createElement("div");
         const projectPriority = document.createElement("label");
         const projectPriorityValue = document.createElement("select");        
@@ -73,7 +75,13 @@ export default function ScreenControllerObject() {
         projectDescription.classList.add(`${project.getProjectID()}`);
         projectItems.classList.add("projectItems");
         taskItems.classList.add("taskItems");
-        projectPriority.textContent = `Priority:`;
+        projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
+        projectDueDate.htmlFor = `due${project.getProjectID()}`;
+        projectDueDateValue.name = `due${project.getProjectID()}`;
+        projectDueDateValue.type = "date";
+        projectDueDateValue.classList.add("projectDueDate");
+        projectDueDateValue.classList.add(`${project.getProjectID()}`);
+        projectPriority.textContent = "Priority:";
         projectPriority.htmlFor = `priority${project.getProjectID()}`;
         projectPriorityValue.name = `priority${project.getProjectID()}`;
         projectPriorityValue.classList.add("projectPriority");
@@ -95,15 +103,16 @@ export default function ScreenControllerObject() {
 
         projectName.textContent = project.getProjectName();
         projectDescription.textContent = project.getProjectDescription();
-        projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
         projectTasksCompleted.textContent = countProjectTasksCompleted(project);
 
         projectNameDiv.appendChild(projectName);
         projectNameDiv.appendChild(projectTasksCompleted);
         projectDescriptionDiv.appendChild(projectDescription);
+        projectDueDateDiv.appendChild(projectDueDate);
+        projectDueDateDiv.appendChild(projectDueDateValue);
         projectPriorityDiv.appendChild(projectPriority);
         projectPriorityDiv.appendChild(projectPriorityValue);
-        projectItems.appendChild(projectDueDate);
+        projectItems.appendChild(projectDueDateDiv);
         projectItems.appendChild(projectPriorityDiv);
         mainContent.appendChild(projectNameDiv);
         mainContent.appendChild(projectItems);
