@@ -80,15 +80,15 @@ export default function ScreenControllerObject(DataManager) {
 
     // Saves the project description when the text on any project is changed
     function changeProjectDescription() {
-        const projectDescriptionTextBoxes = document.querySelector("#projectDescriptionText");
-        const projectDescriptionValues = document.querySelector(".projectDescription");
+        const projectDescriptionTextBox = document.querySelector("#projectDescriptionText");
+        const projectDescriptionValue = document.querySelector(".projectDescription");
 
-        projectDescriptionTextBoxes.addEventListener("keyup", (e) => {
-            const projectID = e.target.classList[1];
+        projectDescriptionTextBox.addEventListener("keyup", (e) => {
+            const projectID = e.target.classList[0];
 
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
-                    projectArray[p].setProjectDescription(projectDescriptionValues[p].dataset.replicatedValue);
+                    projectArray[p].setProjectDescription(projectDescriptionValue.dataset.replicatedValue);
                 };
             };
         });
@@ -104,7 +104,10 @@ export default function ScreenControllerObject(DataManager) {
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
                     projectArray[p].setProjectDueDate(new Date(projectDueDatePicker.value));
-                    // drawProject(projectArray[p]);
+                    clearProjectDueDateDiv();
+                    drawProjectDueDateDiv();
+                    drawProjectDueDate(projectArray[p]);
+                    changeProjectDueDate();
                 };
             };
         });
@@ -112,14 +115,18 @@ export default function ScreenControllerObject(DataManager) {
 
     // Sets project priority whenever it changes
     function changeProjectPriority() {
-        const projectPriorityDropdowns = document.querySelector(".projectPriority");
+        const projectPriorityDropdown = document.querySelector(".projectPriority");
 
-        projectPriorityDropdowns.addEventListener("change", (e) => {
+        projectPriorityDropdown.addEventListener("change", (e) => {
             const projectID = e.target.classList[1];
 
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
-                    projectArray[p].setProjectPriority(projectPriorityDropdowns.value);
+                    projectArray[p].setProjectPriority(projectPriorityDropdown.value);
+                    clearProjectPriorityDiv();
+                    drawProjectPriorityDiv();
+                    drawProjectPriority(projectArray[p]);
+                    changeProjectPriority();
                 };
             };
         });
@@ -145,6 +152,40 @@ export default function ScreenControllerObject(DataManager) {
                 };
             });
         };
+    };
+
+    function changeTaskDueDate() {
+        const taskDueDatePickers = document.querySelectorAll(".taskDueDate");
+
+        for (let i = 0; i < taskDueDatePickers.length; i++) {
+            taskDueDatePickers[i].addEventListener("change", (e) => {
+                const taskID = e.target.classList[1];
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == taskID) {
+                            projectTasks[n].setTaskDueDate(new Date(taskDueDatePickers[i].value));
+                        };
+                    };
+                };
+            });
+        };
+
+        // projectDueDatePicker.addEventListener("change", (e) => {
+        //     const projectID = e.target.classList[1];
+
+        //     for (let p = 0; p < projectArray.length; p++) {
+        //         if (projectArray[p].getProjectID() == projectID) {
+        //             projectArray[p].setProjectDueDate(new Date(projectDueDatePicker.value));
+        //             clearProjectDueDateDiv();
+        //             drawProjectDueDateDiv();
+        //             drawProjectDueDate(projectArray[p]);
+        //             changeProjectDueDate();
+        //         };
+        //     };
+        // });
     };
     
     // Sets task priority whenever it changes
@@ -205,12 +246,14 @@ export default function ScreenControllerObject(DataManager) {
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
                             DataManager.deleteTask(projectTasks[n]);
-                            drawProject(projectArray[p]);
+                            clearTaskItemsDiv();
+                            drawTasks(projectArray[p]);
                         };
                     };
                 };
 
                 dialog.close();
+                dialog.remove();
             };
 
             if (targetClass == "noButton") {
@@ -218,6 +261,7 @@ export default function ScreenControllerObject(DataManager) {
 
                 e.preventDefault();
                 dialog.close();
+                dialog.remove();
             };
 
             if (targetClass == "checkbox") {
@@ -227,7 +271,10 @@ export default function ScreenControllerObject(DataManager) {
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
                             projectTasks[n].toggleIsComplete();
-                            drawProject(projectArray[p]);
+                            clearProjectNameDiv();
+                            drawProjectNameDiv();
+                            drawProjectName(projectArray[p]);
+                            drawProjectTasksCompleted(projectArray[p]);
                         };
                     };
                 };
@@ -241,7 +288,7 @@ export default function ScreenControllerObject(DataManager) {
         changeProjectDueDate();
         changeProjectPriority();
         changeTaskDescription();
-        changeTaskPriority();
+        // changeTaskPriority();
         clickEvents();
     };
 
@@ -249,14 +296,44 @@ export default function ScreenControllerObject(DataManager) {
         mainContent.textContent = "";
     };
 
-    const drawProjectNameDiv = (project) => {
-        const projectNameDiv = document.createElement("div");
-        const projectName = document.createElement("h1");
+    const clearProjectNameDiv = () => {
+        const projectNameDiv = document.querySelector(".projectNameDiv");
+        projectNameDiv.textContent = "";
+    };
 
-        projectNameDiv.classList.add("projectNameDiv");
+    const clearProjectDueDateDiv = () => {
+        const projectDueDateDiv = document.querySelector(".projectDueDateDiv");
+        projectDueDateDiv.textContent = "";
+    };
+
+    const clearProjectPriorityDiv = () => {
+        const projectPriorityDiv = document.querySelector(".projectPriorityDiv");
+        projectPriorityDiv.textContent = "";
+    };
+
+    const clearTaskItemsDiv = () => {
+        const taskItemsDiv = document.querySelector(".taskItemsDiv");
+        taskItemsDiv.textContent = "";
+    };
+
+    const drawProjectNameDiv = () => {
+        const projectNameDivExists = document.querySelector(".projectNameDiv");
+
+        if (projectNameDivExists) {
+            return;
+        } else {
+            const projectNameDiv = document.createElement("div");
+            projectNameDiv.classList.add("projectNameDiv");
+            mainContent.prepend(projectNameDiv);
+        };
+    };
+
+    const drawProjectName = (project) => {
+        const projectName = document.createElement("h1");
+        const projectNameDiv = document.querySelector(".projectNameDiv")
+
         projectName.textContent = project.getProjectName();
         projectNameDiv.appendChild(projectName);
-        mainContent.appendChild(projectNameDiv);
     };
 
     const drawProjectTasksCompleted = (project) => {
@@ -275,13 +352,24 @@ export default function ScreenControllerObject(DataManager) {
         mainContent.appendChild(projectItemsDiv);
     };
 
-    const drawProjectDueDateDiv = (project) => {
+    const drawProjectDueDateDiv = () => {
         const projectItemsDiv = document.querySelector(".projectItemsDiv");
-        const projectDueDateDiv = document.createElement("div");
+        const projectDueDateDivExists = document.querySelector(".projectDueDateDiv");
+
+        if (projectDueDateDivExists) {
+            return;
+        } else {
+            const projectDueDateDiv = document.createElement("div");
+            projectDueDateDiv.classList.add("projectDueDateDiv");
+            projectItemsDiv.prepend(projectDueDateDiv);
+        };
+    };
+
+    const drawProjectDueDate = (project) => {
+        const projectDueDateDiv = document.querySelector(".projectDueDateDiv");
         const projectDueDate = document.createElement("label");
         const projectDueDateValue = document.createElement("input");
 
-        projectDueDateDiv.classList.add("projectDueDateDiv");
         projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
         projectDueDate.htmlFor = `due${project.getProjectID()}`;
         projectDueDateValue.id = `due${project.getProjectID()}`;
@@ -291,16 +379,27 @@ export default function ScreenControllerObject(DataManager) {
 
         projectDueDateDiv.appendChild(projectDueDate);
         projectDueDateDiv.appendChild(projectDueDateValue);
-        projectItemsDiv.appendChild(projectDueDateDiv);
     };
 
-    const drawProjectPriorityDiv = (project) => {
+    const drawProjectPriorityDiv = () => {
         const projectItemsDiv = document.querySelector(".projectItemsDiv");
-        const projectPriorityDiv = document.createElement("div");
+        const projectPriorityDivExists = document.querySelector(".projectPriorityDiv");
+
+        if (projectPriorityDivExists) {
+            return;
+        } else {
+            const projectPriorityDiv = document.createElement("div");
+            projectPriorityDiv.classList.add("projectPriorityDiv");
+            projectItemsDiv.appendChild(projectPriorityDiv);
+        };
+    };
+
+    const drawProjectPriority = (project) => {
+        const projectPriorityDiv = document.querySelector(".projectPriorityDiv");
         const projectPriority = document.createElement("label");
         const projectPriorityValue = document.createElement("select"); 
 
-        projectPriorityDiv.classList.add("projectPriorityDiv");
+        
         projectPriority.textContent = "Priority:";
         projectPriority.htmlFor = `priority${project.getProjectID()}`;
         projectPriorityValue.id = `priority${project.getProjectID()}`;
@@ -321,7 +420,6 @@ export default function ScreenControllerObject(DataManager) {
 
         projectPriorityDiv.appendChild(projectPriority);
         projectPriorityDiv.appendChild(projectPriorityValue);
-        projectItemsDiv.appendChild(projectPriorityDiv);
     };
 
     const drawProjectDescription = (project) => {
@@ -345,10 +443,15 @@ export default function ScreenControllerObject(DataManager) {
     };
 
     const drawTaskItemsDiv = () => {
-        const taskItemsDiv = document.createElement("div");
+        const taskItemsDivExists = document.querySelector(".taskItemsDiv");
 
-        taskItemsDiv.classList.add("taskItemsDiv");
-        mainContent.appendChild(taskItemsDiv);
+        if (taskItemsDivExists) {
+            return;
+        } else {
+            const taskItemsDiv = document.createElement("div");
+            taskItemsDiv.classList.add("taskItemsDiv");
+            mainContent.appendChild(taskItemsDiv);
+        };
     };
 
     const drawTaskItem = (task) => {
@@ -392,7 +495,6 @@ export default function ScreenControllerObject(DataManager) {
         taskItem.appendChild(moreDiv);
     };
 
-    // Loop through all .taskItem divs here, call drawTaskDescription and drawTaskItemDetails, append to .taskItem?
     const drawTaskDetailsDiv = (task) => {
         const taskItems = document.querySelectorAll(".taskItem");
         const taskItem = taskItems[taskItems.length - 1];
@@ -438,11 +540,27 @@ export default function ScreenControllerObject(DataManager) {
     const drawTaskDueDateDiv = (task) => {
         const taskItemDetailsAll = document.querySelectorAll(".taskItemDetails");
         const taskItemDetails = taskItemDetailsAll[taskItemDetailsAll.length - 1];
-        const taskDueDateDiv = document.createElement("div");
+        const taskDueDateDivExists = document.querySelector(".taskDueDateDiv");
+
+        if (taskDueDateDivExists) {
+            const taskDueDateDivs = document.querySelectorAll(".taskDueDateDiv");
+            const taskDueDateDiv = taskDueDateDivs[taskDueDateDivs.length - 1];
+            taskDueDateDiv.classList.add("taskDueDateDiv");
+            taskDueDateDiv.classList.add(`${task.getTaskID()}`);
+            taskItemDetails.appendChild(taskDueDateDiv);
+        } else {
+            const taskDueDateDiv = document.createElement("div");
+            taskDueDateDiv.classList.add("taskDueDateDiv");
+            taskDueDateDiv.classList.add(`${task.getTaskID()}`);
+            taskItemDetails.appendChild(taskDueDateDiv);
+        };
+    };
+
+    const drawTaskDueDate = (task) => {
+        const taskDueDateDiv = document.querySelector(`.taskDueDateDiv.${task.getTaskID()}`);
         const taskDueDate = document.createElement("label");
         const taskDueDateValue = document.createElement("input");
-
-        taskDueDateDiv.classList.add("taskDueDateDiv");
+        
         taskDueDate.textContent = `Due: ${task.getTaskDueDate()}`;
         taskDueDate.htmlFor = `due${task.getTaskID()}`;
         taskDueDateValue.id = `due${task.getTaskID()}`;
@@ -452,7 +570,6 @@ export default function ScreenControllerObject(DataManager) {
 
         taskDueDateDiv.appendChild(taskDueDate);
         taskDueDateDiv.appendChild(taskDueDateValue);
-        taskItemDetails.appendChild(taskDueDateDiv);
     };
 
     const drawTaskPriorityDiv = (task) => {
@@ -501,11 +618,14 @@ export default function ScreenControllerObject(DataManager) {
 
     const drawProject = (project) => {
         clearMainContent();
-        drawProjectNameDiv(project);
+        drawProjectNameDiv();
+        drawProjectName(project);
         drawProjectTasksCompleted(project);
         drawProjectItemsDiv();
-        drawProjectDueDateDiv(project);
-        drawProjectPriorityDiv(project);
+        drawProjectDueDateDiv();
+        drawProjectDueDate(project);
+        drawProjectPriorityDiv();
+        drawProjectPriority(project);
         drawProjectDescription(project);
     };
 
@@ -525,6 +645,7 @@ export default function ScreenControllerObject(DataManager) {
         drawTaskDescription(task);
         drawTaskItemDetails();
         drawTaskDueDateDiv(task);
+        drawTaskDueDate(task);
         drawTaskPriorityDiv(task);
         drawDeleteDiv(task);
     };
