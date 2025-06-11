@@ -249,8 +249,6 @@ export default function ScreenControllerObject(DataManager) {
         mainContent.textContent = "";
     };
 
-// *******************************************************************************************************************************************
-
     const drawProjectNameDiv = (project) => {
         const projectNameDiv = document.createElement("div");
         const projectName = document.createElement("h1");
@@ -574,9 +572,7 @@ export default function ScreenControllerObject(DataManager) {
         return `${tasksComplete}/${totalTasks} tasks completed`;
     };
 
-    return {clearMainContent,
-            buildAreYouSure,
-            startListeners,
+    return {startListeners,
             drawProject,
             drawTasks
     };
