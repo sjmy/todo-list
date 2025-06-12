@@ -24,6 +24,16 @@ body {
     margin-left: 15px;
 }
 
+.sidebarProjectName,
+.projectTasksAmount {
+    padding-bottom: 5px;
+}
+
+.sidebarProjectName:hover {
+    color: rgb(95, 95, 95);
+    cursor: pointer;
+}
+
 .projectTasksAmount {
     align-self: center;
     padding-left: 10px;
@@ -51,9 +61,53 @@ h5 {
     grid-area: 1 / 4 / 2 / 5;
 }
 
-.add {
+.addButtonDiv {
     margin: 20px;
     opacity: 70%;
+}
+
+.addItem {
+    border: none;
+    cursor: pointer;
+}
+
+.addItem:hover,
+.addItem:focus {
+    opacity: 65%;
+}
+
+.dropdown {
+  position: relative;
+  /* display: inline-block; */
+  float: right;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: max-content;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  top: 0;
+  right: 0;
+}
+
+.addProject,
+.addTask {
+  color: black;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.addProject:hover,
+.addTask:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display:block;
 }
 
 .main {
@@ -144,10 +198,9 @@ textarea:hover {
     width: 70%;
 }
 
-
-
 input[type="checkbox"] {
     margin-right: 10px;
+    cursor: pointer;
 }
 
 input:checked + label {
@@ -174,13 +227,23 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     /* display: none;
     -webkit-appearance: none; */
     margin:0;
+    cursor: pointer;
 }
+
 input[type="datetime-local"]::-webkit-datetime-edit {
     display:none;
 }
 
 label {
     margin-right: 10px;
+}
+
+.taskCheckbox {
+    cursor: pointer;
+}
+
+.taskCheckbox:hover {
+    color: rgb(95, 95, 95);
 }
 
 .taskItem {
@@ -191,6 +254,7 @@ label {
 .more {
     display: flex;
     opacity: 70%;
+    cursor: pointer;
 }
 
 .taskDetailsDiv {
@@ -204,6 +268,7 @@ select {
     border: solid 1px lightgrey;
     border-radius: 5px;
     color: rgb(164, 164, 164);
+    cursor: pointer;
 }
 
 .delete {
@@ -211,6 +276,7 @@ select {
     margin-left: auto;
     scale: 70%;
     opacity: 30%;
+    cursor: pointer;
 }
 
 .yesNoButtons {
@@ -221,4 +287,5 @@ select {
 .yesButton,
 .noButton {
     border: solid 1px lightgrey;
+    cursor: pointer;
 }

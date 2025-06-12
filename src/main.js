@@ -31,5 +31,6 @@ DataManager.createTask("Enjoy", projectTwo);
 
 ScreenController.drawProject(projectTwo);
 ScreenController.drawTasks(projectTwo);
+ScreenController.drawHeader();
 ScreenController.drawSidebar();
 ScreenController.startAllListeners();

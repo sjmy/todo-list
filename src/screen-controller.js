@@ -1,5 +1,6 @@
 import moreImage from "./img/more.svg";
 import deleteImage from "./img/delete.svg";
+import plusImage from "./img/add_circle.jpg";
 
 // Methods
 //     - clearMainContent
@@ -302,7 +303,7 @@ export default function ScreenControllerObject(DataManager) {
             };
 
             // If a project in the sidebar is clicked, the project is displayed in the main content area
-            if (targetClass == "projectName") {
+            if (targetClass == "sidebarProjectName") {
                 for (let p = 0; p < projectArray.length; p++) {
                     if (projectArray[p].getProjectID() == ID) {
                         drawProject(projectArray[p]);
@@ -310,6 +311,18 @@ export default function ScreenControllerObject(DataManager) {
                         startProjectListeners();
                         startTaskListeners();
                     };
+                };
+            };
+
+            // If plus image is clicked, show dropdown choice between Add Task and Add Project
+            if (targetClass == "addItem") {
+                const addItemDropdown = document.querySelector("#addItemDropdown");
+                addItemDropdown.classList.toggle("show");
+            } else {
+                const dropdownContent = document.querySelector(".dropdown-content");
+
+                if (dropdownContent.classList.contains("show")) {
+                    dropdownContent.classList.remove("show");
                 };
             };
         });
@@ -363,6 +376,36 @@ export default function ScreenControllerObject(DataManager) {
     // Uses CSS classes to select project/task data.
     // Example: "taskDetailsDiv iiNUEpJND" first is the name, second is the ID
 
+    // Draws add button (plus image) in header
+    const drawHeader = () => {
+        const headerDiv = document.querySelector(".header");
+        const addButtonDiv = document.createElement("div");
+        const plus = document.createElement("img");
+        const menuDropdown = document.createElement("div");
+        const menuDropdownContent = document.createElement("div");
+        const addProjectText = document.createElement("span");
+        const addTaskText = document.createElement("span");
+
+        addButtonDiv.classList.add("addButtonDiv");
+        plus.classList.add("addItem");
+        plus.src = plusImage;
+        plus.alt = "Add Item";
+        menuDropdown.classList.add("dropdown");
+        menuDropdownContent.classList.add("dropdown-content");
+        menuDropdownContent.id = "addItemDropdown";
+        addProjectText.classList.add("addProject");
+        addTaskText.classList.add("addTask");
+        addProjectText.textContent = "Add Project";
+        addTaskText.textContent = "Add Task";
+
+        menuDropdownContent.appendChild(addProjectText);
+        menuDropdownContent.appendChild(addTaskText);
+        menuDropdown.appendChild(plus);
+        menuDropdown.appendChild(menuDropdownContent);
+        addButtonDiv.appendChild(menuDropdown);
+        headerDiv.appendChild(addButtonDiv);
+    };
+
     // Draws all projects in the sidebar
     const drawSidebar = () => {
         const sidebarContent = document.querySelector(".sidebar-content");
@@ -370,17 +413,17 @@ export default function ScreenControllerObject(DataManager) {
         const sidebarProjectNamesDiv = document.createElement("div")
 
         clearSidebar();
-        
+
         allProjectsLabel.textContent = "All Projects";
         sidebarProjectNamesDiv.classList.add("sidebarProjectNamesDiv");
 
         for (let p = 0; p < projectArray.length; p++) {
             const sidebarProjectNameDiv = document.createElement("div");
-            const sidebarProjectName = document.createElement("h4");
+            const sidebarProjectName = document.createElement("span");
             const sidebarProjectTasksAmount = document.createElement("span");
 
             sidebarProjectNameDiv.classList.add("sidebarProjectNameDiv");
-            sidebarProjectName.classList.add("projectName");
+            sidebarProjectName.classList.add("sidebarProjectName");
             sidebarProjectName.classList.add(`${projectArray[p].getProjectID()}`);
             sidebarProjectName.textContent = projectArray[p].getProjectName();
             sidebarProjectTasksAmount.classList.add("projectTasksAmount");
@@ -587,6 +630,7 @@ export default function ScreenControllerObject(DataManager) {
 
         taskLabel.htmlFor = `${task.getTaskID()}`;
         taskLabel.textContent = task.getTaskName();
+        taskLabel.classList.add("taskCheckbox");
 
         checkbox.type = "checkbox";
         checkbox.id = `${task.getTaskID()}`;
@@ -780,6 +824,7 @@ export default function ScreenControllerObject(DataManager) {
 
     // drawProject and drawTasks are currently exposed for testing
     return {startAllListeners,
+            drawHeader,
             drawSidebar,
             drawProject,
             drawTasks
