@@ -20,6 +20,17 @@ body {
     padding-left: 20px;
 }
 
+.sidebarProjectNamesDiv {
+    margin-left: 15px;
+}
+
+.projectTasksAmount {
+    align-self: center;
+    padding-left: 10px;
+    font-size: small;
+    color: rgb(164, 164, 164);
+}
+
 .title {
     grid-area: 1 / 1 / 2 / 2;
     margin-top: 20px;
@@ -47,8 +58,11 @@ h5 {
 
 .main {
     grid-area: 1 / 2 / 11 / 5;
-    margin-top: 20px;
     margin-left: 20px;
+}
+
+.sidebarProjectNameDiv {
+    display: flex;
 }
 
 .projectNameDiv {

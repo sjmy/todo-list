@@ -230,25 +230,29 @@ export default function ScreenControllerObject(DataManager) {
     };
 
     // Handles all click events based on event target
-    function clickEvents() {
+    const clickEvents = () => {
         document.addEventListener("click", (e) => {
             const targetClass = e.target.classList[0];
-            const taskID = e.target.classList[1];
+            const ID = e.target.classList[1];
 
             console.log(targetClass);
-            console.log(taskID);
+            console.log(ID);
 
+            // If three dots icon is clicked, expand task details
             if (targetClass == "more") {
-                moreTaskDetails(taskID);
+                moreTaskDetails(ID);
             };
 
+            // if trash can in task details is clicked, build and show the delete dialog
             if (targetClass == "delete") {
-                buildAreYouSure(taskID);
+                buildAreYouSure(ID);
 
                 const dialog = document.querySelector("dialog");
                 dialog.showModal();
             };
 
+            // If yes is clicked in the delete dialog, delete the task, update the screen,
+            // start the task listeners, close the dialog and remove it
             if (targetClass == "yesButton") {
                 const dialog = document.querySelector("dialog");
 
@@ -258,7 +262,7 @@ export default function ScreenControllerObject(DataManager) {
                     const projectTasks = projectArray[p].getProjectTasks();
 
                     for (let n = 0; n < projectTasks.length; n++) {
-                        if (projectTasks[n].getTaskID() == taskID) {
+                        if (projectTasks[n].getTaskID() == ID) {
                             DataManager.deleteTask(projectTasks[n]);
                             clearTaskItemsDiv();
                             drawTasks(projectArray[p]);
@@ -271,6 +275,7 @@ export default function ScreenControllerObject(DataManager) {
                 dialog.remove();
             };
 
+            // If no is clicked in the delete dialog, close the dialog and remove it
             if (targetClass == "noButton") {
                 const dialog = document.querySelector("dialog");
 
@@ -279,18 +284,31 @@ export default function ScreenControllerObject(DataManager) {
                 dialog.remove();
             };
 
+            // If a checkbox is clicked, set the task as complete and update the screen
             if (targetClass == "checkbox") {
                 for (let p = 0; p < projectArray.length; p++) {
                     const projectTasks = projectArray[p].getProjectTasks();
 
                     for (let n = 0; n < projectTasks.length; n++) {
-                        if (projectTasks[n].getTaskID() == taskID) {
+                        if (projectTasks[n].getTaskID() == ID) {
                             projectTasks[n].toggleIsComplete();
                             clearProjectNameDiv();
                             drawProjectNameDiv();
                             drawProjectName(projectArray[p]);
                             drawProjectTasksCompleted(projectArray[p]);
                         };
+                    };
+                };
+            };
+
+            // If a project in the sidebar is clicked, the project is displayed in the main content area
+            if (targetClass == "projectName") {
+                for (let p = 0; p < projectArray.length; p++) {
+                    if (projectArray[p].getProjectID() == ID) {
+                        drawProject(projectArray[p]);
+                        drawTasks(projectArray[p]);
+                        startProjectListeners();
+                        startTaskListeners();
                     };
                 };
             };
@@ -334,11 +352,47 @@ export default function ScreenControllerObject(DataManager) {
         taskPriorityDiv.textContent = "";
     };
 
+    const clearSidebar = () => {
+        const sidebarContent = document.querySelector(".sidebar-content");
+        sidebarContent.textContent = "";
+    };
+
 
     // Drawing Functions //
     // Each section is broken down into its base parts wherever possible.
     // Uses CSS classes to select project/task data.
     // Example: "taskDetailsDiv iiNUEpJND" first is the name, second is the ID
+
+    // Draws all projects in the sidebar
+    const drawSidebar = () => {
+        const sidebarContent = document.querySelector(".sidebar-content");
+        const allProjectsLabel = document.createElement("h2");
+        const sidebarProjectNamesDiv = document.createElement("div")
+
+        clearSidebar();
+        
+        allProjectsLabel.textContent = "All Projects";
+        sidebarProjectNamesDiv.classList.add("sidebarProjectNamesDiv");
+
+        for (let p = 0; p < projectArray.length; p++) {
+            const sidebarProjectNameDiv = document.createElement("div");
+            const sidebarProjectName = document.createElement("h4");
+            const sidebarProjectTasksAmount = document.createElement("span");
+
+            sidebarProjectNameDiv.classList.add("sidebarProjectNameDiv");
+            sidebarProjectName.classList.add("projectName");
+            sidebarProjectName.classList.add(`${projectArray[p].getProjectID()}`);
+            sidebarProjectName.textContent = projectArray[p].getProjectName();
+            sidebarProjectTasksAmount.classList.add("projectTasksAmount");
+            sidebarProjectTasksAmount.textContent = `(${projectArray[p].getProjectTasks().length} tasks)`;
+            sidebarProjectNameDiv.appendChild(sidebarProjectName);
+            sidebarProjectNameDiv.appendChild(sidebarProjectTasksAmount);
+            sidebarProjectNamesDiv.appendChild(sidebarProjectNameDiv);
+        };
+
+        sidebarContent.appendChild(allProjectsLabel);
+        sidebarContent.appendChild(sidebarProjectNamesDiv);
+    };
 
     // Draws the project by passing the current project around, each function taking what it needs.
     const drawProject = (project) => {
@@ -396,6 +450,8 @@ export default function ScreenControllerObject(DataManager) {
         const projectNameDiv = document.querySelector(".projectNameDiv")
 
         projectName.textContent = project.getProjectName();
+        projectName.classList.add("changeProjectName");
+        projectName.classList.add(`${project.getProjectID()}`)
         projectNameDiv.appendChild(projectName);
     };
 
@@ -724,6 +780,7 @@ export default function ScreenControllerObject(DataManager) {
 
     // drawProject and drawTasks are currently exposed for testing
     return {startAllListeners,
+            drawSidebar,
             drawProject,
             drawTasks
     };
