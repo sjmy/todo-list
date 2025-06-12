@@ -817,7 +817,7 @@ export default function ScreenControllerObject(DataManager) {
 
     // Builds Add Project form for when Add Project is clicked
     // createProject = (projectName, projectDescription = "", projectDueDate = Date(), projectPriority = "None", projectTasks = [])
-    // Todo: required fields, spacing, placeholder text?, submitting form (where does the data go)
+    // Todo: placeholder text?, submitting form (where does the data go)
     const dialogAddProject = () => {
         const body = document.querySelector("body");
         const form = document.createElement("form");
@@ -843,32 +843,34 @@ export default function ScreenControllerObject(DataManager) {
         headerText.textContent = "Add Project";
         headerText.classList.add("addProjectHeader");
 
-        projectNameDiv.classList.add("projectNameDiv");
+        projectNameDiv.classList.add("addProjectNameDiv");
         projectNameLabel.textContent = "Project Name:";
-        projectNameLabel.htmlFor = "projectName";
+        projectNameLabel.htmlFor = "addProjectName";
         projectNameInput.type = "text";
-        projectNameInput.id = "projectName";
-        projectNameInput.name = "projectName";
+        projectNameInput.id = "addProjectName";
+        projectNameInput.name = "addProjectName";
+        projectNameInput.required = true;
+        projectNameInput.placeholder = "Required";
 
-        projectDescriptionDiv.classList.add("projectDescriptionDiv");
+        projectDescriptionDiv.classList.add("addProjectDescriptionDiv");
         projectDescriptionLabel.textContent = "Project Description:";
-        projectDescriptionLabel.htmlFor = "projectDescription";
+        projectDescriptionLabel.htmlFor = "addProjectDescription";
         projectDescriptionInput.type = "text";
-        projectDescriptionInput.id = "projectDescription";
-        projectDescriptionInput.name = "projectDescription";
+        projectDescriptionInput.id = "addProjectDescription";
+        projectDescriptionInput.name = "addProjectDescription";
 
-        projectDueDateDiv.classList.add("projectDueDateDiv");
+        projectDueDateDiv.classList.add("addProjectDueDateDiv");
         projectDueDateLabel.textContent = "Due Date:";
-        projectDueDateLabel.htmlFor = "projectDueDate";
+        projectDueDateLabel.htmlFor = "addProjectDueDate";
         projectDueDateInput.type = "datetime-local";
-        projectDueDateInput.id = "projectDueDate";
-        projectDueDateInput.name = "projectDueDate";
+        projectDueDateInput.id = "addProjectDueDate";
+        projectDueDateInput.name = "addProjectDueDate";
 
-        projectPriorityDiv.classList.add("projectPriorityDiv");
+        projectPriorityDiv.classList.add("addProjectPriorityDiv");
         projectPriorityLabel.textContent = "Priority:";
-        projectPriorityLabel.htmlFor = "projectPriority";
-        projectPrioritySelect.id = "projectPriority";
-        projectPrioritySelect.name = "projectPriority";
+        projectPriorityLabel.htmlFor = "addProjectPriority";
+        projectPrioritySelect.id = "addProjectPriority";
+        projectPrioritySelect.name = "addProjectPriority";
 
         for (let p = 0; p < priorityValues.length; p++) {
             const priorityOption = document.createElement("option");
