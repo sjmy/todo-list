@@ -32,4 +32,4 @@ DataManager.createTask("Enjoy", projectTwo);
 
 ScreenController.drawProject(projectTwo);
 ScreenController.drawTasks(projectTwo);
-ScreenController.startListeners();
+ScreenController.startAllListeners();

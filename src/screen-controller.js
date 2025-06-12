@@ -1,12 +1,7 @@
 import moreImage from "./img/more.svg";
 import deleteImage from "./img/delete.svg";
 
-// ScreenController
-//     - receives DataManager object and data from event listeners, reads projectArray, draws
-//     - interacts with the DOM, draws content
-//     - interacts with DataManager object to get the info it needs
-//         - from main.js, pass in DataManager object to methods
-//             - and the event?
+
 // Methods
 //     - clearMainContent
 //     - drawMainContent
@@ -58,7 +53,7 @@ import deleteImage from "./img/delete.svg";
 // Main:
 //     - Project
 //         - change name
-//         - change dueDate
+//         - change dueDate DONE
 //         - change priority DONE
 //             - green/yellow/red for low/medium/Highlight
 //         - change projectDescription DONE
@@ -68,15 +63,42 @@ import deleteImage from "./img/delete.svg";
 //         - change name
 //         - more icon to show/hide task details DONE
 //         - change taskDescription DONE
-//         - change dueDate
+//         - change dueDate DONE
 //         - change priority DONE
 //         - delete task DONE
 //             - add a trash icon in taskItemDetails DONE
 
+// ScreenControllerObject controls the DOM, updating and clearing as needed. Has access to the projectArray.
+// Contains all event listener functions and attaches listeners to DOM elements.
+// The DOM is broken down into small functions that draw and clear as needed.
 export default function ScreenControllerObject(DataManager) {
     const projectArray = DataManager.getProjectArray();
     const mainContent = document.querySelector(".main");
     const priorityValues = ["None", "Low", "Medium", "High"];
+
+
+    // Event Listener Functions //
+
+    // Start all event listeners
+    const startAllListeners = () => {
+        startProjectListeners();
+        startTaskListeners();
+        clickEvents();
+    };
+
+    // Start the project event listeners
+    const startProjectListeners = () => {
+        changeProjectDescription();
+        changeProjectDueDate();
+        changeProjectPriority();
+    };
+
+    // Start the task event listeners
+    const startTaskListeners = () => {
+        changeTaskDescription();
+        changeTaskDueDate();
+        changeTaskPriority();
+    };
 
     // Saves the project description when the text on any project is changed
     function changeProjectDescription() {
@@ -154,6 +176,7 @@ export default function ScreenControllerObject(DataManager) {
         };
     };
 
+    // Saves the task due date whenever the date picker changes
     function changeTaskDueDate() {
         const taskDueDatePickers = document.querySelectorAll(".taskDueDate");
 
@@ -167,25 +190,14 @@ export default function ScreenControllerObject(DataManager) {
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
                             projectTasks[n].setTaskDueDate(new Date(taskDueDatePickers[i].value));
+                            clearTaskDueDateDiv(projectTasks[n]);
+                            drawTaskDueDate(projectTasks[n]);
+                            changeTaskDueDate();
                         };
                     };
                 };
             });
         };
-
-        // projectDueDatePicker.addEventListener("change", (e) => {
-        //     const projectID = e.target.classList[1];
-
-        //     for (let p = 0; p < projectArray.length; p++) {
-        //         if (projectArray[p].getProjectID() == projectID) {
-        //             projectArray[p].setProjectDueDate(new Date(projectDueDatePicker.value));
-        //             clearProjectDueDateDiv();
-        //             drawProjectDueDateDiv();
-        //             drawProjectDueDate(projectArray[p]);
-        //             changeProjectDueDate();
-        //         };
-        //     };
-        // });
     };
     
     // Sets task priority whenever it changes
@@ -202,6 +214,9 @@ export default function ScreenControllerObject(DataManager) {
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
                             projectTasks[n].setTaskPriority(taskPriorityDropdowns[d].value);
+                            clearTaskPriorityDiv(projectTasks[n]);
+                            drawTaskPriority(projectTasks[n]);
+                            changeTaskPriority();
                         };
                     };
                 };
@@ -248,6 +263,7 @@ export default function ScreenControllerObject(DataManager) {
                             DataManager.deleteTask(projectTasks[n]);
                             clearTaskItemsDiv();
                             drawTasks(projectArray[p]);
+                            startTaskListeners();
                         };
                     };
                 };
@@ -282,15 +298,8 @@ export default function ScreenControllerObject(DataManager) {
         });
     };
 
-    // Start the event listener, call functions based on targetClass, send id for specific project or task
-    const startListeners = () => {
-        changeProjectDescription();
-        changeProjectDueDate();
-        changeProjectPriority();
-        changeTaskDescription();
-        // changeTaskPriority();
-        clickEvents();
-    };
+    
+    // Clearing Functions //
 
     const clearMainContent = () => {
         mainContent.textContent = "";
@@ -316,6 +325,61 @@ export default function ScreenControllerObject(DataManager) {
         taskItemsDiv.textContent = "";
     };
 
+    const clearTaskDueDateDiv = (task) => {
+        const taskDueDateDiv = document.querySelector(`.taskDueDateDiv.${task.getTaskID()}`);
+        taskDueDateDiv.textContent = "";
+    };
+
+    const clearTaskPriorityDiv = (task) => {
+        const taskPriorityDiv = document.querySelector(`.taskPriorityDiv.${task.getTaskID()}`);
+        taskPriorityDiv.textContent = "";
+    };
+
+
+    // Drawing Functions //
+    // Each section is broken down into its base parts wherever possible.
+    // Uses CSS classes to select project/task data.
+    // Example: "taskDetailsDiv iiNUEpJND" first is the name, second is the ID
+
+    // Draws the project by passing the current project around, each function taking what it needs.
+    const drawProject = (project) => {
+        clearMainContent();
+        drawProjectNameDiv();
+        drawProjectName(project);
+        drawProjectTasksCompleted(project);
+        drawProjectItemsDiv();
+        drawProjectDueDateDiv();
+        drawProjectDueDate(project);
+        drawProjectPriorityDiv();
+        drawProjectPriority(project);
+        drawProjectDescription(project);
+    };
+
+    // Draws all the tasks in a project. Calls drawTask on each iteration.
+    const drawTasks = (project) => {
+        const projectTasks = project.getProjectTasks();
+        
+        for (let t = 0; t < projectTasks.length; t++) {
+            drawTask(projectTasks[t]);
+        };
+    };
+
+    // Draws the task by passing the current project around, each function taking what it needs.
+    const drawTask = (task) => {
+        drawTaskItemsDiv();
+        drawTaskItem(task);
+        drawMoreDiv(task);
+        drawTaskDetailsDiv(task);
+        drawTaskDescription(task);
+        drawTaskItemDetails();
+        drawTaskDueDateDiv(task);
+        drawTaskDueDate(task);
+        drawTaskPriorityDiv(task);
+        drawTaskPriority(task);
+        drawDeleteDiv(task);
+    };
+
+    // Checks if the projectNameDiv exists to avoid duplication
     const drawProjectNameDiv = () => {
         const projectNameDivExists = document.querySelector(".projectNameDiv");
 
@@ -352,6 +416,7 @@ export default function ScreenControllerObject(DataManager) {
         mainContent.appendChild(projectItemsDiv);
     };
 
+    // Checks if the projectNameDiv exists to avoid duplication
     const drawProjectDueDateDiv = () => {
         const projectItemsDiv = document.querySelector(".projectItemsDiv");
         const projectDueDateDivExists = document.querySelector(".projectDueDateDiv");
@@ -381,6 +446,7 @@ export default function ScreenControllerObject(DataManager) {
         projectDueDateDiv.appendChild(projectDueDateValue);
     };
 
+    // Checks if the projectNameDiv exists to avoid duplication
     const drawProjectPriorityDiv = () => {
         const projectItemsDiv = document.querySelector(".projectItemsDiv");
         const projectPriorityDivExists = document.querySelector(".projectPriorityDiv");
@@ -442,6 +508,7 @@ export default function ScreenControllerObject(DataManager) {
         mainContent.appendChild(projectDescriptionDiv);
     };
 
+    // Checks if the projectNameDiv exists to avoid duplication
     const drawTaskItemsDiv = () => {
         const taskItemsDivExists = document.querySelector(".taskItemsDiv");
 
@@ -540,20 +607,11 @@ export default function ScreenControllerObject(DataManager) {
     const drawTaskDueDateDiv = (task) => {
         const taskItemDetailsAll = document.querySelectorAll(".taskItemDetails");
         const taskItemDetails = taskItemDetailsAll[taskItemDetailsAll.length - 1];
-        const taskDueDateDivExists = document.querySelector(".taskDueDateDiv");
+        const taskDueDateDiv = document.createElement("div");
 
-        if (taskDueDateDivExists) {
-            const taskDueDateDivs = document.querySelectorAll(".taskDueDateDiv");
-            const taskDueDateDiv = taskDueDateDivs[taskDueDateDivs.length - 1];
-            taskDueDateDiv.classList.add("taskDueDateDiv");
-            taskDueDateDiv.classList.add(`${task.getTaskID()}`);
-            taskItemDetails.appendChild(taskDueDateDiv);
-        } else {
-            const taskDueDateDiv = document.createElement("div");
-            taskDueDateDiv.classList.add("taskDueDateDiv");
-            taskDueDateDiv.classList.add(`${task.getTaskID()}`);
-            taskItemDetails.appendChild(taskDueDateDiv);
-        };
+        taskDueDateDiv.classList.add("taskDueDateDiv");
+        taskDueDateDiv.classList.add(`${task.getTaskID()}`);
+        taskItemDetails.appendChild(taskDueDateDiv);
     };
 
     const drawTaskDueDate = (task) => {
@@ -576,10 +634,17 @@ export default function ScreenControllerObject(DataManager) {
         const taskItemDetailsAll = document.querySelectorAll(".taskItemDetails");
         const taskItemDetails = taskItemDetailsAll[taskItemDetailsAll.length - 1];
         const taskPriorityDiv = document.createElement("div");
-        const taskPriority = document.createElement("label");
-        const taskPriorityValue = document.createElement("select"); 
 
         taskPriorityDiv.classList.add("taskPriorityDiv");
+        taskPriorityDiv.classList.add(`${task.getTaskID()}`);
+        taskItemDetails.appendChild(taskPriorityDiv);
+    };
+
+    const drawTaskPriority = (task) => {
+        const taskPriorityDiv = document.querySelector(`.taskPriorityDiv.${task.getTaskID()}`);
+        const taskPriority = document.createElement("label");
+        const taskPriorityValue = document.createElement("select");
+
         taskPriority.textContent = "Priority:";
         taskPriority.htmlFor = `task${task.getTaskID()}`;
         taskPriorityValue.id = `task${task.getTaskID()}`;
@@ -600,7 +665,6 @@ export default function ScreenControllerObject(DataManager) {
 
         taskPriorityDiv.appendChild(taskPriority);
         taskPriorityDiv.appendChild(taskPriorityValue);
-        taskItemDetails.appendChild(taskPriorityDiv);
     };
 
     const drawDeleteDiv = (task) => {
@@ -615,41 +679,6 @@ export default function ScreenControllerObject(DataManager) {
 
         taskItemDetails.appendChild(del);
     };
-
-    const drawProject = (project) => {
-        clearMainContent();
-        drawProjectNameDiv();
-        drawProjectName(project);
-        drawProjectTasksCompleted(project);
-        drawProjectItemsDiv();
-        drawProjectDueDateDiv();
-        drawProjectDueDate(project);
-        drawProjectPriorityDiv();
-        drawProjectPriority(project);
-        drawProjectDescription(project);
-    };
-
-    const drawTasks = (project) => {
-        const projectTasks = project.getProjectTasks();
-        
-        for (let t = 0; t < projectTasks.length; t++) {
-            drawTask(projectTasks[t]);
-        };
-    };
-
-    const drawTask = (task) => {
-        drawTaskItemsDiv();
-        drawTaskItem(task);
-        drawMoreDiv(task);
-        drawTaskDetailsDiv(task);
-        drawTaskDescription(task);
-        drawTaskItemDetails();
-        drawTaskDueDateDiv(task);
-        drawTaskDueDate(task);
-        drawTaskPriorityDiv(task);
-        drawDeleteDiv(task);
-    };
-
 
     // Builds confirmation form for when delete task is clicked
     const buildAreYouSure = (taskID) => {
@@ -679,7 +708,8 @@ export default function ScreenControllerObject(DataManager) {
         body.appendChild(form);
     };
 
-    function countProjectTasksCompleted(project) {
+    // Counts the tasks in a project that are completed and returns a string
+    const countProjectTasksCompleted = (project) => {
         const projectTasks = project.getProjectTasks();
         const totalTasks = projectTasks.length;
         let tasksComplete = 0;
@@ -693,7 +723,8 @@ export default function ScreenControllerObject(DataManager) {
         return `${tasksComplete}/${totalTasks} tasks completed`;
     };
 
-    return {startListeners,
+    // drawProject and drawTasks are currently exposed for testing
+    return {startAllListeners,
             drawProject,
             drawTasks
     };

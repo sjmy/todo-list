@@ -112,6 +112,7 @@ textarea:hover {
 
 .projectItemsDiv {
     display: flex;
+    align-items: center;
     gap: 40px;
     color: rgb(164, 164, 164);
     font-size: small;
@@ -129,6 +130,8 @@ textarea:hover {
     width: 70%;
 }
 
+
+
 input[type="checkbox"] {
     margin-right: 10px;
 }
@@ -136,6 +139,31 @@ input[type="checkbox"] {
 input:checked + label {
     text-decoration: line-through;
 }
+
+input[type="date"] {
+    font: inherit;
+    font-size: small;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    color: rgb(164, 164, 164);
+}
+
+/* This was an attempt to only show the calendar icon in the date pickers
+
+.projectDueDateDiv input,
+.taskDueDateDiv input{
+
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* display: none;
+    -webkit-appearance: none; */
+    /* margin:0;
+}
+input[type="date"]::-webkit-datetime-edit {
+    display:none;
+} */
 
 label {
     margin-right: 10px;
@@ -153,6 +181,7 @@ label {
 
 .taskDetailsDiv {
     display: none;
+    white-space: nowrap;
 }
 
 select {

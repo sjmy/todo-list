@@ -44,7 +44,7 @@ export default function TaskObject(name, description, dueDate, priority) {
         } else if (isTomorrow(taskDueDate)) {
             return "Tomorrow";
         } else {
-            return format(taskDueDate, "PPPp");
+            return format(taskDueDate, "PPP");
         };
     };
 
