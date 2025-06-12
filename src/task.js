@@ -38,13 +38,13 @@ export default function TaskObject(name, description, dueDate, priority) {
     const getIsComplete = () => isComplete;
     const getTaskDueDate = () => {
         if (isToday(taskDueDate)) {
-            return "Today";
+            return `Today, ${format(taskDueDate, "p")}`;
         } else if (isYesterday(taskDueDate)) {
-            return "Yesterday";
+            return `Yesterday, ${format(taskDueDate, "p")}`;
         } else if (isTomorrow(taskDueDate)) {
-            return "Tomorrow";
+            return `Tomorrow, ${format(taskDueDate, "p")}`;
         } else {
-            return format(taskDueDate, "PPP");
+            return format(taskDueDate, "PPPp");
         };
     };
 

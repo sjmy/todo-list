@@ -34,13 +34,13 @@ export default function ProjectObject(name, description, dueDate, priority, task
     const getProjectTasks = () => projectTasks;
     const getProjectDueDate = () => {
         if (isToday(projectDueDate)) {
-            return "Today";
+            return `Today, ${format(projectDueDate, "p")}`;
         } else if (isYesterday(projectDueDate)) {
-            return "Yesterday";
+            return `Yesterday, ${format(projectDueDate, "p")}`;
         } else if (isTomorrow(projectDueDate)) {
-            return "Tomorrow";
+            return `Tomorrow, ${format(projectDueDate, "p")}`;
         } else {
-            return format(projectDueDate, "PPP");
+            return format(projectDueDate, "PPPp");
         };
     };
 

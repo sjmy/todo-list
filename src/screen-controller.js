@@ -1,7 +1,6 @@
 import moreImage from "./img/more.svg";
 import deleteImage from "./img/delete.svg";
 
-
 // Methods
 //     - clearMainContent
 //     - drawMainContent
@@ -438,7 +437,7 @@ export default function ScreenControllerObject(DataManager) {
         projectDueDate.textContent = `Due: ${project.getProjectDueDate()}`;
         projectDueDate.htmlFor = `due${project.getProjectID()}`;
         projectDueDateValue.id = `due${project.getProjectID()}`;
-        projectDueDateValue.type = "date";
+        projectDueDateValue.type = "datetime-local";
         projectDueDateValue.classList.add("projectDueDate");
         projectDueDateValue.classList.add(`${project.getProjectID()}`);
 
@@ -622,7 +621,7 @@ export default function ScreenControllerObject(DataManager) {
         taskDueDate.textContent = `Due: ${task.getTaskDueDate()}`;
         taskDueDate.htmlFor = `due${task.getTaskID()}`;
         taskDueDateValue.id = `due${task.getTaskID()}`;
-        taskDueDateValue.type = "date";
+        taskDueDateValue.type = "datetime-local";
         taskDueDateValue.classList.add("taskDueDate");
         taskDueDateValue.classList.add(`${task.getTaskID()}`);
 

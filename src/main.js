@@ -16,7 +16,6 @@ const projectOne = projects[0];
 const projectTwo = projects[1];
 
 projectOne.setProjectDescription("This is the project description!");
-projectOne.setProjectDueDate("Tomorrow");
 projectOne.setProjectPriority("High");
 DataManager.createTask("Water plants", projectOne);
 DataManager.createTask("Repot peace lily", projectOne);

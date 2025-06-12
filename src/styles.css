@@ -140,7 +140,7 @@ input:checked + label {
     text-decoration: line-through;
 }
 
-input[type="date"] {
+input[type="datetime-local"] {
     font: inherit;
     font-size: small;
     border: solid 1px lightgrey;
@@ -148,22 +148,22 @@ input[type="date"] {
     color: rgb(164, 164, 164);
 }
 
-/* This was an attempt to only show the calendar icon in the date pickers
+/* Only show the calendar icon in the date pickers */
 
-.projectDueDateDiv input,
-.taskDueDateDiv input{
-
+.projectDueDateDiv,
+.taskDueDateDiv{
+    display: flex;
 }
 
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="datetime-local"]::-webkit-inner-spin-button,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     /* display: none;
     -webkit-appearance: none; */
-    /* margin:0;
+    margin:0;
 }
-input[type="date"]::-webkit-datetime-edit {
+input[type="datetime-local"]::-webkit-datetime-edit {
     display:none;
-} */
+}
 
 label {
     margin-right: 10px;
