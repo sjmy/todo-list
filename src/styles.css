@@ -47,12 +47,12 @@ body {
     margin-right: 20px;
 }
 
-h1 {
+.changeProjectName {
     margin-bottom: 5px;
     word-wrap: none;
 }
 
-h5 {
+.allProjectsLabel {
     margin: 0;
     margin-bottom: 5px;
 }
@@ -77,28 +77,30 @@ h5 {
 }
 
 .dropdown {
-  position: relative;
-  /* display: inline-block; */
-  float: right;
+    position: relative;
+    /* display: inline-block; */
+    float: right;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: max-content;
-  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  top: 0;
-  right: 0;
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: max-content;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 0;
+    right: 0;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
 }
 
 .addProject,
 .addTask {
-  color: black;
-  padding: 10px 12px;
-  text-decoration: none;
-  display: block;
+    color: black;
+    padding: 10px 12px;
+    text-decoration: none;
+    display: block;
 }
 
 .addProject:hover,
@@ -215,6 +217,7 @@ input[type="datetime-local"] {
     color: rgb(164, 164, 164);
 }
 
+
 /* Only show the calendar icon in the date pickers */
 
 .projectDueDateDiv,
@@ -271,12 +274,56 @@ select {
     cursor: pointer;
 }
 
+
+/* Add Project dialog */
+
+.dialogAddProject {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.addProjectHeader {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.buttonsDiv {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.addProjectAddButton,
+.addProjectCancelButton {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+}
+
+
+/* Delete Task dialog */
+
 .delete {
     display: flex;
     margin-left: auto;
     scale: 70%;
     opacity: 30%;
     cursor: pointer;
+}
+
+.deleteTaskText {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.areYouSure {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
 }
 
 .yesNoButtons {

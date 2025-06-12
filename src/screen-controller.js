@@ -230,6 +230,21 @@ export default function ScreenControllerObject(DataManager) {
         detailsDiv.style.display = (detailsDiv.style.display === "none" || detailsDiv.style.display === "") ? "block" : "none";
     };
 
+    // Counts the tasks in a project that are completed and returns a string
+    const countProjectTasksCompleted = (project) => {
+        const projectTasks = project.getProjectTasks();
+        const totalTasks = projectTasks.length;
+        let tasksComplete = 0;
+
+        for (let t = 0; t < totalTasks; t++) {
+            if (projectTasks[t].getIsComplete() == true) {
+                tasksComplete += 1;
+            };
+        };
+
+        return `${tasksComplete}/${totalTasks} tasks completed`;
+    };
+
     // Handles all click events based on event target
     const clickEvents = () => {
         document.addEventListener("click", (e) => {
@@ -246,7 +261,7 @@ export default function ScreenControllerObject(DataManager) {
 
             // if trash can in task details is clicked, build and show the delete dialog
             if (targetClass == "delete") {
-                buildAreYouSure(ID);
+                dialogAreYouSure(ID);
 
                 const dialog = document.querySelector("dialog");
                 dialog.showModal();
@@ -324,6 +339,23 @@ export default function ScreenControllerObject(DataManager) {
                 if (dropdownContent.classList.contains("show")) {
                     dropdownContent.classList.remove("show");
                 };
+            };
+
+            // If Add Project is clicked, build and show the dialog
+            if (targetClass == "addProject") {
+                dialogAddProject();
+
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            };
+
+            // If cancel button is clicked in Add Project, close and remove the dialog
+            if (targetClass == "addProjectCancelButton") {
+                const dialog = document.querySelector("dialog");
+
+                e.preventDefault();
+                dialog.close();
+                dialog.remove();
             };
         });
     };
@@ -415,6 +447,7 @@ export default function ScreenControllerObject(DataManager) {
         clearSidebar();
 
         allProjectsLabel.textContent = "All Projects";
+        allProjectsLabel.classList.add("allProjectsLabel");
         sidebarProjectNamesDiv.classList.add("sidebarProjectNamesDiv");
 
         for (let p = 0; p < projectArray.length; p++) {
@@ -779,8 +812,103 @@ export default function ScreenControllerObject(DataManager) {
         taskItemDetails.appendChild(del);
     };
 
+
+    // Dialog functions
+
+    // Builds Add Project form for when Add Project is clicked
+    // createProject = (projectName, projectDescription = "", projectDueDate = Date(), projectPriority = "None", projectTasks = [])
+    // Todo: required fields, spacing, placeholder text?, submitting form (where does the data go)
+    const dialogAddProject = () => {
+        const body = document.querySelector("body");
+        const form = document.createElement("form");
+        const dialog = document.createElement("dialog");
+        const headerText = document.createElement("h3");
+        const projectNameDiv = document.createElement("div");
+        const projectNameLabel = document.createElement("label");
+        const projectNameInput = document.createElement("input");
+        const projectDescriptionDiv = document.createElement("div");
+        const projectDescriptionLabel = document.createElement("label");
+        const projectDescriptionInput = document.createElement("input");
+        const projectDueDateDiv = document.createElement("div");
+        const projectDueDateLabel = document.createElement("label");
+        const projectDueDateInput = document.createElement("input");
+        const projectPriorityDiv = document.createElement("div");
+        const projectPriorityLabel = document.createElement("label");
+        const projectPrioritySelect = document.createElement("select");
+        const buttonsDiv = document.createElement("div");
+        const addButton = document.createElement("button");
+        const cancelButton = document.createElement("button");
+
+        dialog.classList.add("dialogAddProject");
+        headerText.textContent = "Add Project";
+        headerText.classList.add("addProjectHeader");
+
+        projectNameDiv.classList.add("projectNameDiv");
+        projectNameLabel.textContent = "Project Name:";
+        projectNameLabel.htmlFor = "projectName";
+        projectNameInput.type = "text";
+        projectNameInput.id = "projectName";
+        projectNameInput.name = "projectName";
+
+        projectDescriptionDiv.classList.add("projectDescriptionDiv");
+        projectDescriptionLabel.textContent = "Project Description:";
+        projectDescriptionLabel.htmlFor = "projectDescription";
+        projectDescriptionInput.type = "text";
+        projectDescriptionInput.id = "projectDescription";
+        projectDescriptionInput.name = "projectDescription";
+
+        projectDueDateDiv.classList.add("projectDueDateDiv");
+        projectDueDateLabel.textContent = "Due Date:";
+        projectDueDateLabel.htmlFor = "projectDueDate";
+        projectDueDateInput.type = "datetime-local";
+        projectDueDateInput.id = "projectDueDate";
+        projectDueDateInput.name = "projectDueDate";
+
+        projectPriorityDiv.classList.add("projectPriorityDiv");
+        projectPriorityLabel.textContent = "Priority:";
+        projectPriorityLabel.htmlFor = "projectPriority";
+        projectPrioritySelect.id = "projectPriority";
+        projectPrioritySelect.name = "projectPriority";
+
+        for (let p = 0; p < priorityValues.length; p++) {
+            const priorityOption = document.createElement("option");
+            priorityOption.value = priorityValues[p];
+            priorityOption.textContent = priorityValues[p];
+            projectPrioritySelect.appendChild(priorityOption);
+        };
+
+        buttonsDiv.classList.add("buttonsDiv");
+        addButton.classList.add("addProjectAddButton");
+        addButton.value = "default";
+        addButton.textContent = "Add Project"
+        cancelButton.classList.add("addProjectCancelButton");
+        cancelButton.value = "cancel";
+        cancelButton.textContent = "Cancel"
+        // Not sure I need this
+        cancelButton.formMethod = "dialog";
+
+        projectNameDiv.appendChild(projectNameLabel);
+        projectNameDiv.appendChild(projectNameInput);
+        projectDescriptionDiv.appendChild(projectDescriptionLabel);
+        projectDescriptionDiv.appendChild(projectDescriptionInput);
+        projectDueDateDiv.appendChild(projectDueDateLabel);
+        projectDueDateDiv.appendChild(projectDueDateInput);
+        projectPriorityDiv.appendChild(projectPriorityLabel);
+        projectPriorityDiv.appendChild(projectPrioritySelect);
+        buttonsDiv.appendChild(addButton);
+        buttonsDiv.appendChild(cancelButton);
+        form.appendChild(headerText);
+        form.appendChild(projectNameDiv);
+        form.appendChild(projectDescriptionDiv);
+        form.appendChild(projectDueDateDiv);
+        form.appendChild(projectPriorityDiv);
+        form.appendChild(buttonsDiv);
+        dialog.appendChild(form);
+        body.appendChild(dialog);
+    };
+
     // Builds confirmation form for when delete task is clicked
-    const buildAreYouSure = (taskID) => {
+    const dialogAreYouSure = (taskID) => {
         const body = document.querySelector("body");
         const form = document.createElement("form");
         const dialog = document.createElement("dialog");
@@ -796,6 +924,7 @@ export default function ScreenControllerObject(DataManager) {
         noButton.classList.add("noButton");
         yesButton.classList.add(`${taskID}`);
         deleteTaskText.textContent = "Delete Task?";
+        deleteTaskText.classList.add("deleteTaskText");
         yesButton.textContent = "Yes";
         noButton.textContent = "No";
 
@@ -805,21 +934,6 @@ export default function ScreenControllerObject(DataManager) {
         dialog.appendChild(buttons);
         form.appendChild(dialog);
         body.appendChild(form);
-    };
-
-    // Counts the tasks in a project that are completed and returns a string
-    const countProjectTasksCompleted = (project) => {
-        const projectTasks = project.getProjectTasks();
-        const totalTasks = projectTasks.length;
-        let tasksComplete = 0;
-
-        for (let t = 0; t < totalTasks; t++) {
-            if (projectTasks[t].getIsComplete() == true) {
-                tasksComplete += 1;
-            };
-        };
-
-        return `${tasksComplete}/${totalTasks} tasks completed`;
     };
 
     // drawProject and drawTasks are currently exposed for testing
