@@ -3,71 +3,6 @@ import deleteImage from "./img/delete.svg";
 import plusImage from "./img/add_circle.jpg";
 import { format } from "date-fns";
 
-// Methods
-//     - clearMainContent
-//     - drawMainContent
-//         - when project is clicked on sidebar, show the project and its tasks
-//     - drawProject
-//         - projectName
-//         - dueDate, priority, notes in light grey in a line underneath projectName
-//         - projectDescription (show one line, expandable if more)
-//             - textarea element
-//                 - can set maxchars
-//                 - can it be styled to only show a certain amount of chars before expanding? font? border?
-//     - drawTask
-//         - checkbox (task.isComplete() for task status)
-//             - strikethrough when complete
-//         - taskName
-//         - expandable (all editable)
-//             - description
-//             - due date
-//             - priority
-//             - notes
-//             - change project
-//     - sidebar
-//         - projects list
-//         - number of tasks?
-//         - expandable to see taskNames?
-//         - resizeable sidebar?
-//     - addItem
-//         - dialog box that pops up? (like the library project?)
-//         - edit in place?
-//     - what happens when the plus icon is clicked?
-//         - dropdown menu: Add Item or Add Project
-
-// Event Listeners
-//
-// Header:
-//     - add button
-//         - dropdown to choose project or task
-//         - create a project or task, focus to projectName or taskName
-//             - form validation check for empty String
-//         - user can fill in the rest
-// Sidebar:
-//     - Projects
-//         - expand to see all Projects
-//     - Project
-//         - expand to see all Tasks for each project, just the taskName
-//         - click on project name, opens in main content
-//         - click on project task, opens project in main content with task expanded
-
-// Main:
-//     - Project
-//         - change name
-//         - change dueDate DONE
-//         - change priority DONE
-//             - green/yellow/red for low/medium/Highlight
-//         - change projectDescription DONE
-//     - Task
-//         - checkbox toggles isComplete DONE
-//             - could show amount of tasks completed next to the project "3/6 tasks completed" DONE
-//         - change name
-//         - more icon to show/hide task details DONE
-//         - change taskDescription DONE
-//         - change dueDate DONE
-//         - change priority DONE
-//         - delete task DONE
-//             - add a trash icon in taskItemDetails DONE
 
 // ScreenControllerObject controls the DOM, updating and clearing as needed. Has access to the projectArray.
 // Contains all event listener functions and attaches listeners to DOM elements.
@@ -225,25 +160,66 @@ export default function ScreenControllerObject(DataManager) {
         };
     };
 
-    // Shows/hides task details
-    function moreTaskDetails(taskID) {
-        const detailsDiv = document.querySelector(`.taskDetailsDiv.${taskID}`);
-        detailsDiv.style.display = (detailsDiv.style.display === "none" || detailsDiv.style.display === "") ? "block" : "none";
+    // In the Add Project dialog, if Add Project is clicked (submit), create the project and update the UI
+    const addProjectSubmitListener = () => {
+        const form = document.querySelector("form");
+
+        form.addEventListener("submit", (e) => {
+            const dialog = document.querySelector("dialog");
+            const projectName = document.querySelector("#addProjectName");
+            const projectDescription = document.querySelector("#addProjectDescription");
+            const projectDueDate = document.querySelector("#addProjectDueDate");
+            const projectPriority = document.querySelector("#addProjectPriority");
+
+            e.preventDefault();
+
+            DataManager.createProject(projectName.value, projectDescription.value, projectDueDate.value, projectPriority.value);
+            const currentProject = projectArray[projectArray.length - 1];
+
+            dialog.close();
+            dialog.remove();
+            drawProject(currentProject);
+            drawTasks(currentProject);
+            drawSidebar();
+        });
     };
 
-    // Counts the tasks in a project that are completed and returns a string
-    const countProjectTasksCompleted = (project) => {
-        const projectTasks = project.getProjectTasks();
-        const totalTasks = projectTasks.length;
-        let tasksComplete = 0;
+    // In the Add Task dialog, if Add Task is clicked (submit), create the task and update the UI
+    const addTaskSubmitListener = () => {
+        const form = document.querySelector("form");
 
-        for (let t = 0; t < totalTasks; t++) {
-            if (projectTasks[t].getIsComplete() == true) {
-                tasksComplete += 1;
+        form.addEventListener("submit", (e) => {
+            const dialog = document.querySelector("dialog");
+            const projectName = document.querySelector("#taskProjectChoice");
+            const taskName = document.querySelector("#addTaskName");
+            const taskDescription = document.querySelector("#addTaskDescription");
+            const taskDueDate = document.querySelector("#addTaskDueDate");
+            const taskPriority = document.querySelector("#addTaskPriority");
+            const currentProjectName = document.querySelector(".currentProjectName").textContent;
+            let projectObject = projectArray[0];
+
+            e.preventDefault();
+
+            for (let p = 0; p < projectArray.length; p++) {
+                if (projectArray[p].getProjectName() == projectName.value) {
+                    projectObject = projectArray[p];
+                };
             };
-        };
 
-        return `${tasksComplete}/${totalTasks} tasks completed`;
+            DataManager.createTask(taskName.value, projectObject, taskDescription.value, taskDueDate.value, taskPriority.value);
+
+            dialog.close();
+            dialog.remove();
+
+            // If the task is added to the currently displayed project, update the tasks UI
+            // If not, just update the sidebar
+            if (currentProjectName == projectObject.getProjectName()) {
+                clearTaskItemsDiv();
+                drawTasks(projectObject);
+            };
+
+            drawSidebar();
+        });
     };
 
     // Handles all click events based on event target
@@ -544,7 +520,7 @@ export default function ScreenControllerObject(DataManager) {
         const projectNameDiv = document.querySelector(".projectNameDiv")
 
         projectName.textContent = project.getProjectName();
-        projectName.classList.add("changeProjectName");
+        projectName.classList.add("currentProjectName");
         projectName.classList.add(`${project.getProjectID()}`)
         projectNameDiv.appendChild(projectName);
     };
@@ -830,6 +806,27 @@ export default function ScreenControllerObject(DataManager) {
         taskItemDetails.appendChild(del);
     };
 
+    // Shows/hides task details
+    function moreTaskDetails(taskID) {
+        const detailsDiv = document.querySelector(`.taskDetailsDiv.${taskID}`);
+        detailsDiv.style.display = (detailsDiv.style.display === "none" || detailsDiv.style.display === "") ? "block" : "none";
+    };
+
+    // Counts the tasks in a project that are completed and returns a string
+    const countProjectTasksCompleted = (project) => {
+        const projectTasks = project.getProjectTasks();
+        const totalTasks = projectTasks.length;
+        let tasksComplete = 0;
+
+        for (let t = 0; t < totalTasks; t++) {
+            if (projectTasks[t].getIsComplete() == true) {
+                tasksComplete += 1;
+            };
+        };
+
+        return `${tasksComplete}/${totalTasks} tasks completed`;
+    };
+
 
     // Dialog functions
 
@@ -868,8 +865,8 @@ export default function ScreenControllerObject(DataManager) {
         projectNameInput.type = "text";
         projectNameInput.id = "addProjectName";
         projectNameInput.name = "addProjectName";
-        projectNameInput.required = true;
         projectNameInput.placeholder = "Required";
+        projectNameInput.required = true;
 
         projectDescriptionDiv.classList.add("addProjectDescriptionDiv");
         projectDescriptionLabel.textContent = "Project Description:";
@@ -885,6 +882,7 @@ export default function ScreenControllerObject(DataManager) {
         projectDueDateInput.type = "datetime-local";
         projectDueDateInput.id = "addProjectDueDate";
         projectDueDateInput.name = "addProjectDueDate";
+        projectDueDateInput.defaultValue = format(Date(), "yyyy-MM-dd hh:mm");
 
         projectPriorityDiv.classList.add("addProjectPriorityDiv");
         projectPriorityLabel.textContent = "Priority:";
@@ -901,12 +899,10 @@ export default function ScreenControllerObject(DataManager) {
 
         buttonsDiv.classList.add("buttonsDiv");
         addButton.classList.add("addProjectAddButton");
-        addButton.value = "default";
-        addButton.textContent = "Add Project"
+        addButton.type = "submit";
+        addButton.textContent = "Add Project";
         cancelButton.classList.add("addProjectCancelButton");
-        cancelButton.value = "cancel";
         cancelButton.textContent = "Cancel"
-        // Not sure I need this
         cancelButton.formMethod = "dialog";
 
         projectNameDiv.appendChild(projectNameLabel);
@@ -928,6 +924,8 @@ export default function ScreenControllerObject(DataManager) {
         form.appendChild(buttonsDiv);
         dialog.appendChild(form);
         body.appendChild(dialog);
+
+        addProjectSubmitListener();
     };
 
     // Builds Add Task form when Add Task is clicked
@@ -982,8 +980,8 @@ export default function ScreenControllerObject(DataManager) {
         taskNameInput.type = "text";
         taskNameInput.id = "addTaskName";
         taskNameInput.name = "addTaskName";
-        taskNameInput.required = true;
         taskNameInput.placeholder = "Required";
+        taskNameInput.required = true;
 
         taskDescriptionDiv.classList.add("addTaskDescriptionDiv");
         taskDescriptionLabel.textContent = "Task Description:";
@@ -999,6 +997,7 @@ export default function ScreenControllerObject(DataManager) {
         taskDueDateInput.type = "datetime-local";
         taskDueDateInput.id = "addTaskDueDate";
         taskDueDateInput.name = "addTaskDueDate";
+        taskDueDateInput.defaultValue = format(Date(), "yyyy-MM-dd hh:mm");
 
         taskPriorityDiv.classList.add("addTaskPriorityDiv");
         taskPriorityLabel.textContent = "Priority:";
@@ -1015,12 +1014,10 @@ export default function ScreenControllerObject(DataManager) {
 
         buttonsDiv.classList.add("buttonsDiv");
         addButton.classList.add("addTaskAddButton");
-        addButton.value = "default";
-        addButton.textContent = "Add Task"
+        addButton.type = "submit";
+        addButton.textContent = "Add Task";
         cancelButton.classList.add("addTaskCancelButton");
-        cancelButton.value = "cancel";
         cancelButton.textContent = "Cancel"
-        // Not sure I need this
         cancelButton.formMethod = "dialog";
 
         taskNameDiv.appendChild(taskNameLabel);
@@ -1046,6 +1043,8 @@ export default function ScreenControllerObject(DataManager) {
         form.appendChild(buttonsDiv);
         dialog.appendChild(form);
         body.appendChild(dialog);
+
+        addTaskSubmitListener();
     };
 
     // Builds confirmation form for when delete task is clicked

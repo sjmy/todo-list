@@ -21,8 +21,6 @@ import TaskObject from "./task.js";
 //                                         taskPriority: "high",
 //                                         taskNotes: "here are some thoughts on how to do stuff really well"}]}]
 
-// Need a default value for projectDueDate and taskDueDate. Is it an empty date? "none"? Will there be issues assigning it a Date object if the default is a string?
-
 export default function DataManagerObject() {
     let projectArray = [];
 

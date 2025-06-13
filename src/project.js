@@ -4,13 +4,13 @@ import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 // - Project
 //     - created via factory function
 //     - separate lists of tasks
-//     - when app is first opened, a 'default' project (My Tasks?) is created that tasks are attached to
+//     - when app is first opened, a 'default' project (My Tasks) is created that tasks are attached to
 //     - users can create new projects and decide which project their tasks go into
 //     - Properties:
 //         - projectID
-//             - crypto.randomUUID()
+//             - getter
 //         - projectName
-//             - getter/setter
+//             - getter
 //         - projectDescription
 //             - getter/setter
 //         - projectDueDate

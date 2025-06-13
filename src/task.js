@@ -5,9 +5,9 @@ import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 //     - created via factory function
 //     - Properties:
 //         - taskID
-//             - crypto.randomUUID()
+//             - getter
 //         - taskName
-//             - getter/setter
+//             - getter
 //         - taskDescription
 //             - getter/setter
 //         - taskDueDate
@@ -19,8 +19,6 @@ import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 //         - checklist box
 //             - toggle
 //             - strikethrough when toggled
-
-// Need a default value for taskDueDate. Is it an empty date? "none"? Will there be issues assigning it a Date object if the default is a string?
 
 export default function TaskObject(name, description, dueDate, priority) {
     const taskID = createRandomString(10);
