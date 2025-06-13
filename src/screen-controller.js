@@ -1,6 +1,7 @@
 import moreImage from "./img/more.svg";
 import deleteImage from "./img/delete.svg";
 import plusImage from "./img/add_circle.jpg";
+import { format } from "date-fns";
 
 // Methods
 //     - clearMainContent
@@ -351,6 +352,23 @@ export default function ScreenControllerObject(DataManager) {
 
             // If cancel button is clicked in Add Project, close and remove the dialog
             if (targetClass == "addProjectCancelButton") {
+                const dialog = document.querySelector("dialog");
+
+                e.preventDefault();
+                dialog.close();
+                dialog.remove();
+            };
+
+            // If Add Task is clicked, build and show the dialog
+            if (targetClass == "addTask") {
+                dialogAddTask();
+
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            };
+
+            // If cancel button is clicked in Add Project, close and remove the dialog
+            if (targetClass == "addTaskCancelButton") {
                 const dialog = document.querySelector("dialog");
 
                 e.preventDefault();
@@ -817,7 +835,7 @@ export default function ScreenControllerObject(DataManager) {
 
     // Builds Add Project form for when Add Project is clicked
     // createProject = (projectName, projectDescription = "", projectDueDate = Date(), projectPriority = "None", projectTasks = [])
-    // Todo: placeholder text?, submitting form (where does the data go)
+    // Todo: submitting form (where does the data go)
     const dialogAddProject = () => {
         const body = document.querySelector("body");
         const form = document.createElement("form");
@@ -828,7 +846,8 @@ export default function ScreenControllerObject(DataManager) {
         const projectNameInput = document.createElement("input");
         const projectDescriptionDiv = document.createElement("div");
         const projectDescriptionLabel = document.createElement("label");
-        const projectDescriptionInput = document.createElement("input");
+        const projectDescriptionInput = document.createElement("textarea");
+        const projectItemsDiv = document.createElement("div");
         const projectDueDateDiv = document.createElement("div");
         const projectDueDateLabel = document.createElement("label");
         const projectDueDateInput = document.createElement("input");
@@ -855,9 +874,10 @@ export default function ScreenControllerObject(DataManager) {
         projectDescriptionDiv.classList.add("addProjectDescriptionDiv");
         projectDescriptionLabel.textContent = "Project Description:";
         projectDescriptionLabel.htmlFor = "addProjectDescription";
-        projectDescriptionInput.type = "text";
         projectDescriptionInput.id = "addProjectDescription";
         projectDescriptionInput.name = "addProjectDescription";
+
+        projectItemsDiv.classList.add("addProjectItemsDiv");
 
         projectDueDateDiv.classList.add("addProjectDueDateDiv");
         projectDueDateLabel.textContent = "Due Date:";
@@ -897,13 +917,132 @@ export default function ScreenControllerObject(DataManager) {
         projectDueDateDiv.appendChild(projectDueDateInput);
         projectPriorityDiv.appendChild(projectPriorityLabel);
         projectPriorityDiv.appendChild(projectPrioritySelect);
+        projectItemsDiv.appendChild(projectDueDateDiv);
+        projectItemsDiv.appendChild(projectPriorityDiv);
         buttonsDiv.appendChild(addButton);
         buttonsDiv.appendChild(cancelButton);
         form.appendChild(headerText);
         form.appendChild(projectNameDiv);
         form.appendChild(projectDescriptionDiv);
-        form.appendChild(projectDueDateDiv);
-        form.appendChild(projectPriorityDiv);
+        form.appendChild(projectItemsDiv);
+        form.appendChild(buttonsDiv);
+        dialog.appendChild(form);
+        body.appendChild(dialog);
+    };
+
+    // Builds Add Task form when Add Task is clicked
+    // const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None")
+    const dialogAddTask = () => {
+        const body = document.querySelector("body");
+        const form = document.createElement("form");
+        const dialog = document.createElement("dialog");
+        const headerTextDiv = document.createElement("div");
+        const headerText = document.createElement("h3");
+        const taskProjectChoiceDiv = document.createElement("div");
+        const taskProjectChoiceLabel = document.createElement("label");
+        const taskProjectChoiceSelect = document.createElement("select");
+        const taskNameDiv = document.createElement("div");
+        const taskNameLabel = document.createElement("label");
+        const taskNameInput = document.createElement("input");
+        const taskDescriptionDiv = document.createElement("div");
+        const taskDescriptionLabel = document.createElement("label");
+        const taskDescriptionInput = document.createElement("textarea");
+        const taskItemsDiv = document.createElement("div");
+        const taskDueDateDiv = document.createElement("div");
+        const taskDueDateLabel = document.createElement("label");
+        const taskDueDateInput = document.createElement("input");
+        const taskPriorityDiv = document.createElement("div");
+        const taskPriorityLabel = document.createElement("label");
+        const taskPrioritySelect = document.createElement("select");
+        const buttonsDiv = document.createElement("div");
+        const addButton = document.createElement("button");
+        const cancelButton = document.createElement("button");
+
+        dialog.classList.add("dialogAddTask");
+        headerTextDiv.classList.add("addTaskHeaderDiv");
+        headerText.textContent = "Add Task";
+        headerText.classList.add("addTaskHeader");
+
+        taskProjectChoiceDiv.classList.add("taskProjectChoiceDiv");
+        taskProjectChoiceLabel.textContent = "Project:";
+        taskProjectChoiceLabel.htmlFor = "taskProjectChoice"
+        taskProjectChoiceSelect.id = "taskProjectChoice";
+        taskProjectChoiceSelect.name = "taskProjectChoice";
+
+        for (let p = 0; p < projectArray.length; p++) {
+            const projectOption = document.createElement("option");
+            projectOption.value = projectArray[p].getProjectName();
+            projectOption.textContent = projectArray[p].getProjectName();
+            taskProjectChoiceSelect.appendChild(projectOption);
+        };
+
+        taskNameDiv.classList.add("addTaskNameDiv");
+        taskNameLabel.textContent = "Task Name:";
+        taskNameLabel.htmlFor = "addTaskName";
+        taskNameInput.type = "text";
+        taskNameInput.id = "addTaskName";
+        taskNameInput.name = "addTaskName";
+        taskNameInput.required = true;
+        taskNameInput.placeholder = "Required";
+
+        taskDescriptionDiv.classList.add("addTaskDescriptionDiv");
+        taskDescriptionLabel.textContent = "Task Description:";
+        taskDescriptionLabel.htmlFor = "addTaskDescription";
+        taskDescriptionInput.id = "addTaskDescription";
+        taskDescriptionInput.name = "addTaskDescription";
+
+        taskItemsDiv.classList.add("addTaskItemsDiv");
+
+        taskDueDateDiv.classList.add("addTaskDueDateDiv");
+        taskDueDateLabel.textContent = "Due Date:";
+        taskDueDateLabel.htmlFor = "addTaskDueDate";
+        taskDueDateInput.type = "datetime-local";
+        taskDueDateInput.id = "addTaskDueDate";
+        taskDueDateInput.name = "addTaskDueDate";
+
+        taskPriorityDiv.classList.add("addTaskPriorityDiv");
+        taskPriorityLabel.textContent = "Priority:";
+        taskPriorityLabel.htmlFor = "addTaskPriority";
+        taskPrioritySelect.id = "addTaskPriority";
+        taskPrioritySelect.name = "addTaskPriority";
+
+        for (let p = 0; p < priorityValues.length; p++) {
+            const priorityOption = document.createElement("option");
+            priorityOption.value = priorityValues[p];
+            priorityOption.textContent = priorityValues[p];
+            taskPrioritySelect.appendChild(priorityOption);
+        };
+
+        buttonsDiv.classList.add("buttonsDiv");
+        addButton.classList.add("addTaskAddButton");
+        addButton.value = "default";
+        addButton.textContent = "Add Task"
+        cancelButton.classList.add("addTaskCancelButton");
+        cancelButton.value = "cancel";
+        cancelButton.textContent = "Cancel"
+        // Not sure I need this
+        cancelButton.formMethod = "dialog";
+
+        taskNameDiv.appendChild(taskNameLabel);
+        taskNameDiv.appendChild(taskNameInput);
+        taskDescriptionDiv.appendChild(taskDescriptionLabel);
+        taskDescriptionDiv.appendChild(taskDescriptionInput);
+        taskDueDateDiv.appendChild(taskDueDateLabel);
+        taskDueDateDiv.appendChild(taskDueDateInput);
+        taskPriorityDiv.appendChild(taskPriorityLabel);
+        taskPriorityDiv.appendChild(taskPrioritySelect);
+        taskItemsDiv.appendChild(taskDueDateDiv);
+        taskItemsDiv.appendChild(taskPriorityDiv);
+        buttonsDiv.appendChild(addButton);
+        buttonsDiv.appendChild(cancelButton);
+        taskProjectChoiceDiv.appendChild(taskProjectChoiceLabel);
+        taskProjectChoiceDiv.appendChild(taskProjectChoiceSelect);
+        headerTextDiv.appendChild(headerText);
+        headerTextDiv.appendChild(taskProjectChoiceDiv);
+        form.appendChild(headerTextDiv);
+        form.appendChild(taskNameDiv);
+        form.appendChild(taskDescriptionDiv);
+        form.appendChild(taskItemsDiv);
         form.appendChild(buttonsDiv);
         dialog.appendChild(form);
         body.appendChild(dialog);

@@ -133,6 +133,10 @@ body {
     color: rgb(164, 164, 164);
 }
 
+textarea {
+    resize: none;
+}
+
 .projectDescription,
 .taskDescription {
     display: grid;
@@ -200,7 +204,8 @@ textarea:hover {
     width: 70%;
 }
 
-input[type="checkbox"] {
+.projectDueDateDiv > input[type="checkbox"],
+.taskDueDateDiv > input[type="checkbox"] {
     margin-right: 10px;
     cursor: pointer;
 }
@@ -221,19 +226,22 @@ input[type="datetime-local"] {
 /* Only show the calendar icon in the date pickers */
 
 .projectDueDateDiv,
-.taskDueDateDiv{
+.taskDueDateDiv {
     display: flex;
 }
 
-input[type="datetime-local"]::-webkit-inner-spin-button,
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+.projectDueDateDiv > input[type="datetime-local"]::-webkit-inner-spin-button,
+.taskDueDateDiv > input[type="datetime-local"]::-webkit-inner-spin-button,
+.projectDueDateDiv > input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.taskDueDateDiv > input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     /* display: none;
     -webkit-appearance: none; */
     margin:0;
     cursor: pointer;
 }
 
-input[type="datetime-local"]::-webkit-datetime-edit {
+.projectDueDateDiv > input[type="datetime-local"]::-webkit-datetime-edit,
+.taskDueDateDiv > input[type="datetime-local"]::-webkit-datetime-edit {
     display:none;
 }
 
@@ -243,6 +251,7 @@ label {
 
 .taskCheckbox {
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .taskCheckbox:hover {
@@ -281,7 +290,7 @@ select {
     border: solid 1px lightgrey;
     border-radius: 5px;
     box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    width: 35%;
+    width: 40%;
 }
 
 form {
@@ -299,11 +308,23 @@ form {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    text-align: start;
+}
+
+.addProjectItemsDiv {
+    display: flex;
+    justify-content: space-between;
 }
 
 .addProjectDueDateDiv,
 .addProjectPriorityDiv {
+    display: flex;
     margin-bottom: 10px;
+}
+
+#addProjectName {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
 }
 
 #addProjectName::placeholder {
@@ -311,6 +332,10 @@ form {
 }
 
 #addProjectDescription {
+    font: inherit;
+    font-size: small;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
     height: 70px;
 }
 
@@ -322,6 +347,68 @@ form {
 
 .addProjectAddButton,
 .addProjectCancelButton {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+}
+
+
+/* Add Task dialog */
+
+.dialogAddTask {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    width: 40%;
+}
+
+.addTaskHeaderDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addTaskHeader {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.addTaskNameDiv,
+.addTaskDescriptionDiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    text-align: start;
+}
+
+.addTaskItemsDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addTaskDueDateDiv,
+.addTaskPriorityDiv {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#addTaskName {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+}
+
+#addTaskName::placeholder {
+    font-style: italic;
+}
+
+#addTaskDescription {
+    font: inherit;
+    font-size: small;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    height: 70px;
+}
+
+.addTaskAddButton,
+.addTaskCancelButton {
     border: solid 1px lightgrey;
     border-radius: 5px;
 }
