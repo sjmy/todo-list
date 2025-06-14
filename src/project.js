@@ -43,6 +43,7 @@ export default function ProjectObject(name, description, dueDate, priority, task
             return format(projectDueDate, "PPPp");
         };
     };
+    const getRawDueDate = () => projectDueDate;
 
     // Setters
     const setProjectDescription = (newProjectDescription) => {
@@ -61,6 +62,7 @@ export default function ProjectObject(name, description, dueDate, priority, task
             getProjectName,
             getProjectDescription,
             getProjectDueDate,
+            getRawDueDate,
             getProjectPriority,
             getProjectTasks,
             setProjectDescription,

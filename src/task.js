@@ -45,6 +45,7 @@ export default function TaskObject(name, description, dueDate, priority) {
             return format(taskDueDate, "PPPp");
         };
     };
+    const getRawDueDate = () => taskDueDate;
 
     // Setters
     const setTaskDescription = (newTaskDescription) => {
@@ -67,6 +68,7 @@ export default function TaskObject(name, description, dueDate, priority) {
             getTaskName,
             getTaskDescription,
             getTaskDueDate,
+            getRawDueDate,
             getTaskPriority,
             getIsComplete,
             setTaskDescription,

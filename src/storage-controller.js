@@ -5,6 +5,19 @@
 //         - destructure when getting JSON data to create the appropriate objects
 //         - if the structure of JSON is known, should be able to recreate objects
 
+// projectArray = [{projectID: "9834nhn98",
+//                  projectName: "My Tasks",
+//                  projectDescription: "My first list of tasks",
+//                  projectDueDate: "2025-08-17",
+//                  projectPriority: "high",
+//                  projectTasks: [{taskID: "h345h34",
+//                                  taskName: "do stuff",
+//                                  taskDescription: "do stuff really well",
+//                                  taskDueDate: "tomorrow",
+//                                  taskPriority: "high"}
+//                                ]
+//                 }]
+
 export default function StorageControllerObject(DataManager) {
 
     // This function detects whether localStorage is both supported and available
@@ -29,12 +42,87 @@ export default function StorageControllerObject(DataManager) {
         };
     };
 
-    function updateStorage() {
+    // Gets all the data for each task and puts it into an object of key/value pairs for storage
+    function getTasksForStorage(projectTasks) {
+        const taskList = [];
 
+        for (let t = 0; t < projectTasks.length; t++) {
+            const taskID = projectTasks[t].getTaskID();
+            const taskName = projectTasks[t].getTaskName();
+            const taskDescription = projectTasks[t].getTaskDescription();
+            const taskDueDate = JSON.stringify(projectTasks[t].getRawDueDate());
+            const taskPriority = projectTasks[t].getTaskPriority();
+
+            taskList.push({
+                taskID: taskID,
+                taskName: taskName,
+                taskDescription: taskDescription,
+                taskDueDate: taskDueDate,
+                taskPriority: taskPriority});
+        };
+
+        return taskList;
+    };
+
+    // Gets all the data for each project and puts it into an object of key/value pairs for storage
+    // Calls getTasksForStorage() to get the task list for each project
+    function getProjectArrayForStorage() {
+        const projectArray = DataManager.getProjectArray();
+        const projectArrayForStorage = [];
+
+        for (let p = 0; p < projectArray.length; p++) {
+            const projectID = projectArray[p].getProjectID();
+            const projectName = projectArray[p].getProjectName();
+            const projectDescription = projectArray[p].getProjectDescription();
+            const projectDueDate = JSON.stringify(projectArray[p].getRawDueDate());
+            const projectPriority = projectArray[p].getProjectPriority();
+            const projectTasks = projectArray[p].getProjectTasks();
+
+            projectArrayForStorage.push({
+                projectID: projectID,
+                projectName: projectName,
+                projectDescription: projectDescription,
+                projectDueDate: projectDueDate,
+                projectPriority: projectPriority,
+                projectTasks: getTasksForStorage(projectTasks)
+            });
+        };
+
+        return projectArrayForStorage;
+    };
+
+    function updateStorage() {
+        localStorage.setItem("projectArray", JSON.stringify(getProjectArrayForStorage()));
     };
 
     function updateDataManager() {
+        // This needs to update the DataManager with the recreated projectArray. Recreated Projects and Tasks with the strings in localStorage
+        // JSON.parse() stringified objects like Date(), and maybe arrays?
+        // createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None")
+        // createProject = (projectName, projectDescription = "", projectDueDate = Date(), projectPriority = "None", projectTasks = [])
+        const localStorageProjectArray = JSON.parse(localStorage.getItem("projectArray"));
 
+        for (let p = 0; p < localStorageProjectArray.length; p++) {
+            const projectID = localStorageProjectArray[p].projectID;
+            const projectName = localStorageProjectArray[p].projectName;
+            const projectDescription = localStorageProjectArray[p].projectDescription;
+            const projectDueDate = localStorageProjectArray[p].projectDueDate;
+            const projectPriority = localStorageProjectArray[p].projectPriority;
+            const projectTasks = localStorageProjectArray[p].projectTasks;
+
+            DataManager.createProject(projectName, projectDescription, projectDueDate, projectPriority);
+
+            for (let t = 0; t < projectTasks.length; t++) {
+                const projectArray = DataManager.getProjectArray();
+                const taskID = projectTasks[t].taskID;
+                const taskName = projectTasks[t].taskName;
+                const taskDescription = projectTasks[t].taskDescription;
+                const taskDueDate = projectTasks[t].taskDueDate;
+                const taskPriority = projectTasks[t].taskPriority;
+
+                DataManager.createTask(taskName, projectArray[p], taskDescription, taskDueDate, taskPriority);
+            };
+        };
     };
 
     const start = () => {
@@ -46,7 +134,6 @@ export default function StorageControllerObject(DataManager) {
                 updateDataManager();
             } else {
                 // No projectArray found
-                console.log("No projectArray found");
                 return false;
             }
         } else {
@@ -56,6 +143,7 @@ export default function StorageControllerObject(DataManager) {
     };
 
     return {start,
-            updateStorage
+            updateStorage,
+            updateDataManager
     };
 };

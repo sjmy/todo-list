@@ -29,6 +29,11 @@ export default function DataManagerObject() {
     // Getter
     const getProjectArray = () => projectArray;
 
+    // Setter
+    const setProjectArray = (localStorageProjectArray) => {
+        projectArray = localStorageProjectArray;
+    };
+
     // Create a task. taskName is the only required field.
     // A project object must always be passed as a parameter
     const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None") => {
@@ -49,35 +54,38 @@ export default function DataManagerObject() {
         const StorageController = StorageControllerObject(DataManager);
 
         // Talk to StorageController to get parsed localStorage JSON
-        // If localStorage is empty, create a default project and first task
-        if (!StorageController.start()) {
+        // If localStorage is empty or unavailable, create a default project and first task
+        // Else, get the data from localStorage and update the DataManager
+        if (StorageController.start() == false) {
             createProject("My Tasks");
             createTask("First task - implement project/task name changes!", projectArray[0]);
+            console.log("default project and task added");
         };
 
         // Test data start
-        const projects = DataManager.getProjectArray();
+        // const projects = DataManager.getProjectArray();
 
-        createProject("Plant Trees", "Plant all those trees");
+        // createProject("Plant Trees", "Plant all those trees");
 
-        const projectOne = projects[0];
-        const projectTwo = projects[1];
+        // const projectOne = projects[0];
+        // const projectTwo = projects[1];
 
-        projectOne.setProjectDescription("This is the project description!");
-        projectOne.setProjectPriority("High");
-        createTask("Water plants", projectOne);
-        createTask("Repot peace lily", projectOne);
-        createTask("Buy End-All", projectOne);
-        createTask("Propagate umbrella plant", projectOne);
-        createTask("Fertilize calathea", projectOne);
+        // projectOne.setProjectDescription("This is the project description!");
+        // projectOne.setProjectPriority("High");
+        // createTask("Water plants", projectOne);
+        // createTask("Repot peace lily", projectOne);
+        // createTask("Buy End-All", projectOne);
+        // createTask("Propagate umbrella plant", projectOne);
+        // createTask("Fertilize calathea", projectOne);
 
-        createTask("Bloodgood Maple", projectTwo);
-        createTask("Japanese Stewartia", projectTwo);
-        createTask("Buy big containers", projectTwo);
-        createTask("Buy mulch", projectTwo);
-        createTask("Enjoy", projectTwo);
+        // createTask("Bloodgood Maple", projectTwo);
+        // createTask("Japanese Stewartia", projectTwo);
+        // createTask("Buy big containers", projectTwo);
+        // createTask("Buy mulch", projectTwo);
+        // createTask("Enjoy", projectTwo);
         // Test data end
-
+        
+        StorageController.updateStorage();
         ScreenController.drawProject(projectArray[0]);
         ScreenController.drawTasks(projectArray[0]);
         ScreenController.drawHeader();
@@ -121,6 +129,7 @@ export default function DataManagerObject() {
     };
 
     return {getProjectArray,
+            setProjectArray,
             createTask,
             createProject,
             addTaskToProject,

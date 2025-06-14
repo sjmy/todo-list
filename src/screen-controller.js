@@ -228,8 +228,9 @@ export default function ScreenControllerObject(DataManager) {
             const targetClass = e.target.classList[0];
             const ID = e.target.classList[1];
 
-            console.log(targetClass);
-            console.log(ID);
+            // Used in development to display click target classes
+            // console.log(targetClass);
+            // console.log(ID);
 
             // If three dots icon is clicked, expand task details
             if (targetClass == "more") {
@@ -931,6 +932,7 @@ export default function ScreenControllerObject(DataManager) {
     // Builds Add Task form when Add Task is clicked
     // const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None")
     const dialogAddTask = () => {
+        const currentProject = document.querySelector(".currentProjectName").textContent;
         const body = document.querySelector("body");
         const form = document.createElement("form");
         const dialog = document.createElement("dialog");
@@ -971,6 +973,11 @@ export default function ScreenControllerObject(DataManager) {
             const projectOption = document.createElement("option");
             projectOption.value = projectArray[p].getProjectName();
             projectOption.textContent = projectArray[p].getProjectName();
+
+            if (projectArray[p].getProjectName() == currentProject) {
+                projectOption.selected = "selected";
+            };
+
             taskProjectChoiceSelect.appendChild(projectOption);
         };
 
