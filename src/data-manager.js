@@ -1,3 +1,5 @@
+import ScreenControllerObject from "./screen-controller.js";
+import StorageControllerObject from "./storage-controller.js";
 import ProjectObject from "./project.js";
 import TaskObject from "./task.js";
 
@@ -43,9 +45,44 @@ export default function DataManagerObject() {
     };
 
     const start = () => {
+        const ScreenController = ScreenControllerObject(DataManager);
+        const StorageController = StorageControllerObject(DataManager);
+
         // Talk to StorageController to get parsed localStorage JSON
-        // If localStorage is empty:
-        createProject("My Tasks");
+        // If localStorage is empty, create a default project and first task
+        if (!StorageController.start()) {
+            createProject("My Tasks");
+            createTask("First task - implement project/task name changes!", projectArray[0]);
+        };
+
+        // Test data start
+        const projects = DataManager.getProjectArray();
+
+        createProject("Plant Trees", "Plant all those trees");
+
+        const projectOne = projects[0];
+        const projectTwo = projects[1];
+
+        projectOne.setProjectDescription("This is the project description!");
+        projectOne.setProjectPriority("High");
+        createTask("Water plants", projectOne);
+        createTask("Repot peace lily", projectOne);
+        createTask("Buy End-All", projectOne);
+        createTask("Propagate umbrella plant", projectOne);
+        createTask("Fertilize calathea", projectOne);
+
+        createTask("Bloodgood Maple", projectTwo);
+        createTask("Japanese Stewartia", projectTwo);
+        createTask("Buy big containers", projectTwo);
+        createTask("Buy mulch", projectTwo);
+        createTask("Enjoy", projectTwo);
+        // Test data end
+
+        ScreenController.drawProject(projectArray[0]);
+        ScreenController.drawTasks(projectArray[0]);
+        ScreenController.drawHeader();
+        ScreenController.drawSidebar();
+        ScreenController.startAllListeners();
     };
 
     // If project is not specified on task creation, task gets placed in the default project ("My Tasks")
