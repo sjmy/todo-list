@@ -49,7 +49,7 @@ export default function DataManagerObject() {
         projectArray.push(newProjectObject);
     };
 
-    const start = () => {
+    const start = (DataManager) => {
         const ScreenController = ScreenControllerObject(DataManager);
         const StorageController = StorageControllerObject(DataManager);
 

@@ -50,7 +50,7 @@ export default function StorageControllerObject(DataManager) {
             const taskID = projectTasks[t].getTaskID();
             const taskName = projectTasks[t].getTaskName();
             const taskDescription = projectTasks[t].getTaskDescription();
-            const taskDueDate = JSON.stringify(projectTasks[t].getRawDueDate());
+            const taskDueDate = projectTasks[t].getRawDueDate();
             const taskPriority = projectTasks[t].getTaskPriority();
 
             taskList.push({
@@ -74,7 +74,7 @@ export default function StorageControllerObject(DataManager) {
             const projectID = projectArray[p].getProjectID();
             const projectName = projectArray[p].getProjectName();
             const projectDescription = projectArray[p].getProjectDescription();
-            const projectDueDate = JSON.stringify(projectArray[p].getRawDueDate());
+            const projectDueDate = projectArray[p].getRawDueDate();
             const projectPriority = projectArray[p].getProjectPriority();
             const projectTasks = projectArray[p].getProjectTasks();
 
