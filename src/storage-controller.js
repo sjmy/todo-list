@@ -18,7 +18,7 @@
 //                                ]
 //                 }]
 
-export default function StorageControllerObject(DataManager) {
+export default function StorageControllerObject() {
 
     // This function detects whether localStorage is both supported and available
     // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
@@ -66,8 +66,8 @@ export default function StorageControllerObject(DataManager) {
 
     // Gets all the data for each project and puts it into an object of key/value pairs for storage
     // Calls getTasksForStorage() to get the task list for each project
-    function getProjectArrayForStorage() {
-        const projectArray = DataManager.getProjectArray();
+    function getProjectArrayForStorage(projectArray) {
+        // const projectArray = DataManager.getProjectArray();
         const projectArrayForStorage = [];
 
         for (let p = 0; p < projectArray.length; p++) {
@@ -91,11 +91,11 @@ export default function StorageControllerObject(DataManager) {
         return projectArrayForStorage;
     };
 
-    function updateStorage() {
-        localStorage.setItem("projectArray", JSON.stringify(getProjectArrayForStorage()));
+    function updateStorage(projectArray) {
+        localStorage.setItem("projectArray", JSON.stringify(getProjectArrayForStorage(projectArray)));
     };
 
-    function updateDataManager() {
+    function updateDataManager(DataManager) {
         // This needs to update the DataManager with the recreated projectArray. Recreated Projects and Tasks with the strings in localStorage
         // JSON.parse() stringified objects like Date(), and maybe arrays?
         // createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None")
@@ -125,13 +125,13 @@ export default function StorageControllerObject(DataManager) {
         };
     };
 
-    const start = () => {
+    const start = (DataManager) => {
         if (storageAvailable("localStorage")) {
             // localStorage available. Check to see if there is a projectArray in localStorage
             if (localStorage.getItem("projectArray")) {
                 // We found a projectArray, update the DataManager projectArray
                 console.log("projectArray found");
-                updateDataManager();
+                updateDataManager(DataManager);
             } else {
                 // No projectArray found
                 return false;

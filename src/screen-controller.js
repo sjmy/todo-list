@@ -200,7 +200,7 @@ export default function ScreenControllerObject(DataManager) {
 
             e.preventDefault();
 
-            for (let p = 0; p < projectArray.length; p++) {
+            for (let p = 0; p < DataManager.getProjectArray().length; p++) {
                 if (projectArray[p].getProjectName() == projectName.value) {
                     projectObject = projectArray[p];
                 };
@@ -260,6 +260,7 @@ export default function ScreenControllerObject(DataManager) {
                             DataManager.deleteTask(projectTasks[n]);
                             clearTaskItemsDiv();
                             drawTasks(projectArray[p]);
+                            drawSidebar();
                             startTaskListeners();
                         };
                     };
@@ -378,6 +379,8 @@ export default function ScreenControllerObject(DataManager) {
     };
 
     const clearTaskItemsDiv = () => {
+        drawTaskItemsDiv();
+
         const taskItemsDiv = document.querySelector(".taskItemsDiv");
         taskItemsDiv.textContent = "";
     };

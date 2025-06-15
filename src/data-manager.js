@@ -1,5 +1,4 @@
 import ScreenControllerObject from "./screen-controller.js";
-import StorageControllerObject from "./storage-controller.js";
 import ProjectObject from "./project.js";
 import TaskObject from "./task.js";
 
@@ -23,7 +22,7 @@ import TaskObject from "./task.js";
 //                                         taskPriority: "high",
 //                                         taskNotes: "here are some thoughts on how to do stuff really well"}]}]
 
-export default function DataManagerObject() {
+export default function DataManagerObject(StorageController) {
     let projectArray = [];
 
     // Getter
@@ -47,16 +46,16 @@ export default function DataManagerObject() {
 
         // Check for existing project here? Or caught via form validation?
         projectArray.push(newProjectObject);
+        StorageController.updateStorage(getProjectArray());
     };
 
     const start = (DataManager) => {
         const ScreenController = ScreenControllerObject(DataManager);
-        const StorageController = StorageControllerObject(DataManager);
 
         // Talk to StorageController to get parsed localStorage JSON
         // If localStorage is empty or unavailable, create a default project and first task
         // Else, get the data from localStorage and update the DataManager
-        if (StorageController.start() == false) {
+        if (StorageController.start(DataManager) == false) {
             createProject("My Tasks");
             createTask("First task - implement project/task name changes!", projectArray[0]);
             console.log("default project and task added");
@@ -85,7 +84,7 @@ export default function DataManagerObject() {
         // createTask("Enjoy", projectTwo);
         // Test data end
         
-        StorageController.updateStorage();
+        StorageController.updateStorage(getProjectArray());
         ScreenController.drawProject(projectArray[0]);
         ScreenController.drawTasks(projectArray[0]);
         ScreenController.drawHeader();
@@ -96,28 +95,33 @@ export default function DataManagerObject() {
     // If project is not specified on task creation, task gets placed in the default project ("My Tasks")
     // "My Tasks" project is created during start()
     const addTaskToProject = (taskObject, projectObject) => {
-        for (let i = 0; i < projectArray.length; i++) {
-            const existingProjectID = projectArray[i].getProjectID();
+        for (let i = 0; i < getProjectArray().length; i++) {
+            const existingProjectID = getProjectArray()[i].getProjectID();
             if (existingProjectID == projectObject.getProjectID()) {
-                projectArray[i].getProjectTasks().push(taskObject);
+                getProjectArray()[i].getProjectTasks().push(taskObject);
             };
         };
+
+        StorageController.updateStorage(getProjectArray());
     };
 
     const deleteTask = (task) => {
         const taskID = task.getTaskID();
 
-        for (let p = 0; p < projectArray.length; p++) {
-            const projectTasks = projectArray[p].getProjectTasks();
+        for (let p = 0; p < getProjectArray().length; p++) {
+            const projectTasks = getProjectArray()[p].getProjectTasks();
 
             for (let t = 0; t < projectTasks.length; t++) {
                 const existingTaskID = projectTasks[t].getTaskID();
 
                 if (existingTaskID == taskID) {
                     projectTasks.splice(t, 1);
+                    break;
                 };
             };
         };
+
+        StorageController.updateStorage(getProjectArray());
     };
 
     // Move task to a different project
