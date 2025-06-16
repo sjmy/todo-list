@@ -58,7 +58,7 @@ export default function DataManagerObject(StorageController) {
         // Else, get the data from localStorage and update the DataManager
         if (StorageController.start(DataManager) == false) {
             createProject("My Tasks");
-            createTask("First task - implement project/task name changes!", projectArray[0]);
+            createTask("First task", projectArray[0]);
 
             // Used for debugging
             // console.log("default project and task added");
@@ -134,6 +134,11 @@ export default function DataManagerObject(StorageController) {
         StorageController.updateStorage(getProjectArray());
     };
 
+    const changeProjectName = (project, name) => {
+        project.setProjectName(name);
+        StorageController.updateStorage(getProjectArray());
+    };
+
     const changeProjectDescription = (project, description) => {
         project.setProjectDescription(description);
         StorageController.updateStorage(getProjectArray());
@@ -146,6 +151,11 @@ export default function DataManagerObject(StorageController) {
 
     const changeProjectPriority = (project, priority) => {
         project.setProjectPriority(priority);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeTaskName = (task, name) => {
+        task.setTaskName(name);
         StorageController.updateStorage(getProjectArray());
     };
 
@@ -176,9 +186,11 @@ export default function DataManagerObject(StorageController) {
             addTaskToProject,
             moveTask,
             deleteTask,
+            changeProjectName,
             changeProjectDescription,
             changeProjectDueDate,
             changeProjectPriority,
+            changeTaskName,
             changeTaskDescription,
             changeTaskDueDate,
             changeTaskPriority,

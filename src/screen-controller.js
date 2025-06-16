@@ -1,4 +1,5 @@
 import moreImage from "./img/more.svg";
+import editImage from "./img/edit.svg";
 import deleteImage from "./img/delete.svg";
 import plusImage from "./img/add_circle.jpg";
 import { format } from "date-fns";
@@ -229,8 +230,22 @@ export default function ScreenControllerObject(DataManager) {
             const ID = e.target.classList[1];
 
             // Used in development to display click target classes
-            // console.log(targetClass);
-            // console.log(ID);
+            console.log(targetClass);
+            console.log(ID);
+
+            if (targetClass == "editProjectName") {
+                dialogChangeProjectName(ID);
+
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            };
+
+            if (targetClass == "editTaskName") {
+                dialogChangeTaskName(ID);
+
+                const dialog = document.querySelector("dialog");
+                dialog.showModal();
+            };
 
             // If three dots icon is clicked, expand task details
             if (targetClass == "more") {
@@ -243,6 +258,74 @@ export default function ScreenControllerObject(DataManager) {
 
                 const dialog = document.querySelector("dialog");
                 dialog.showModal();
+            };
+
+            if (targetClass == "okChangeProjectName") {
+                const form = document.querySelector("form");
+                const dialog = document.querySelector("dialog");
+                const newProjectName = document.querySelector("#changeProjectName");
+
+                e.preventDefault();
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    if (projectArray[p].getProjectID() == ID) {
+                        DataManager.changeProjectName(projectArray[p], newProjectName.value);
+                        drawProject(projectArray[p]);
+                        drawTasks(projectArray[p]);
+                        drawSidebar();
+                        startTaskListeners();
+                    };
+                };
+
+                dialog.close();
+                dialog.remove();
+                form.remove();
+            };
+
+            if (targetClass == "cancelChangeProjectName") {
+                const form = document.querySelector("form");
+                const dialog = document.querySelector("dialog");
+
+                e.preventDefault();
+                dialog.close();
+                dialog.remove();
+                form.remove();
+            };
+
+            if (targetClass == "okChangeTaskName") {
+                const form = document.querySelector("form");
+                const dialog = document.querySelector("dialog");
+                const newTaskName = document.querySelector("#changeTaskName");
+
+                e.preventDefault();
+
+                for (let p = 0; p < projectArray.length; p++) {
+                    const projectTasks = projectArray[p].getProjectTasks();
+
+                    for (let n = 0; n < projectTasks.length; n++) {
+                        if (projectTasks[n].getTaskID() == ID) {
+                            DataManager.changeTaskName(projectTasks[n], newTaskName.value);
+                            clearTaskItemsDiv();
+                            drawTasks(projectArray[p]);
+                            drawSidebar();
+                            startTaskListeners();
+                        };
+                    };
+                };
+
+                dialog.close();
+                dialog.remove();
+                form.remove();
+            };
+
+            if (targetClass == "cancelChangeTaskName") {
+                const form = document.querySelector("form");
+                const dialog = document.querySelector("dialog");
+
+                e.preventDefault();
+                dialog.close();
+                dialog.remove();
+                form.remove();
             };
 
             // If yes is clicked in the delete dialog, delete the task, update the screen,
@@ -477,6 +560,7 @@ export default function ScreenControllerObject(DataManager) {
         clearMainContent();
         drawProjectNameDiv();
         drawProjectName(project);
+        drawEditProjectNameDiv(project);
         drawProjectTasksCompleted(project);
         drawProjectItemsDiv();
         drawProjectDueDateDiv();
@@ -499,6 +583,7 @@ export default function ScreenControllerObject(DataManager) {
     const drawTask = (task) => {
         drawTaskItemsDiv();
         drawTaskItem(task);
+        drawEditTaskNameDiv(task);
         drawMoreDiv(task);
         drawTaskDetailsDiv(task);
         drawTaskDescription(task);
@@ -531,6 +616,20 @@ export default function ScreenControllerObject(DataManager) {
         projectName.classList.add("currentProjectName");
         projectName.classList.add(`${project.getProjectID()}`)
         projectNameDiv.appendChild(projectName);
+    };
+
+    const drawEditProjectNameDiv = (project) => {
+        const projectNameDiv = document.querySelector(".projectNameDiv");
+        const editDiv = document.createElement("div");
+        const edit = document.createElement("img");
+
+        edit.src = editImage;
+        edit.alt = "Edit project name";
+        edit.classList.add("editProjectName");
+        edit.classList.add(`${project.getProjectID()}`);
+
+        editDiv.appendChild(edit);
+        projectNameDiv.appendChild(editDiv);
     };
 
     const drawProjectTasksCompleted = (project) => {
@@ -679,6 +778,21 @@ export default function ScreenControllerObject(DataManager) {
         taskDiv.appendChild(checkbox);
         taskDiv.appendChild(taskLabel);
         taskItemsDiv.appendChild(taskDiv);
+    };
+
+    const drawEditTaskNameDiv = (task) => {
+        const taskItems = document.querySelectorAll(".taskItem");
+        const taskItem = taskItems[taskItems.length - 1];
+        const editDiv = document.createElement("div");
+        const edit = document.createElement("img");
+
+        edit.src = editImage;
+        edit.alt = "Edit task name";
+        edit.classList.add("editTaskName");
+        edit.classList.add(`${task.getTaskID()}`);
+
+        editDiv.appendChild(edit);
+        taskItem.appendChild(editDiv);
     };
 
     const drawMoreDiv = (task) => {
@@ -1085,6 +1199,86 @@ export default function ScreenControllerObject(DataManager) {
         buttons.appendChild(yesButton);
         buttons.appendChild(noButton);
         dialog.appendChild(deleteTaskText);
+        dialog.appendChild(buttons);
+        form.appendChild(dialog);
+        body.appendChild(form);
+    };
+
+    const dialogChangeProjectName = (taskID) => {
+        const body = document.querySelector("body");
+        const form = document.createElement("form");
+        const dialog = document.createElement("dialog");
+        const changeProjectNameText = document.createElement("h5");
+        const projectNameDiv = document.createElement("div");
+        const projectNameLabel = document.createElement("label");
+        const projectNameInput = document.createElement("input");
+        const buttons = document.createElement("div");
+        const okButton = document.createElement("button");
+        const cancelButton = document.createElement("button");
+
+        dialog.classList.add("changeProjectName");
+        projectNameDiv.classList.add("changeProjectNameDiv");
+        projectNameLabel.textContent = "Project Name:";
+        projectNameLabel.htmlFor = "changeProjectName";
+        projectNameInput.type = "text";
+        projectNameInput.id = "changeProjectName";
+        projectNameInput.name = "changeProjectName";
+        buttons.classList.add("okCancelButtons");
+        okButton.classList.add("okChangeProjectName");
+        okButton.classList.add(`${taskID}`);
+        cancelButton.classList.add("cancelChangeProjectName");
+        cancelButton.classList.add(`${taskID}`);
+        changeProjectNameText.textContent = "Change Project Name";
+        changeProjectNameText.classList.add("changeProjectNameText");
+        okButton.textContent = "OK";
+        cancelButton.textContent = "Cancel";
+
+        projectNameDiv.appendChild(projectNameLabel);
+        projectNameDiv.appendChild(projectNameInput);
+        buttons.appendChild(okButton);
+        buttons.appendChild(cancelButton);
+        dialog.appendChild(changeProjectNameText);
+        dialog.appendChild(projectNameDiv);
+        dialog.appendChild(buttons);
+        form.appendChild(dialog);
+        body.appendChild(form);
+    };
+
+    const dialogChangeTaskName = (taskID) => {
+        const body = document.querySelector("body");
+        const form = document.createElement("form");
+        const dialog = document.createElement("dialog");
+        const changeTaskNameText = document.createElement("h5");
+        const taskNameDiv = document.createElement("div");
+        const taskNameLabel = document.createElement("label");
+        const taskNameInput = document.createElement("input");
+        const buttons = document.createElement("div");
+        const okButton = document.createElement("button");
+        const cancelButton = document.createElement("button");
+
+        dialog.classList.add("changeTaskName");
+        taskNameDiv.classList.add("changeTaskNameDiv");
+        taskNameLabel.textContent = "Task Name:";
+        taskNameLabel.htmlFor = "changeTaskName";
+        taskNameInput.type = "text";
+        taskNameInput.id = "changeTaskName";
+        taskNameInput.name = "changeTaskName";
+        buttons.classList.add("okCancelButtons");
+        okButton.classList.add("okChangeTaskName");
+        okButton.classList.add(`${taskID}`);
+        cancelButton.classList.add("cancelChangeTaskName");
+        cancelButton.classList.add(`${taskID}`);
+        changeTaskNameText.textContent = "Change Task Name";
+        changeTaskNameText.classList.add("changeTaskNameText");
+        okButton.textContent = "OK";
+        cancelButton.textContent = "Cancel";
+
+        taskNameDiv.appendChild(taskNameLabel);
+        taskNameDiv.appendChild(taskNameInput);
+        buttons.appendChild(okButton);
+        buttons.appendChild(cancelButton);
+        dialog.appendChild(changeTaskNameText);
+        dialog.appendChild(taskNameDiv);
         dialog.appendChild(buttons);
         form.appendChild(dialog);
         body.appendChild(form);

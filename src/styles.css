@@ -123,11 +123,12 @@ body {
 
 .projectNameDiv {
     display: flex;
+    align-items: center;
 }
 
 .projectTasksCompleted {
     align-self: center;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-left: 15px;
     font-size: small;
     color: rgb(164, 164, 164);
@@ -261,6 +262,21 @@ label {
 .taskItem {
     display: flex;
     width: 75%;
+}
+
+.editProjectName {
+    display: flex;
+    scale: 70%;
+    opacity: 70%;
+    cursor: pointer;
+    padding-left: 15px;
+}
+
+.editTaskName {
+    display: flex;
+    scale: 70%;
+    opacity: 70%;
+    cursor: pointer;
 }
 
 .more {
@@ -414,6 +430,50 @@ form {
 }
 
 
+/* Change Project/Task Name dialogs */
+
+.changeProjectNameText,
+.changeTaskNameText {
+    margin: 0;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.changeProjectName,
+.changeTaskName {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    margin: auto;
+}
+
+.changeProjectNameDiv,
+.changeTaskNameDiv {
+    font-size: small;
+}
+
+.changeProjectNameDiv > input,
+.changeTaskNameDiv > input {
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+}
+
+.okCancelButtons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.okChangeProjectName,
+.cancelChangeProjectName,
+.okChangeTaskName,
+.cancelChangeTaskName {
+    border: solid 1px lightgrey;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
 /* Delete Task dialog */
 
 .delete {
@@ -432,6 +492,7 @@ form {
 .areYouSure {
     border: solid 1px lightgrey;
     border-radius: 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
 }
 
 .yesNoButtons {
@@ -443,4 +504,5 @@ form {
 .noButton {
     border: solid 1px lightgrey;
     cursor: pointer;
+    border-radius: 5px;
 }

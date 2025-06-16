@@ -48,6 +48,10 @@ export default function TaskObject(name, description, dueDate, priority, complet
     const getRawDueDate = () => taskDueDate;
 
     // Setters
+    const setTaskName = (newTaskName) => {
+        taskName = newTaskName;
+    };
+
     const setTaskDescription = (newTaskDescription) => {
         taskDescription = newTaskDescription;
     };
@@ -71,6 +75,7 @@ export default function TaskObject(name, description, dueDate, priority, complet
             getRawDueDate,
             getTaskPriority,
             getIsComplete,
+            setTaskName,
             setTaskDescription,
             setTaskDueDate,
             setTaskPriority,
