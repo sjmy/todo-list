@@ -52,13 +52,15 @@ export default function StorageControllerObject() {
             const taskDescription = projectTasks[t].getTaskDescription();
             const taskDueDate = projectTasks[t].getRawDueDate();
             const taskPriority = projectTasks[t].getTaskPriority();
+            const taskIsComplete = projectTasks[t].getIsComplete();
 
             taskList.push({
                 taskID: taskID,
                 taskName: taskName,
                 taskDescription: taskDescription,
                 taskDueDate: taskDueDate,
-                taskPriority: taskPriority});
+                taskPriority: taskPriority,
+                taskIsComplete: taskIsComplete});
         };
 
         return taskList;
@@ -103,7 +105,6 @@ export default function StorageControllerObject() {
         const localStorageProjectArray = JSON.parse(localStorage.getItem("projectArray"));
 
         for (let p = 0; p < localStorageProjectArray.length; p++) {
-            const projectID = localStorageProjectArray[p].projectID;
             const projectName = localStorageProjectArray[p].projectName;
             const projectDescription = localStorageProjectArray[p].projectDescription;
             const projectDueDate = localStorageProjectArray[p].projectDueDate;
@@ -114,13 +115,13 @@ export default function StorageControllerObject() {
 
             for (let t = 0; t < projectTasks.length; t++) {
                 const projectArray = DataManager.getProjectArray();
-                const taskID = projectTasks[t].taskID;
                 const taskName = projectTasks[t].taskName;
                 const taskDescription = projectTasks[t].taskDescription;
                 const taskDueDate = projectTasks[t].taskDueDate;
                 const taskPriority = projectTasks[t].taskPriority;
+                const taskIsComplete = projectTasks[t].taskIsComplete;
 
-                DataManager.createTask(taskName, projectArray[p], taskDescription, taskDueDate, taskPriority);
+                DataManager.createTask(taskName, projectArray[p], taskDescription, taskDueDate, taskPriority, taskIsComplete);
             };
         };
     };
@@ -130,7 +131,7 @@ export default function StorageControllerObject() {
             // localStorage available. Check to see if there is a projectArray in localStorage
             if (localStorage.getItem("projectArray")) {
                 // We found a projectArray, update the DataManager projectArray
-                console.log("projectArray found");
+                // console.log("projectArray found");
                 updateDataManager(DataManager);
             } else {
                 // No projectArray found

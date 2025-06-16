@@ -35,8 +35,8 @@ export default function DataManagerObject(StorageController) {
 
     // Create a task. taskName is the only required field.
     // A project object must always be passed as a parameter
-    const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None") => {
-        const newTaskObject = TaskObject(taskName, taskDescription, taskDueDate, taskPriority);
+    const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None", taskIsComplete = false) => {
+        const newTaskObject = TaskObject(taskName, taskDescription, taskDueDate, taskPriority, taskIsComplete);
         addTaskToProject(newTaskObject, projectObject);
         StorageController.updateStorage(getProjectArray());
     };
@@ -59,7 +59,9 @@ export default function DataManagerObject(StorageController) {
         if (StorageController.start(DataManager) == false) {
             createProject("My Tasks");
             createTask("First task - implement project/task name changes!", projectArray[0]);
-            console.log("default project and task added");
+
+            // Used for debugging
+            // console.log("default project and task added");
         };
 
         // Test data start
@@ -106,6 +108,14 @@ export default function DataManagerObject(StorageController) {
         StorageController.updateStorage(getProjectArray());
     };
 
+    // Move task to a different project
+    const moveTask = (task, newProject) => {
+        // task is task object to be moved
+        // newProject is project object the task is to be moved into
+        deleteTask(task);
+        addTaskToProject(task, newProject);
+    };    
+
     const deleteTask = (task) => {
         const taskID = task.getTaskID();
 
@@ -124,12 +134,39 @@ export default function DataManagerObject(StorageController) {
         StorageController.updateStorage(getProjectArray());
     };
 
-    // Move task to a different project
-    const moveTask = (task, newProject) => {
-        // task is task object to be moved
-        // newProject is project object the task is to be moved into
-        deleteTask(task);
-        addTaskToProject(task, newProject);
+    const changeProjectDescription = (project, description) => {
+        project.setProjectDescription(description);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeProjectDueDate = (project, dueDate) => {
+        project.setProjectDueDate(dueDate);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeProjectPriority = (project, priority) => {
+        project.setProjectPriority(priority);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeTaskDescription = (task, description) => {
+        task.setTaskDescription(description);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeTaskDueDate = (task, dueDate) => {
+        task.setTaskDueDate(dueDate);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const changeTaskPriority = (task, priority) => {
+        task.setTaskPriority(priority);
+        StorageController.updateStorage(getProjectArray());
+    };
+
+    const toggleIsComplete = (task) => {
+        task.toggleIsComplete();
+        StorageController.updateStorage(getProjectArray());
     };
 
     return {getProjectArray,
@@ -139,6 +176,13 @@ export default function DataManagerObject(StorageController) {
             addTaskToProject,
             moveTask,
             deleteTask,
+            changeProjectDescription,
+            changeProjectDueDate,
+            changeProjectPriority,
+            changeTaskDescription,
+            changeTaskDueDate,
+            changeTaskPriority,
+            toggleIsComplete,
             start
     };
 };

@@ -20,13 +20,13 @@ import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 //             - toggle
 //             - strikethrough when toggled
 
-export default function TaskObject(name, description, dueDate, priority) {
+export default function TaskObject(name, description, dueDate, priority, complete) {
     const taskID = createRandomString(10);
     let taskName = name;
     let taskDescription = description;
     let taskDueDate = dueDate;
     let taskPriority = priority;
-    let isComplete = false;
+    let isComplete = complete;
 
     // Getters
     const getTaskID = () => taskID;

@@ -46,7 +46,7 @@ export default function ScreenControllerObject(DataManager) {
 
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
-                    projectArray[p].setProjectDescription(projectDescriptionValue.dataset.replicatedValue);
+                    DataManager.changeProjectDescription(projectArray[p], projectDescriptionValue.dataset.replicatedValue);
                 };
             };
         });
@@ -61,7 +61,7 @@ export default function ScreenControllerObject(DataManager) {
 
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
-                    projectArray[p].setProjectDueDate(new Date(projectDueDatePicker.value));
+                    DataManager.changeProjectDueDate(projectArray[p], new Date(projectDueDatePicker.value));
                     clearProjectDueDateDiv();
                     drawProjectDueDateDiv();
                     drawProjectDueDate(projectArray[p]);
@@ -80,7 +80,7 @@ export default function ScreenControllerObject(DataManager) {
 
             for (let p = 0; p < projectArray.length; p++) {
                 if (projectArray[p].getProjectID() == projectID) {
-                    projectArray[p].setProjectPriority(projectPriorityDropdown.value);
+                    DataManager.changeProjectPriority(projectArray[p], projectPriorityDropdown.value);
                     clearProjectPriorityDiv();
                     drawProjectPriorityDiv();
                     drawProjectPriority(projectArray[p]);
@@ -104,7 +104,7 @@ export default function ScreenControllerObject(DataManager) {
 
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
-                            projectTasks[n].setTaskDescription(taskDescriptionValues[n].dataset.replicatedValue);
+                            DataManager.changeTaskDescription(projectTasks[n], taskDescriptionValues[n].dataset.replicatedValue);
                         };
                     };
                 };
@@ -125,7 +125,7 @@ export default function ScreenControllerObject(DataManager) {
 
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
-                            projectTasks[n].setTaskDueDate(new Date(taskDueDatePickers[i].value));
+                            DataManager.changeTaskDueDate(projectTasks[n], new Date(taskDueDatePickers[i].value));
                             clearTaskDueDateDiv(projectTasks[n]);
                             drawTaskDueDate(projectTasks[n]);
                             changeTaskDueDate();
@@ -149,7 +149,7 @@ export default function ScreenControllerObject(DataManager) {
 
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == taskID) {
-                            projectTasks[n].setTaskPriority(taskPriorityDropdowns[d].value);
+                            DataManager.changeTaskPriority(projectTasks[n], taskPriorityDropdowns[d].value)
                             clearTaskPriorityDiv(projectTasks[n]);
                             drawTaskPriority(projectTasks[n]);
                             changeTaskPriority();
@@ -274,6 +274,7 @@ export default function ScreenControllerObject(DataManager) {
 
             // If no is clicked in the delete dialog, close the dialog and remove it
             if (targetClass == "noButton") {
+                const form = document.querySelector("form");
                 const dialog = document.querySelector("dialog");
 
                 e.preventDefault();
@@ -289,7 +290,7 @@ export default function ScreenControllerObject(DataManager) {
 
                     for (let n = 0; n < projectTasks.length; n++) {
                         if (projectTasks[n].getTaskID() == ID) {
-                            projectTasks[n].toggleIsComplete();
+                            DataManager.toggleIsComplete(projectTasks[n]);
                             clearProjectNameDiv();
                             drawProjectNameDiv();
                             drawProjectName(projectArray[p]);
