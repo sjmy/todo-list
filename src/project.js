@@ -18,60 +18,67 @@ import { format, isToday, isYesterday, isTomorrow } from "date-fns";
 //         - projectPriority
 //             - getter/setter
 
-export default function ProjectObject(name, description, dueDate, priority, tasks) {
-    const projectID = createRandomString(10);
-    let projectName = name;
-    let projectDescription = description;
-    let projectDueDate = dueDate;
-    let projectPriority = priority;
-    let projectTasks = tasks;
+export default function ProjectObject(
+  name,
+  description,
+  dueDate,
+  priority,
+  tasks,
+) {
+  const projectID = createRandomString(10);
+  let projectName = name;
+  let projectDescription = description;
+  let projectDueDate = dueDate;
+  let projectPriority = priority;
+  let projectTasks = tasks;
 
-    // Getters
-    const getProjectID = () => projectID;
-    const getProjectName = () => projectName;
-    const getProjectDescription = () => projectDescription;
-    const getProjectPriority = () => projectPriority;
-    const getProjectTasks = () => projectTasks;
-    const getProjectDueDate = () => {
-        if (isToday(projectDueDate)) {
-            return `Today, ${format(projectDueDate, "p")}`;
-        } else if (isYesterday(projectDueDate)) {
-            return `Yesterday, ${format(projectDueDate, "p")}`;
-        } else if (isTomorrow(projectDueDate)) {
-            return `Tomorrow, ${format(projectDueDate, "p")}`;
-        } else {
-            return format(projectDueDate, "PPPp");
-        };
-    };
-    const getRawDueDate = () => projectDueDate;
+  // Getters
+  const getProjectID = () => projectID;
+  const getProjectName = () => projectName;
+  const getProjectDescription = () => projectDescription;
+  const getProjectPriority = () => projectPriority;
+  const getProjectTasks = () => projectTasks;
+  const getProjectDueDate = () => {
+    if (isToday(projectDueDate)) {
+      return `Today, ${format(projectDueDate, "p")}`;
+    } else if (isYesterday(projectDueDate)) {
+      return `Yesterday, ${format(projectDueDate, "p")}`;
+    } else if (isTomorrow(projectDueDate)) {
+      return `Tomorrow, ${format(projectDueDate, "p")}`;
+    } else {
+      return format(projectDueDate, "PPPp");
+    }
+  };
+  const getRawDueDate = () => projectDueDate;
 
-    // Setters
-    const setProjectName = (newProjectName) => {
-        projectName = newProjectName;
-    };
+  // Setters
+  const setProjectName = (newProjectName) => {
+    projectName = newProjectName;
+  };
 
-    const setProjectDescription = (newProjectDescription) => {
-        projectDescription = newProjectDescription;
-    };
+  const setProjectDescription = (newProjectDescription) => {
+    projectDescription = newProjectDescription;
+  };
 
-    const setProjectDueDate = (newProjectDueDate) => {
-        projectDueDate = newProjectDueDate;
-    };
+  const setProjectDueDate = (newProjectDueDate) => {
+    projectDueDate = newProjectDueDate;
+  };
 
-    const setProjectPriority = (newProjectPriority) => {
-        projectPriority = newProjectPriority;
-    };
+  const setProjectPriority = (newProjectPriority) => {
+    projectPriority = newProjectPriority;
+  };
 
-    return {getProjectID,
-            getProjectName,
-            getProjectDescription,
-            getProjectDueDate,
-            getRawDueDate,
-            getProjectPriority,
-            getProjectTasks,
-            setProjectName,
-            setProjectDescription,
-            setProjectDueDate,
-            setProjectPriority
-    };
-};
+  return {
+    getProjectID,
+    getProjectName,
+    getProjectDescription,
+    getProjectDueDate,
+    getRawDueDate,
+    getProjectPriority,
+    getProjectTasks,
+    setProjectName,
+    setProjectDescription,
+    setProjectDueDate,
+    setProjectPriority,
+  };
+}
