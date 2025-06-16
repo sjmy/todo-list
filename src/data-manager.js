@@ -38,6 +38,7 @@ export default function DataManagerObject(StorageController) {
     const createTask = (taskName, projectObject, taskDescription = "", taskDueDate = Date(), taskPriority = "None") => {
         const newTaskObject = TaskObject(taskName, taskDescription, taskDueDate, taskPriority);
         addTaskToProject(newTaskObject, projectObject);
+        StorageController.updateStorage(getProjectArray());
     };
 
     // Create a project. projectName is the only required field.
@@ -116,7 +117,6 @@ export default function DataManagerObject(StorageController) {
 
                 if (existingTaskID == taskID) {
                     projectTasks.splice(t, 1);
-                    break;
                 };
             };
         };

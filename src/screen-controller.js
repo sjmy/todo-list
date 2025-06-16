@@ -248,6 +248,7 @@ export default function ScreenControllerObject(DataManager) {
             // If yes is clicked in the delete dialog, delete the task, update the screen,
             // start the task listeners, close the dialog and remove it
             if (targetClass == "yesButton") {
+                const form = document.querySelector("form");
                 const dialog = document.querySelector("dialog");
 
                 e.preventDefault();
@@ -268,6 +269,7 @@ export default function ScreenControllerObject(DataManager) {
 
                 dialog.close();
                 dialog.remove();
+                form.remove();
             };
 
             // If no is clicked in the delete dialog, close the dialog and remove it
@@ -277,6 +279,7 @@ export default function ScreenControllerObject(DataManager) {
                 e.preventDefault();
                 dialog.close();
                 dialog.remove();
+                form.remove();
             };
 
             // If a checkbox is clicked, set the task as complete and update the screen
