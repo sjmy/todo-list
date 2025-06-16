@@ -230,8 +230,8 @@ export default function ScreenControllerObject(DataManager) {
             const ID = e.target.classList[1];
 
             // Used in development to display click target classes
-            console.log(targetClass);
-            console.log(ID);
+            // console.log(targetClass);
+            // console.log(ID);
 
             if (targetClass == "editProjectName") {
                 dialogChangeProjectName(ID);
