@@ -417,6 +417,7 @@ export default function ScreenControllerObject(DataManager) {
               clearProjectNameDiv();
               drawProjectNameDiv();
               drawProjectName(projectArray[p]);
+              drawEditProjectNameDiv(projectArray[p]);
               drawProjectTasksCompleted(projectArray[p]);
             }
           }
