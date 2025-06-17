@@ -1,508 +1,505 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
 }
 
 .layout {
-    display: grid;
-    grid-template-columns: min-content 3fr;
-    grid-template-rows: 1fr 9fr;
-    height: 100vh;
+  display: grid;
+  grid-template-columns: min-content 3fr;
+  grid-template-rows: 1fr 9fr;
+  height: 100vh;
 }
 
 .sidebar {
-    display: grid;
-    grid-template-rows: 1fr 9fr;
-    grid-area: 1 / 1 / 11 / 2;
-    box-shadow: 1px 1px 4px 1px lightgrey;
-    padding-left: 20px;
+  display: grid;
+  grid-template-rows: 1fr 9fr;
+  grid-area: 1 / 1 / 11 / 2;
+  box-shadow: 1px 1px 4px 1px lightgrey;
+  padding-left: 20px;
 }
 
 .sidebarProjectNamesDiv {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 .sidebarProjectName,
 .projectTasksAmount {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .sidebarProjectName:hover {
-    color: rgb(95, 95, 95);
-    cursor: pointer;
+  color: rgb(95, 95, 95);
+  cursor: pointer;
 }
 
 .projectTasksAmount {
-    align-self: center;
-    padding-left: 10px;
-    font-size: small;
-    color: rgb(164, 164, 164);
+  align-self: center;
+  padding-left: 10px;
+  font-size: small;
+  color: rgb(164, 164, 164);
 }
 
 .title {
-    grid-area: 1 / 1 / 2 / 2;
-    margin-top: 20px;
-    margin-right: 20px;
+  grid-area: 1 / 1 / 2 / 2;
+  margin-top: 20px;
+  margin-right: 20px;
 }
 
 .changeProjectName {
-    margin-bottom: 5px;
-    word-wrap: none;
+  margin-bottom: 5px;
+  word-wrap: none;
 }
 
 .allProjectsLabel {
-    margin: 0;
-    margin-bottom: 5px;
+  margin: 0;
+  margin-bottom: 5px;
 }
 
 .header {
-    grid-area: 1 / 4 / 2 / 5;
+  grid-area: 1 / 4 / 2 / 5;
 }
 
 .addButtonDiv {
-    margin: 20px;
-    opacity: 70%;
+  margin: 20px;
+  opacity: 70%;
 }
 
 .addItem {
-    border: none;
-    cursor: pointer;
+  border: none;
+  cursor: pointer;
 }
 
 .addItem:hover,
 .addItem:focus {
-    opacity: 65%;
+  opacity: 65%;
 }
 
 .dropdown {
-    position: relative;
-    /* display: inline-block; */
-    float: right;
+  position: relative;
+  /* display: inline-block; */
+  float: right;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: max-content;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    top: 0;
-    right: 0;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: max-content;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  top: 0;
+  right: 0;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
 
 .addProject,
 .addTask {
-    color: black;
-    padding: 10px 12px;
-    text-decoration: none;
-    display: block;
+  color: black;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: block;
 }
 
 .addProject:hover,
 .addTask:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 .show {
-    display:block;
+  display: block;
 }
 
 .main {
-    grid-area: 1 / 2 / 11 / 5;
-    margin-left: 20px;
+  grid-area: 1 / 2 / 11 / 5;
+  margin-left: 20px;
 }
 
 .sidebarProjectNameDiv {
-    display: flex;
+  display: flex;
 }
 
 .projectNameDiv {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .projectTasksCompleted {
-    align-self: center;
-    padding-top: 10px;
-    padding-left: 15px;
-    font-size: small;
-    color: rgb(164, 164, 164);
+  align-self: center;
+  padding-top: 10px;
+  padding-left: 15px;
+  font-size: small;
+  color: rgb(164, 164, 164);
 }
 
 textarea {
-    resize: none;
+  resize: none;
 }
 
 .projectDescription,
 .taskDescription {
-    display: grid;
+  display: grid;
 }
 
 .projectDescription::after,
 .taskDescription::after {
-    content: attr(data-replicated-value) " ";
-    white-space: pre-wrap;
-    visibility: hidden;
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  visibility: hidden;
 }
 
 .projectDescription > textarea,
 .taskDescription > textarea {
-    resize: none;
-    overflow: hidden;
+  resize: none;
+  overflow: hidden;
 }
 
 .projectDescription > textarea,
 .projectDescription::after {
-    font: inherit;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    color: grey;
-    resize: none;
-    width: 90%;
-    grid-area: 1 / 1 / 2 / 2;
-    margin-bottom: 10px;
+  font: inherit;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  color: grey;
+  resize: none;
+  width: 90%;
+  grid-area: 1 / 1 / 2 / 2;
+  margin-bottom: 10px;
 }
 
 .taskDescription > textarea,
 .taskDescription::after {
-    font: inherit;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    color: grey;
-    resize: none;
-    width: 70%;
-    grid-area: 1 / 1 / 2 / 2;
-    margin-left: 25px;
-    margin-bottom: 5px;
+  font: inherit;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  color: grey;
+  resize: none;
+  width: 70%;
+  grid-area: 1 / 1 / 2 / 2;
+  margin-left: 25px;
+  margin-bottom: 5px;
 }
 
 textarea:hover {
-    border: solid 1px rgb(180, 180, 180);
+  border: solid 1px rgb(180, 180, 180);
 }
 
 .projectItemsDiv {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    color: rgb(164, 164, 164);
-    font-size: small;
-    padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  color: rgb(164, 164, 164);
+  font-size: small;
+  padding-bottom: 10px;
 }
 
 .taskItemDetails {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    color: rgb(164, 164, 164);
-    font-size: small;
-    padding-bottom: 10px;
-    margin-left: 30px;
-    width: 70%;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  color: rgb(164, 164, 164);
+  font-size: small;
+  padding-bottom: 10px;
+  margin-left: 30px;
+  width: 70%;
 }
 
 .projectDueDateDiv > input[type="checkbox"],
 .taskDueDateDiv > input[type="checkbox"] {
-    margin-right: 10px;
-    cursor: pointer;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
 input:checked + label {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 input[type="datetime-local"] {
-    font: inherit;
-    font-size: small;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    color: rgb(164, 164, 164);
+  font: inherit;
+  font-size: small;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  color: rgb(164, 164, 164);
 }
-
 
 /* Only show the calendar icon in the date pickers */
 
 .projectDueDateDiv,
 .taskDueDateDiv {
-    display: flex;
+  display: flex;
 }
 
 .projectDueDateDiv > input[type="datetime-local"]::-webkit-inner-spin-button,
 .taskDueDateDiv > input[type="datetime-local"]::-webkit-inner-spin-button,
-.projectDueDateDiv > input[type="datetime-local"]::-webkit-calendar-picker-indicator,
-.taskDueDateDiv > input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    /* display: none;
+.projectDueDateDiv
+  > input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.taskDueDateDiv
+  > input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  /* display: none;
     -webkit-appearance: none; */
-    margin:0;
-    cursor: pointer;
+  margin: 0;
+  cursor: pointer;
 }
 
 .projectDueDateDiv > input[type="datetime-local"]::-webkit-datetime-edit,
 .taskDueDateDiv > input[type="datetime-local"]::-webkit-datetime-edit {
-    display:none;
+  display: none;
 }
 
 label {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .taskCheckbox {
-    cursor: pointer;
-    margin-left: 5px;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
 .taskCheckbox:hover {
-    color: rgb(95, 95, 95);
+  color: rgb(95, 95, 95);
 }
 
 .taskItem {
-    display: flex;
-    width: 75%;
+  display: flex;
+  width: 75%;
 }
 
 .editProjectName {
-    display: flex;
-    scale: 70%;
-    opacity: 70%;
-    cursor: pointer;
-    padding-left: 15px;
+  display: flex;
+  scale: 70%;
+  opacity: 70%;
+  cursor: pointer;
+  padding-left: 15px;
 }
 
 .editTaskName {
-    display: flex;
-    scale: 70%;
-    opacity: 70%;
-    cursor: pointer;
+  display: flex;
+  scale: 70%;
+  opacity: 70%;
+  cursor: pointer;
 }
 
 .more {
-    display: flex;
-    opacity: 70%;
-    cursor: pointer;
+  display: flex;
+  opacity: 70%;
+  cursor: pointer;
 }
 
 .taskDetailsDiv {
-    display: none;
-    white-space: nowrap;
+  display: none;
+  white-space: nowrap;
 }
 
 select {
-    font: inherit;
-    font-size: small;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    color: rgb(164, 164, 164);
-    cursor: pointer;
+  font: inherit;
+  font-size: small;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  color: rgb(164, 164, 164);
+  cursor: pointer;
 }
-
 
 /* Add Project dialog */
 
 .dialogAddProject {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    width: 40%;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  width: 40%;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .addProjectHeader {
-    margin: 0;
-    margin-bottom: 10px;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 .addProjectNameDiv,
 .addProjectDescriptionDiv {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    text-align: start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: start;
 }
 
 .addProjectItemsDiv {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .addProjectDueDateDiv,
 .addProjectPriorityDiv {
-    display: flex;
-    margin-bottom: 10px;
+  display: flex;
+  margin-bottom: 10px;
 }
 
 #addProjectName {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
 
 #addProjectName::placeholder {
-    font-style: italic;
+  font-style: italic;
 }
 
 #addProjectDescription {
-    font: inherit;
-    font-size: small;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    height: 70px;
+  font: inherit;
+  font-size: small;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  height: 70px;
 }
 
 .buttonsDiv {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
 }
 
 .addProjectAddButton,
 .addProjectCancelButton {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
-
 
 /* Add Task dialog */
 
 .dialogAddTask {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    width: 40%;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  width: 40%;
 }
 
 .addTaskHeaderDiv {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .addTaskHeader {
-    margin: 0;
-    margin-bottom: 10px;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 .addTaskNameDiv,
 .addTaskDescriptionDiv {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    text-align: start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: start;
 }
 
 .addTaskItemsDiv {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .addTaskDueDateDiv,
 .addTaskPriorityDiv {
-    display: flex;
-    margin-bottom: 10px;
+  display: flex;
+  margin-bottom: 10px;
 }
 
 #addTaskName {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
 
 #addTaskName::placeholder {
-    font-style: italic;
+  font-style: italic;
 }
 
 #addTaskDescription {
-    font: inherit;
-    font-size: small;
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    height: 70px;
+  font: inherit;
+  font-size: small;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  height: 70px;
 }
 
 .addTaskAddButton,
 .addTaskCancelButton {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
-
 
 /* Change Project/Task Name dialogs */
 
 .changeProjectNameText,
 .changeTaskNameText {
-    margin: 0;
-    margin-bottom: 5px;
-    text-align: center;
+  margin: 0;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .changeProjectName,
 .changeTaskName {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
-    margin: auto;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  margin: auto;
 }
 
 .changeProjectNameDiv,
 .changeTaskNameDiv {
-    font-size: small;
+  font-size: small;
 }
 
 .changeProjectNameDiv > input,
 .changeTaskNameDiv > input {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  border-radius: 5px;
 }
 
 .okCancelButtons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
 }
 
 .okChangeProjectName,
 .cancelChangeProjectName,
 .okChangeTaskName,
 .cancelChangeTaskName {
-    border: solid 1px lightgrey;
-    cursor: pointer;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  cursor: pointer;
+  border-radius: 5px;
 }
-
 
 /* Delete Task dialog */
 
 .delete {
-    display: flex;
-    margin-left: auto;
-    scale: 70%;
-    opacity: 30%;
-    cursor: pointer;
+  display: flex;
+  margin-left: auto;
+  scale: 70%;
+  opacity: 30%;
+  cursor: pointer;
 }
 
 .deleteTaskText {
-    margin: 0;
-    margin-bottom: 5px;
+  margin: 0;
+  margin-bottom: 5px;
 }
 
 .areYouSure {
-    border: solid 1px lightgrey;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+  border: solid 1px lightgrey;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 }
 
 .yesNoButtons {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .yesButton,
 .noButton {
-    border: solid 1px lightgrey;
-    cursor: pointer;
-    border-radius: 5px;
+  border: solid 1px lightgrey;
+  cursor: pointer;
+  border-radius: 5px;
 }
